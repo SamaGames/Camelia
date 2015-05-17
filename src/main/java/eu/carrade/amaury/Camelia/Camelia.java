@@ -6,12 +6,15 @@
 
 package eu.carrade.amaury.Camelia;
 
+import eu.carrade.amaury.Camelia.drawing.DrawingManager;
 import eu.carrade.amaury.Camelia.game.GameManager;
-import eu.carrade.amaury.Camelia.game.Whiteboard;
+import eu.carrade.amaury.Camelia.drawing.Whiteboard;
 import eu.carrade.amaury.Camelia.listeners.DrawListener;
 import eu.carrade.amaury.Camelia.listeners.PlayersConnectionListener;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -23,6 +26,7 @@ public final class Camelia extends JavaPlugin {
 	private Configuration arenaConfig;
 
 	private GameManager gameManager;
+	private DrawingManager drawingManager;
 	private Whiteboard whiteboard;
 	
 	@Override
@@ -49,12 +53,21 @@ public final class Camelia extends JavaPlugin {
 
 		/** *** Managers *** **/
 		gameManager = new GameManager();
+		drawingManager = new DrawingManager();
 		whiteboard = new Whiteboard();
 
 
 		/** *** Listeners *** **/
 		getServer().getPluginManager().registerEvents(new PlayersConnectionListener(), this);
 		getServer().getPluginManager().registerEvents(new DrawListener(), this);
+
+
+
+		/** *** Reload handling *** **/
+		for(Player player : getServer().getOnlinePlayers()) {
+			PlayerJoinEvent joinEvent = new PlayerJoinEvent(player, player.getName() + " stayed on a reloaded server");
+			new PlayersConnectionListener().onPlayerJoin(joinEvent);
+		}
 
 	}
 
@@ -64,6 +77,10 @@ public final class Camelia extends JavaPlugin {
 
 	public GameManager getGameManager() {
 		return gameManager;
+	}
+
+	public DrawingManager getDrawingManager() {
+		return drawingManager;
 	}
 
 	public Whiteboard getWhiteboard() {

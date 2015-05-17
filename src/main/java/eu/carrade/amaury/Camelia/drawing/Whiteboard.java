@@ -1,4 +1,4 @@
-package eu.carrade.amaury.Camelia.game;
+package eu.carrade.amaury.Camelia.drawing;
 
 import eu.carrade.amaury.Camelia.Camelia;
 import eu.carrade.amaury.Camelia.utils.Utils;
