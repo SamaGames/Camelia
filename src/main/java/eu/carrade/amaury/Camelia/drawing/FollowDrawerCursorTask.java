@@ -40,10 +40,6 @@ public class FollowDrawerCursorTask extends BukkitRunnable {
 
 			if(target != null) {
 
-				Bukkit.getLogger().info("PAINT! " + target);
-
-				Camelia.getInstance().getWhiteboard().setBlock(target, Material.COAL_BLOCK);
-
 				// We draw a line between the last known target and this one
 				// (only if the last known target location is not too old and not too close).
 				if(previousLocation.containsKey(rightClickingPlayerID)
@@ -53,12 +49,16 @@ public class FollowDrawerCursorTask extends BukkitRunnable {
 					Vector direction = target.toVector().subtract(start.toVector());
 					Double distance = start.distance(target);
 
-					if(distance > 1.5) {
+					if(distance > 1) {
 						BlockIterator blockIterator = new BlockIterator(start.getWorld(), start.toVector(), direction, 1, (int) Math.ceil(distance));
 
 						while (blockIterator.hasNext()) {
 							Camelia.getInstance().getWhiteboard().setBlock(blockIterator.next().getLocation(), Material.COAL_BLOCK);
 						}
+					}
+
+					else {
+						Camelia.getInstance().getWhiteboard().setBlock(target, Material.COAL_BLOCK);
 					}
 				}
 
