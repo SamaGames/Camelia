@@ -1,5 +1,5 @@
 name: Camelia
-description: Ensures the nether portals created are always inside the vanilla WorldBorder
+description: Draw.
 main: eu.carrade.amaury.Camelia.Camelia
 version: 1.0
 author: "Amaury Carrade"
