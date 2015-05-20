@@ -1,9 +1,6 @@
 package eu.carrade.amaury.Camelia.game;
 
 
-
-import eu.carrade.amaury.Camelia.Camelia;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;

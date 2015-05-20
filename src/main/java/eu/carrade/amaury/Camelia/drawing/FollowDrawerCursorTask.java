@@ -2,11 +2,9 @@ package eu.carrade.amaury.Camelia.drawing;
 
 import eu.carrade.amaury.Camelia.Camelia;
 import eu.carrade.amaury.Camelia.game.Drawer;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 

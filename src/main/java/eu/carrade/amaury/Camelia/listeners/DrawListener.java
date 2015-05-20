@@ -2,16 +2,13 @@ package eu.carrade.amaury.Camelia.listeners;
 
 import eu.carrade.amaury.Camelia.Camelia;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.BlockIterator;
-import org.bukkit.util.Vector;
 
-import java.util.*;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 
