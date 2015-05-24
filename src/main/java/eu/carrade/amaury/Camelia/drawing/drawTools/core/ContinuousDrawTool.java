@@ -1,8 +1,5 @@
 package eu.carrade.amaury.Camelia.drawing.drawTools.core;
 
-import eu.carrade.amaury.Camelia.game.Drawer;
-import org.bukkit.Location;
-
 /**
  * Represents a tool that needs to be applied on every block targeted by the player.
  *

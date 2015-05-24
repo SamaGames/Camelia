@@ -12,8 +12,6 @@ public class PlayersConnectionListener implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerJoin(PlayerJoinEvent ev) {
-		Camelia.getInstance().getGameManager().registerNewDrawer(ev.getPlayer().getUniqueId());
+		Camelia.getInstance().getGameManager().registerNewDrawer(ev.getPlayer().getUniqueId()).fillInventory();
 	}
-
-
 }

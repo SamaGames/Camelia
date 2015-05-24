@@ -2,8 +2,10 @@ package eu.carrade.amaury.Camelia.drawing;
 
 import eu.carrade.amaury.Camelia.Camelia;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
+import eu.carrade.amaury.Camelia.drawing.tools.SampleTool;
 import eu.carrade.amaury.Camelia.game.Drawer;
 import eu.carrade.amaury.Camelia.utils.Utils;
+
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -33,6 +35,7 @@ public class DrawingManager {
 
 		new FollowDrawerCursorTask().runTaskTimer(Camelia.getInstance(), 10l, 1l);
 
+		registerDrawTool(new SampleTool());
 	}
 
 
@@ -98,4 +101,7 @@ public class DrawingManager {
 		return rightClickingPlayers;
 	}
 
+	public Map<Integer, DrawTool> getDrawTools() {
+		return drawTools;
+	}
 }
