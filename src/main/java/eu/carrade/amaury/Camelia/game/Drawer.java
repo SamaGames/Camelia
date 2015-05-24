@@ -6,17 +6,24 @@ import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import eu.carrade.amaury.Camelia.Camelia;
+import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
 
 import java.util.UUID;
 
 public class Drawer {
 
-	private UUID playerID;
+	private final UUID playerID;
+	private final Player player;
 
 	private boolean drawing = false;
 
 	public Drawer(UUID playerID) {
 		this.playerID = playerID;
+		this.player = Bukkit.getPlayer(this.playerID);
 	}
 
 	/**
@@ -73,8 +80,24 @@ public class Drawer {
 	public void drawABlock(Location target) {
 		DrawTool tool = Camelia.getInstance().getDrawingManager().getActivePlayerTool(this);
 
-		if(tool != null) {
+		if (tool != null) {
 			tool.onRightClick(target, this);
+		}
+	}
+
+	/**
+	 * Updates the inventory of this player with the good content (draw tools if
+	 * drawing; empty else).
+	 */
+	public void fillInventory() {
+		this.getPlayer().getInventory().clear();
+
+		if(this.isDrawing()) {
+			for(int i = 0; i < 9; i++) {
+				DrawTool tool = Camelia.getInstance().getDrawingManager().getDrawTools().get(i);
+				if(tool != null)
+					this.player.getInventory().setItem(i, tool.constructIcon());
+			}
 		}
 	}
 }

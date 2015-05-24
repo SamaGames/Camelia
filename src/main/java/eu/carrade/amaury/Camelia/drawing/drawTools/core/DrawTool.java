@@ -1,13 +1,12 @@
 package eu.carrade.amaury.Camelia.drawing.drawTools.core;
 
-import eu.carrade.amaury.Camelia.game.Drawer;
-import eu.carrade.amaury.Camelia.utils.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.List;
+import eu.carrade.amaury.Camelia.game.Drawer;
+import eu.carrade.amaury.Camelia.utils.Utils;
 
 /**
  * Represents a tool used to draw.

@@ -4,13 +4,9 @@ import eu.carrade.amaury.Camelia.Camelia;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.ContinuousDrawTool;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
 import eu.carrade.amaury.Camelia.game.Drawer;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.BlockIterator;
-import org.bukkit.util.Vector;
 
 import java.util.Map;
 import java.util.UUID;
@@ -55,23 +51,7 @@ public class FollowDrawerCursorTask extends BukkitRunnable {
 					Location end = target;
 					
 					drawLine(drawer, start.getBlockX(), start.getBlockY(), end.getBlockX(), end.getBlockY(), end.getBlockZ());
-					
-					//if("AmauryPi".equals("AmauryPi")) return;
-					/*
-					Vector direction = target.toVector().subtract(start.toVector());
-					Double distance = start.distance(target);
 
-					if(distance > 1) {
-						BlockIterator blockIterator = new BlockIterator(start.getWorld(), start.toVector(), direction, 1, (int) Math.ceil(distance));
-
-						while (blockIterator.hasNext()) {
-							Camelia.getInstance().getWhiteboard().setBlock(blockIterator.next().getLocation(), Material.COAL_BLOCK);
-						}
-					}
-
-					else {
-						Camelia.getInstance().getWhiteboard().setBlock(target, Material.COAL_BLOCK);
-					}*/
 				}
 
 				previousLocation.put(rightClickingPlayerID, target);
@@ -79,47 +59,9 @@ public class FollowDrawerCursorTask extends BukkitRunnable {
 			}
 		}
 	}
-	
-	// Old tests
-	/*
-	private void drawLine(int x1, int y1, int x2, int y2, int plan) {
-		if(x2 - x1 == 0) {
-			Camelia.getInstance().getWhiteboard().setBlock(new Location(Bukkit.getServer().getWorlds().get(0), x1, y1, plan), Material.STONE);
-			return;
-		}
-		double d = (y2 - y1) / (x2 - x1);
-		double s = 2 * d - 1;
-		double inc1 = 2 * d;
-		double inc2 = 2 * d - 2;
-		int y = Math.min(y1, y2);
-		for(int x = Math.min(x1, x2); x <= Math.max(x1, x2); x++) {
-			Camelia.getInstance().getWhiteboard().setBlock(new Location(Bukkit.getServer().getWorlds().get(0), x, y, plan), Material.STONE);
-			if(s < 0) {
-				s += inc1;
-			} else {
-				s += inc2;
-				y++;
-			}
-		}
-		
-		/*		  d = y2 / x2
-				  S = 2 * d - 1
-				  Inc1 = 2 * d
-				  Inc2 = 2* d - 2
-				  Y = 0
-				  Pour x allant de 0 à x2 incrément 1
-				     Faire
-				        Afficher (x,y) 
-				        Si S < 0 alors S = S + Inc1
-				                       Sinon 
-						 Faire
-						    S = S + Inc2
-						    y = y+1
-						FinFaire
-				     FinFaire 
-	}*/
-	
+
 	private void drawLine(Drawer drawer, int x1, int y1, int x2, int y2, int plan) {
+
 		// Draw a perfect line from pos1 to pos2 on a surface
 		// Source: http://java.developpez.com/telecharger/detail/id/1268/Algorithme-de-Bresenham
 		int dx, dy, i, xinc, yinc, cumul, x, y ;
