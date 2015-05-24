@@ -1,7 +1,10 @@
 package eu.carrade.amaury.Camelia.game;
 
 
+import eu.carrade.amaury.Camelia.Camelia;
+import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -60,5 +63,18 @@ public class Drawer {
 	 */
 	public void setDrawing(boolean drawing) {
 		this.drawing = drawing;
+	}
+
+	/**
+	 * Called when a player use a tool. Calls the good methods of the tool.
+	 *
+	 * @param target The targeted location on the screen.
+	 */
+	public void drawABlock(Location target) {
+		DrawTool tool = Camelia.getInstance().getDrawingManager().getActivePlayerTool(this);
+
+		if(tool != null) {
+			tool.onRightClick(target, this);
+		}
 	}
 }

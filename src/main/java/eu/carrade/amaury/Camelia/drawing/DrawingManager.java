@@ -4,6 +4,7 @@ import eu.carrade.amaury.Camelia.Camelia;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
 import eu.carrade.amaury.Camelia.game.Drawer;
 import eu.carrade.amaury.Camelia.utils.Utils;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -80,7 +81,7 @@ public class DrawingManager {
 	}
 
 
-	/* ***  Right-clicking players tracking *** */
+	/* ***  Right-clicking players tracking  *** */
 
 	public void setRightClicking(UUID id, boolean rightClicking) {
 		if(rightClicking) {

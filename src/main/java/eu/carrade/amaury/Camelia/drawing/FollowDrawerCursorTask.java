@@ -1,6 +1,8 @@
 package eu.carrade.amaury.Camelia.drawing;
 
 import eu.carrade.amaury.Camelia.Camelia;
+import eu.carrade.amaury.Camelia.drawing.drawTools.core.ContinuousDrawTool;
+import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
 import eu.carrade.amaury.Camelia.game.Drawer;
 
 import org.bukkit.Bukkit;
@@ -36,6 +38,10 @@ public class FollowDrawerCursorTask extends BukkitRunnable {
 
 			if(drawer == null || !drawer.isDrawing()) continue;
 
+			DrawTool tool = Camelia.getInstance().getDrawingManager().getActivePlayerTool(drawer);
+			if(tool == null || !(tool instanceof ContinuousDrawTool)) return;
+
+			
 			Location target = Camelia.getInstance().getWhiteboard().getTargetBlock(drawer.getPlayer());
 
 			if(target != null) {
@@ -48,7 +54,7 @@ public class FollowDrawerCursorTask extends BukkitRunnable {
 					Location start = previousLocation.get(rightClickingPlayerID);
 					Location end = target;
 					
-					drawLine(start.getBlockX(), start.getBlockY(), end.getBlockX(), end.getBlockY(), end.getBlockZ());
+					drawLine(drawer, start.getBlockX(), start.getBlockY(), end.getBlockX(), end.getBlockY(), end.getBlockZ());
 					
 					//if("AmauryPi".equals("AmauryPi")) return;
 					/*
@@ -113,7 +119,7 @@ public class FollowDrawerCursorTask extends BukkitRunnable {
 				     FinFaire 
 	}*/
 	
-	private void drawLine(int x1, int y1, int x2, int y2, int plan) {
+	private void drawLine(Drawer drawer, int x1, int y1, int x2, int y2, int plan) {
 		// Draw a perfect line from pos1 to pos2 on a surface
 		// Source: http://java.developpez.com/telecharger/detail/id/1268/Algorithme-de-Bresenham
 		int dx, dy, i, xinc, yinc, cumul, x, y ;
@@ -127,8 +133,8 @@ public class FollowDrawerCursorTask extends BukkitRunnable {
 		dx = Math.abs(dx);
 		dy = Math.abs(dy);
 
-		Camelia.getInstance().getWhiteboard().setBlock(new Location(Bukkit.getServer().getWorlds().get(0), x, y, plan), Material.STONE);
-	 
+		drawer.drawABlock(new Location(Bukkit.getServer().getWorlds().get(0), x, y, plan));
+
 		if (dx > dy) {
 			cumul = dx / 2;
 			for (i=1 ; i <= dx ; i++) {
@@ -138,9 +144,12 @@ public class FollowDrawerCursorTask extends BukkitRunnable {
 					cumul -= dx;
 					y += yinc;
 				}
-				Camelia.getInstance().getWhiteboard().setBlock(new Location(Bukkit.getServer().getWorlds().get(0), x, y, plan), Material.STONE);
+
+				drawer.drawABlock(new Location(Bukkit.getServer().getWorlds().get(0), x, y, plan));
 			}
-		} else {
+		}
+
+		else {
 			cumul = dy / 2;
 			for (i=1 ; i <= dy ; i++) {
 				y += yinc;
@@ -149,7 +158,8 @@ public class FollowDrawerCursorTask extends BukkitRunnable {
 					cumul -= dy;
 					x += xinc;
 				}
-				Camelia.getInstance().getWhiteboard().setBlock(new Location(Bukkit.getServer().getWorlds().get(0), x, y, plan), Material.STONE);
+
+				drawer.drawABlock(new Location(Bukkit.getServer().getWorlds().get(0), x, y, plan));
 			}
 		}
 	}
