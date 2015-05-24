@@ -34,7 +34,7 @@ public class FollowDrawerCursorTask extends BukkitRunnable {
 
 			Drawer drawer = Camelia.getInstance().getGameManager().getDrawer(rightClickingPlayerID);
 
-			//if(drawer == null || !drawer.isDrawing()) continue;
+			if(drawer == null || !drawer.isDrawing()) continue;
 
 			Location target = Camelia.getInstance().getWhiteboard().getTargetBlock(drawer.getPlayer());
 
@@ -50,8 +50,8 @@ public class FollowDrawerCursorTask extends BukkitRunnable {
 					
 					drawLine(start.getBlockX(), start.getBlockY(), end.getBlockX(), end.getBlockY(), end.getBlockZ());
 					
-					if("AmauryPi".equals("AmauryPi")) return;
-					
+					//if("AmauryPi".equals("AmauryPi")) return;
+					/*
 					Vector direction = target.toVector().subtract(start.toVector());
 					Double distance = start.distance(target);
 
@@ -65,7 +65,7 @@ public class FollowDrawerCursorTask extends BukkitRunnable {
 
 					else {
 						Camelia.getInstance().getWhiteboard().setBlock(target, Material.COAL_BLOCK);
-					}
+					}*/
 				}
 
 				previousLocation.put(rightClickingPlayerID, target);

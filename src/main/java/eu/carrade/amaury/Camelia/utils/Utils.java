@@ -1,12 +1,17 @@
 package eu.carrade.amaury.Camelia.utils;
 
 
+import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Utils {
 
@@ -74,5 +79,67 @@ public class Utils {
 
 		return null;
 	}
+
+	/**
+	 * Cuts a string in lines to be inserted in a lore.
+	 *
+	 * @param text The original text.
+	 * @return A list of lines.
+	 */
+	public static List<String> stringToLore(String text) {
+		List<String> lines = new ArrayList<>();
+		String[] words = text.split(" ");
+		int line = 0;
+		lines.add(line, "");
+
+		String previousWords = "";
+
+		for (String word : words) {
+			previousWords += word;
+
+			int chars = (lines.get(line) + " " + word).length() - countColors(lines.get(line) + " " + word);
+
+			if (chars >= 45) {
+				line++;
+				lines.add(line, ChatColor.getLastColors(previousWords) + word);
+			}
+
+			else {
+				if (lines.get(line).equals("")) {
+					lines.set(line, ChatColor.getLastColors(previousWords) + word);
+				} else {
+					lines.set(line, lines.get(line) + " " + word);
+				}
+			}
+		}
+
+		for(int k = 0; k < lines.size(); k++) {
+			lines.set(k, lines.get(k).trim());
+		}
+
+		return lines;
+	}
+
+	private static int countColors(String str) {
+		int count = 0;
+		for(int i = 0; i < str.length(); i++) {
+			if(str.charAt(i) == ChatColor.COLOR_CHAR && ChatColor.getByChar(str.charAt(i + 1)) != null) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+
+	/**
+	 * Returns a valid slot to use for this tool.
+	 *
+	 * @param tool The tool
+	 * @return The slot to use: the declared slot if below or equals to 8; 8 else.
+	 */
+	public static Integer getDrawToolRealSlot(DrawTool tool) {
+		return Math.min(Math.abs(tool.getSlot()), 8);
+	}
+
 
 }
