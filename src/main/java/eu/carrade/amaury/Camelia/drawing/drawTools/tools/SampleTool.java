@@ -34,7 +34,7 @@ public class SampleTool extends ContinuousDrawTool {
 
 	@Override
 	public void onRightClick(Location targetOnScreen, Drawer drawer) {
-		GameBlock block = drawer.getColor().getBasicBlock();
+		GameBlock block = drawer.getColor().getBlock();
 		Camelia.getInstance().getWhiteboard().setBlock(targetOnScreen, block.getType(), block.getData());
 	}
 

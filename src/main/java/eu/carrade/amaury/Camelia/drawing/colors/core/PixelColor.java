@@ -57,4 +57,15 @@ public abstract class PixelColor {
 		}
 		return getBasicDisplayName();
 	}
+	
+	public GameBlock getBlock() {
+		if(type == ColorType.BASIC) {
+			return getBasicBlock();
+		} else if(type == ColorType.BETTER) {
+			return getBetterBlock();
+		} else if(type == ColorType.ROUGH) {
+			return getRoughBlock();
+		}
+		return getBasicBlock();
+	}
 }
