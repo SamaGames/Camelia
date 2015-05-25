@@ -32,13 +32,13 @@ public abstract class PixelColor {
 	public abstract String getBasicDisplayName();
 	
 	public GameBlock getBetterBlock() {
-		return basicBlock;
+		return betterBlock;
 	}
 	
 	public abstract String getBetterDisplayName();
 	
 	public GameBlock getRoughBlock() {
-		return basicBlock;
+		return roughBlock;
 	}
 	
 	public abstract String getRoughDisplayName();
