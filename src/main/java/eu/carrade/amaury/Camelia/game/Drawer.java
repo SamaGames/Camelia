@@ -70,7 +70,7 @@ public class Drawer {
 	public void setDrawing(boolean drawing) {
 		this.drawing = drawing;
 	}
-	
+
 
 	/**
 	 * Returns the current color of this drawer

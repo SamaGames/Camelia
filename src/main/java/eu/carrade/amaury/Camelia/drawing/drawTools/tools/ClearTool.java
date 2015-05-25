@@ -1,5 +1,6 @@
 package eu.carrade.amaury.Camelia.drawing.drawTools.tools;
 
+import eu.carrade.amaury.Camelia.Camelia;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.ClicDrawTool;
 import eu.carrade.amaury.Camelia.game.Drawer;
 import org.bukkit.ChatColor;
@@ -31,11 +32,11 @@ public class ClearTool extends ClicDrawTool {
 
 	@Override
 	public void onRightClick(Location targetOnScreen, Drawer drawer) {
-		drawer.getPlayer().sendMessage("TODO cleaning");
+		Camelia.getInstance().getWhiteboard().clearBoard();
 	}
 
 	@Override
 	public void onLeftClick(Location targetOnScreen, Drawer drawer) {
-
+		onRightClick(targetOnScreen, drawer);
 	}
 }

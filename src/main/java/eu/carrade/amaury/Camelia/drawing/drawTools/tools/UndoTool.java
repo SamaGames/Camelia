@@ -32,11 +32,11 @@ public class UndoTool extends ClicDrawTool {
 
 	@Override
 	public void onRightClick(Location targetOnScreen, Drawer drawer) {
-		drawer.getPlayer().sendMessage("TODO Undo/Redo");
+		drawer.getPlayer().sendMessage("TODO Undo");
 	}
 
 	@Override
 	public void onLeftClick(Location targetOnScreen, Drawer drawer) {
-
+		drawer.getPlayer().sendMessage("TODO Redo");
 	}
 }
