@@ -36,8 +36,9 @@ public abstract class DrawTool {
 	 * from the content returned by {@link #getDisplayName} and {@link #getDescription}.
 	 *
 	 * @return The icon, as an ItemStack.
+	 * @param drawer The drawer
 	 */
-	public abstract ItemStack getIcon();
+	public abstract ItemStack getIcon(Drawer drawer);
 
 
 	/**
@@ -69,9 +70,10 @@ public abstract class DrawTool {
 	 * Returns a ready-to-use ItemStack to represents this tool in the player's hotbar.
 	 *
 	 * @return The ItemStack, with display names and lores correctly set.
+	 * @param drawer
 	 */
-	public ItemStack constructIcon() {
-		ItemStack icon = getIcon().clone();
+	public ItemStack constructIcon(Drawer drawer) {
+		ItemStack icon = getIcon(drawer).clone();
 		ItemMeta  meta = icon.getItemMeta();
 
 		meta.setDisplayName(getDisplayName() + ChatColor.DARK_GRAY + " - " + ChatColor.GRAY + "Clic droit (outil) ou gauche (couleurs)");

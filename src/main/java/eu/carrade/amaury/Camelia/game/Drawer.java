@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 
 import eu.carrade.amaury.Camelia.Camelia;
 import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorBlue;
-import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorRed;
 import eu.carrade.amaury.Camelia.drawing.colors.core.ColorType;
 import eu.carrade.amaury.Camelia.drawing.colors.core.PixelColor;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
@@ -98,7 +97,7 @@ public class Drawer {
 			for(int i = 0; i < 9; i++) {
 				DrawTool tool = Camelia.getInstance().getDrawingManager().getDrawTools().get(i);
 				if(tool != null)
-					this.player.getInventory().setItem(i, tool.constructIcon());
+					this.player.getInventory().setItem(i, tool.constructIcon(this));
 			}
 		}
 	}

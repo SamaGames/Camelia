@@ -23,7 +23,7 @@ public class SampleTool extends ContinuousDrawTool {
 	}
 
 	@Override
-	public ItemStack getIcon() {
+	public ItemStack getIcon(Drawer drawer) {
 		return new ItemStack(Material.DIAMOND_SPADE);
 	}
 
