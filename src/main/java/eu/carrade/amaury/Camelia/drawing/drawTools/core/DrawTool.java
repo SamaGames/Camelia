@@ -76,7 +76,7 @@ public abstract class DrawTool {
 		ItemStack icon = getIcon(drawer).clone();
 		ItemMeta  meta = icon.getItemMeta();
 
-		meta.setDisplayName(getDisplayName() + ChatColor.DARK_GRAY + " - " + ChatColor.GRAY + "Clic droit (outil) ou gauche (couleurs)");
+		meta.setDisplayName(getDisplayName());
 		meta.setLore(Utils.stringToLore(getDescription()));
 
 		icon.setItemMeta(meta);

@@ -10,16 +10,16 @@ import eu.carrade.amaury.Camelia.drawing.colors.core.GameBlock;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.ContinuousDrawTool;
 import eu.carrade.amaury.Camelia.game.Drawer;
 
-public class SampleTool extends ContinuousDrawTool {
+public class BrushTool extends ContinuousDrawTool {
 
 	@Override
 	public String getDisplayName() {
-		return ChatColor.AQUA + "" + ChatColor.BOLD + "Pinceau stylé";
+		return ChatColor.AQUA + "" + ChatColor.BOLD + "Pinceau";
 	}
 
 	@Override
 	public String getDescription() {
-		return ChatColor.GRAY + "Description";
+		return ChatColor.GRAY + "Peint une ligne d'épaisseur variable sur le tableau";
 	}
 
 	@Override
