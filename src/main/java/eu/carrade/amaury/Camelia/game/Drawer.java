@@ -70,20 +70,7 @@ public class Drawer {
 	public void setDrawing(boolean drawing) {
 		this.drawing = drawing;
 	}
-
-
-	/**
-	 * Called when a player use a tool. Calls the good methods of the tool.
-	 *
-	 * @param target The targeted location on the screen.
-	 */
-	public void drawABlock(Location target) {
-		DrawTool tool = getActiveTool();
-
-		if (tool != null) {
-			tool.onRightClick(target, this);
-		}
-	}
+	
 
 	/**
 	 * Returns the current color of this drawer
