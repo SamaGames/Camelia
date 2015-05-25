@@ -1,18 +1,16 @@
 package eu.carrade.amaury.Camelia.game;
 
 
-import eu.carrade.amaury.Camelia.Camelia;
-import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import eu.carrade.amaury.Camelia.Camelia;
+import eu.carrade.amaury.Camelia.drawing.colors.colors.better.Red;
+import eu.carrade.amaury.Camelia.drawing.colors.core.PixelColor;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
-
-import java.util.UUID;
 
 public class Drawer {
 
@@ -20,6 +18,8 @@ public class Drawer {
 	private final Player player;
 
 	private boolean drawing = false;
+	
+	private PixelColor color = new Red();
 
 	public Drawer(UUID playerID) {
 		this.playerID = playerID;
@@ -99,5 +99,9 @@ public class Drawer {
 					this.player.getInventory().setItem(i, tool.constructIcon());
 			}
 		}
+	}
+	
+	public PixelColor getColor() {
+		return this.color;
 	}
 }

@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import eu.carrade.amaury.Camelia.Camelia;
+import eu.carrade.amaury.Camelia.drawing.colors.core.GameBlock;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.ContinuousDrawTool;
 import eu.carrade.amaury.Camelia.game.Drawer;
 
@@ -33,7 +34,8 @@ public class SampleTool extends ContinuousDrawTool {
 
 	@Override
 	public void onRightClick(Location targetOnScreen, Drawer drawer) {
-		Camelia.getInstance().getWhiteboard().setBlock(targetOnScreen, Material.WOOL, (byte) 1);
+		GameBlock block = drawer.getColor().getBasicBlock();
+		Camelia.getInstance().getWhiteboard().setBlock(targetOnScreen, block.getType(), block.getData());
 	}
 
 	@Override
