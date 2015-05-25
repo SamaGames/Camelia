@@ -10,7 +10,13 @@ import org.bukkit.entity.Player;
 
 import eu.carrade.amaury.Camelia.Camelia;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
-import eu.carrade.amaury.Camelia.drawing.drawTools.tools.SampleTool;
+import eu.carrade.amaury.Camelia.drawing.drawTools.tools.BrushTool;
+import eu.carrade.amaury.Camelia.drawing.drawTools.tools.ClearTool;
+import eu.carrade.amaury.Camelia.drawing.drawTools.tools.ColorChooserTool;
+import eu.carrade.amaury.Camelia.drawing.drawTools.tools.FillRegionTool;
+import eu.carrade.amaury.Camelia.drawing.drawTools.tools.PaintingsTools;
+import eu.carrade.amaury.Camelia.drawing.drawTools.tools.SprayTool;
+import eu.carrade.amaury.Camelia.drawing.drawTools.tools.UndoTool;
 import eu.carrade.amaury.Camelia.game.Drawer;
 import eu.carrade.amaury.Camelia.utils.Utils;
 
@@ -33,9 +39,15 @@ public class DrawingManager {
 
 	public DrawingManager() {
 
-		new FollowDrawerCursorTask().runTaskTimer(Camelia.getInstance(), 10l, 1l);
+		registerDrawTool(new BrushTool());
+		registerDrawTool(new SprayTool());
+		registerDrawTool(new FillRegionTool());
+		registerDrawTool(new PaintingsTools());
+		registerDrawTool(new ColorChooserTool());
+		registerDrawTool(new UndoTool());
+		registerDrawTool(new ClearTool());
 
-		registerDrawTool(new SampleTool());
+		new FollowDrawerCursorTask().runTaskTimer(Camelia.getInstance(), 10l, 1l);
 	}
 
 
