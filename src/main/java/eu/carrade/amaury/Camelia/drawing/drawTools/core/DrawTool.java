@@ -53,6 +53,7 @@ public abstract class DrawTool {
 	 * Executed when the player right-clicks with the tool.
 	 *
 	 * @param targetOnScreen The block the drawer is currently targeting on his screen.
+	 *                       CAN BE NULL, if the drawer isn't targeting the screen.
 	 * @param drawer The drawer.
 	 */
 	public abstract void onRightClick(Location targetOnScreen, Drawer drawer);
@@ -61,6 +62,7 @@ public abstract class DrawTool {
 	 * Executed when the player left-clicks with the tool.
 	 *
 	 * @param targetOnScreen The block the drawer is currently targeting on his screen.
+	 *                       CAN BE NULL, if the drawer isn't targeting the screen.
 	 * @param drawer The drawer.
 	 */
 	public abstract void onLeftClick(Location targetOnScreen, Drawer drawer);

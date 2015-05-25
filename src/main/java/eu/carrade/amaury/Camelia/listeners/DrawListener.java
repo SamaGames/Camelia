@@ -67,8 +67,6 @@ public class DrawListener implements Listener {
 			DrawTool tool = drawer.getActiveTool();
 			Location target = Camelia.getInstance().getWhiteboard().getTargetBlock(ev.getPlayer());
 
-			if(target == null) return;
-
 			switch(ev.getAction()) {
 
 				case LEFT_CLICK_BLOCK:
