@@ -62,38 +62,6 @@ public class DrawingManager {
 		drawTools.put(Utils.getDrawToolRealSlot(tool), tool);
 	}
 
-	/**
-	 * Returns the player's active draw tool.
-	 *
-	 * Warning - this method will NOT check if a player is currently in a
-	 * drawing state, for performance reasons. Use {@link #getActivePlayerTool(Drawer)}
-	 * if you want this check.
-	 *
-	 * @param player The player.
-	 *
-	 * @return The tool, or {@code null} if there is no active tool,
-	 * the player is null, or disconnected.
-	 */
-	public DrawTool getActivePlayerTool(Player player) {
-		if(player == null || !player.isOnline()) return null;
-
-		return drawTools.get(player.getInventory().getHeldItemSlot());
-	}
-
-	/**
-	 * Returns the player's active draw tool.
-	 *
-	 * @param drawer The drawer.
-	 *
-	 * @return The tool, or {@code null} if there is no active tool,
-	 * the player is null, not currently drawing, or disconnected.
-	 */
-	public DrawTool getActivePlayerTool(Drawer drawer) {
-		if(drawer == null || !drawer.isOnline() || !drawer.isDrawing()) return null;
-
-		return getActivePlayerTool(drawer.getPlayer());
-	}
-
 
 	/* ***  Right-clicking players tracking  *** */
 

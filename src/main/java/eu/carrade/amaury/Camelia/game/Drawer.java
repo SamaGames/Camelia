@@ -16,7 +16,6 @@ import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
 public class Drawer {
 
 	private final UUID playerID;
-	private final Player player;
 
 	private boolean drawing = false;
 	
@@ -24,7 +23,6 @@ public class Drawer {
 
 	public Drawer(UUID playerID) {
 		this.playerID = playerID;
-		this.player = Bukkit.getPlayer(this.playerID);
 	}
 
 	/**
@@ -73,13 +71,14 @@ public class Drawer {
 		this.drawing = drawing;
 	}
 
+
 	/**
 	 * Called when a player use a tool. Calls the good methods of the tool.
 	 *
 	 * @param target The targeted location on the screen.
 	 */
 	public void drawABlock(Location target) {
-		DrawTool tool = Camelia.getInstance().getDrawingManager().getActivePlayerTool(this);
+		DrawTool tool = getActiveTool();
 
 		if (tool != null) {
 			tool.onRightClick(target, this);
@@ -87,26 +86,53 @@ public class Drawer {
 	}
 
 	/**
+	 * Returns the current color of this drawer
+	 *
+	 * @return The color
+	 */
+	public PixelColor getColor() {
+		return this.color;
+	}
+
+	/**
+	 * Updates the current color of this drawer
+	 *
+	 * @param color The new color
+	 */
+	public void setColor(PixelColor color) {
+		this.color = color;
+	}
+
+	/**
+	 * Returns the currently active tool of this drawer.
+	 *
+	 * @return The tool, or {@code null} if there is no active tool,
+	 * the player is null, not currently drawing, or disconnected.
+	 */
+	public DrawTool getActiveTool() {
+		if(!isOnline() || !isDrawing()) return null;
+
+		Player player = getPlayer();
+		if(player == null) return null; // Just to be sure
+
+		return Camelia.getInstance().getDrawingManager().getDrawTools().get(getPlayer().getInventory().getHeldItemSlot());
+	}
+
+	/**
 	 * Updates the inventory of this player with the good content (draw tools if
 	 * drawing; empty else).
 	 */
 	public void fillInventory() {
-		this.getPlayer().getInventory().clear();
+		Player player = getPlayer();
 
-		if(this.isDrawing()) {
+		player.getInventory().clear();
+
+		if(isDrawing()) {
 			for(int i = 0; i < 9; i++) {
 				DrawTool tool = Camelia.getInstance().getDrawingManager().getDrawTools().get(i);
 				if(tool != null)
-					this.player.getInventory().setItem(i, tool.constructIcon(this));
+					player.getInventory().setItem(i, tool.constructIcon(this));
 			}
 		}
-	}
-	
-	public PixelColor getColor() {
-		return this.color;
-	}
-	
-	public void setColor(PixelColor color) {
-		this.color = color;
 	}
 }

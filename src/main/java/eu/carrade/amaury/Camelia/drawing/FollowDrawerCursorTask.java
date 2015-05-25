@@ -34,7 +34,7 @@ public class FollowDrawerCursorTask extends BukkitRunnable {
 
 			if(drawer == null || !drawer.isDrawing()) continue;
 
-			DrawTool tool = Camelia.getInstance().getDrawingManager().getActivePlayerTool(drawer);
+			DrawTool tool = drawer.getActiveTool();
 			if(tool == null || !(tool instanceof ContinuousDrawTool)) return;
 
 			
@@ -62,6 +62,11 @@ public class FollowDrawerCursorTask extends BukkitRunnable {
 
 	private void drawLine(Drawer drawer, int x1, int y1, int x2, int y2, int plan) {
 
+		DrawTool tool = drawer.getActiveTool();
+
+		if(tool == null) return;
+
+
 		// Draw a perfect line from pos1 to pos2 on a surface
 		// Source: http://java.developpez.com/telecharger/detail/id/1268/Algorithme-de-Bresenham
 		int dx, dy, i, xinc, yinc, cumul, x, y ;
@@ -75,7 +80,7 @@ public class FollowDrawerCursorTask extends BukkitRunnable {
 		dx = Math.abs(dx);
 		dy = Math.abs(dy);
 
-		drawer.drawABlock(new Location(Bukkit.getServer().getWorlds().get(0), x, y, plan));
+		tool.onRightClick(new Location(Bukkit.getServer().getWorlds().get(0), x, y, plan), drawer);
 
 		if (dx > dy) {
 			cumul = dx / 2;
@@ -87,7 +92,7 @@ public class FollowDrawerCursorTask extends BukkitRunnable {
 					y += yinc;
 				}
 
-				drawer.drawABlock(new Location(Bukkit.getServer().getWorlds().get(0), x, y, plan));
+				tool.onRightClick(new Location(Bukkit.getServer().getWorlds().get(0), x, y, plan), drawer);
 			}
 		}
 
@@ -101,7 +106,7 @@ public class FollowDrawerCursorTask extends BukkitRunnable {
 					x += xinc;
 				}
 
-				drawer.drawABlock(new Location(Bukkit.getServer().getWorlds().get(0), x, y, plan));
+				tool.onRightClick(new Location(Bukkit.getServer().getWorlds().get(0), x, y, plan), drawer);
 			}
 		}
 	}
