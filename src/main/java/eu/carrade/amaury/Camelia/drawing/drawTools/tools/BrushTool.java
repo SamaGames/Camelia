@@ -36,7 +36,6 @@ public class BrushTool extends ContinuousDrawTool {
 	public void onRightClick(Location targetOnScreen, Drawer drawer) {
 		if(targetOnScreen == null) return;
 
-		GameBlock block = drawer.getColor().getBlock();
 		Camelia.getInstance().getWhiteboard().setBlock(targetOnScreen, drawer.getColor());
 	}
 
