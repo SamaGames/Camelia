@@ -1,7 +1,14 @@
 package eu.carrade.amaury.Camelia.drawing;
 
 import eu.carrade.amaury.Camelia.Camelia;
+import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorWhite;
+import eu.carrade.amaury.Camelia.drawing.colors.core.ColorType;
+import eu.carrade.amaury.Camelia.drawing.colors.core.ColorUtils;
+import eu.carrade.amaury.Camelia.drawing.colors.core.GameBlock;
+import eu.carrade.amaury.Camelia.drawing.colors.core.PixelColor;
 import eu.carrade.amaury.Camelia.utils.Utils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,7 +30,11 @@ public class Whiteboard {
 	 * two coordinates (x and z).
 	 */
 	private Location topAngle;
-
+	
+	private final int width;
+	private final int height;
+	
+	private final PixelColor[][] board; 
 
 	public Whiteboard() {
 		try {
@@ -47,6 +58,15 @@ public class Whiteboard {
 			Camelia.getInstance().disable();
 		}
 
+		this.width = bottomAngle.getBlockX() == topAngle.getBlockX() ? topAngle.getBlockZ() - bottomAngle.getBlockZ() + 1 : topAngle.getBlockX() - bottomAngle.getBlockX() + 1;
+		this.height = topAngle.getBlockY() - bottomAngle.getBlockY() + 1;
+		
+		board = new PixelColor[width][height];
+		
+		System.out.println(width);
+		System.out.println(height);
+		
+		clearBoard(); // To remove all null values
 	}
 
 
@@ -74,40 +94,21 @@ public class Whiteboard {
 	 *
 	 * @return True if the block was set (i.e. the location is in the whiteboard)
 	 */
-	public boolean setBlock(Location location, Material type, byte data) {
+	public boolean setBlock(Location location, PixelColor color) {
 		if(!isOnTheWhiteboard(location)) {
 			return false;
 		}
+		
+		int unit = bottomAngle.getBlockX() == topAngle.getBlockX() ? location.getBlockZ() - bottomAngle.getBlockZ() : location.getBlockX() - bottomAngle.getBlockX();
+		PixelColor baseColor = board[unit][location.getBlockY() - bottomAngle.getBlockY()];
+		PixelColor finalColor = ColorUtils.getMix(color, baseColor);
+		
+		board[unit][location.getBlockY() - bottomAngle.getBlockY()] = finalColor;
 
-		location.getBlock().setType(type);
-		location.getBlock().setData(data);
+		location.getBlock().setType(finalColor.getBlock().getType());
+		location.getBlock().setData(finalColor.getBlock().getData());
 
 		return true;
-	}
-
-	/**
-	 * Sets a block of the whiteboard
-	 *
-	 * @param location The location
-	 * @param type The block's type
-	 *
-	 * @return True if the block was set (i.e. the location is in the whiteboard)
-	 */
-	public boolean setBlock(Location location, Material type) {
-		return setBlock(location, type, (byte) 0);
-	}
-
-	/**
-	 * Sets a block of the whiteboard
-	 *
-	 * @param location The location
-	 * @param type The block's type
-	 * @param color The block's color
-	 *
-	 * @return True if the block was set (i.e. the location is in the whiteboard)
-	 */
-	public boolean setBlock(Location location, Material type, DyeColor color) {
-		return setBlock(location, type, type == Material.WOOL ? color.getWoolData() : color.getData());
 	}
 
 
@@ -130,5 +131,17 @@ public class Whiteboard {
 		}
 
 		return null;
+	}
+	
+	public void clearBoard() {
+		for(int x = 0; x < width; x++) {
+			for(int y = 0; y < height; y++) {
+				if(bottomAngle.getBlockX() == topAngle.getBlockX()) {
+					setBlock(new Location(Bukkit.getWorlds().get(0), bottomAngle.getBlockX(), bottomAngle.getBlockY() + y, bottomAngle.getBlockZ() + x), new ColorWhite(ColorType.BASIC));
+				} else {
+					setBlock(new Location(Bukkit.getWorlds().get(0), bottomAngle.getBlockX() + x, bottomAngle.getBlockY() + y, bottomAngle.getBlockZ()), new ColorWhite(ColorType.BASIC));
+				}
+			}
+		}
 	}
 }

@@ -8,9 +8,11 @@ package eu.carrade.amaury.Camelia;
 
 import eu.carrade.amaury.Camelia.drawing.DrawingManager;
 import eu.carrade.amaury.Camelia.drawing.Whiteboard;
+import eu.carrade.amaury.Camelia.drawing.colors.core.ColorUtils;
 import eu.carrade.amaury.Camelia.game.GameManager;
 import eu.carrade.amaury.Camelia.listeners.DrawListener;
 import eu.carrade.amaury.Camelia.listeners.PlayersConnectionListener;
+
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -68,6 +70,8 @@ public final class Camelia extends JavaPlugin {
 			PlayerJoinEvent joinEvent = new PlayerJoinEvent(player, player.getName() + " stayed on a reloaded server");
 			new PlayersConnectionListener().onPlayerJoin(joinEvent);
 		}
+		
+		ColorUtils.init();
 
 	}
 

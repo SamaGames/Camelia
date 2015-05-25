@@ -1,18 +1,18 @@
 package eu.carrade.amaury.Camelia.drawing;
 
-import eu.carrade.amaury.Camelia.Camelia;
-import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
-import eu.carrade.amaury.Camelia.drawing.drawTools.tools.SampleTool;
-import eu.carrade.amaury.Camelia.game.Drawer;
-import eu.carrade.amaury.Camelia.utils.Utils;
-
-import org.bukkit.entity.Player;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArraySet;
+
+import org.bukkit.entity.Player;
+
+import eu.carrade.amaury.Camelia.Camelia;
+import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
+import eu.carrade.amaury.Camelia.drawing.drawTools.tools.SampleTool;
+import eu.carrade.amaury.Camelia.game.Drawer;
+import eu.carrade.amaury.Camelia.utils.Utils;
 
 
 public class DrawingManager {

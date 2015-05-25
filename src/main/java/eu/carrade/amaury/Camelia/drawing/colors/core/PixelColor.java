@@ -68,4 +68,12 @@ public abstract class PixelColor {
 		}
 		return getBasicBlock();
 	}
+
+	public ColorType getType() {
+		return type;
+	}
+	
+	public void setColorType(ColorType type) {
+		this.type = type;
+	}
 }

@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import eu.carrade.amaury.Camelia.Camelia;
 import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorBlue;
 import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorRed;
+import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorYellow;
 import eu.carrade.amaury.Camelia.drawing.colors.core.ColorType;
 import eu.carrade.amaury.Camelia.drawing.colors.core.PixelColor;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
@@ -21,7 +22,7 @@ public class Drawer {
 
 	private boolean drawing = false;
 	
-	private PixelColor color = new ColorBlue(ColorType.ROUGH);
+	private PixelColor color = new ColorYellow(ColorType.BASIC);
 
 	public Drawer(UUID playerID) {
 		this.playerID = playerID;
@@ -105,5 +106,9 @@ public class Drawer {
 	
 	public PixelColor getColor() {
 		return this.color;
+	}
+	
+	public void setColor(PixelColor color) {
+		this.color = color;
 	}
 }
