@@ -26,8 +26,10 @@ public final class ColorUtils {
 	
 	private static Set<BasicMix> mixes = new HashSet<BasicMix>();
 	
-	private ColorUtils() {
+	static {
+
 		// http://minecraft.gamepedia.com/File:Minecraft-DyeGuide-1.7.2.png
+
 		mixes.add(new BasicMix(DyeColor.BLUE, DyeColor.GREEN, DyeColor.CYAN));
 		mixes.add(new BasicMix(DyeColor.BLUE, DyeColor.RED, DyeColor.MAGENTA));
 		mixes.add(new BasicMix(DyeColor.WHITE, DyeColor.RED, DyeColor.PINK));
@@ -36,84 +38,96 @@ public final class ColorUtils {
 		mixes.add(new BasicMix(DyeColor.WHITE, DyeColor.BLACK, DyeColor.GRAY));
 		mixes.add(new BasicMix(DyeColor.WHITE, DyeColor.GRAY, DyeColor.SILVER));
 		mixes.add(new BasicMix(DyeColor.RED, DyeColor.YELLOW, DyeColor.ORANGE));
-	}
-	
-	public static void init() {
-		new ColorUtils();
+
 	}
 	
 	/**
 	 * Mixes two colors together
-	 * @param The color the player tries to paint
-	 * @param The color already on the board
+	 * @param paintedColor The color the player tries to paint
+	 * @param onBoardColor The color already on the board
 	 * @return The new color
 	 */
-	public static PixelColor getMix(PixelColor color1, PixelColor color2) {
-		if(color2 == null || color1 == null) return color1;
-		if(color1.getType() == ColorType.ROUGH && color2.getType() != ColorType.ROUGH || color1.getType() != ColorType.ROUGH && color2.getType() == ColorType.ROUGH)
-			return color1;
+	public static PixelColor getMix(PixelColor paintedColor, PixelColor onBoardColor) {
+		if(onBoardColor == null || paintedColor == null) return paintedColor;
+
+		if(paintedColor.getType() == ColorType.ROUGH && onBoardColor.getType() != ColorType.ROUGH || paintedColor.getType() != ColorType.ROUGH && onBoardColor.getType() == ColorType.ROUGH)
+			return paintedColor;
+
+
 		DyeColor newColor = null;
+
 		for(BasicMix mix : mixes) {
-			if(mix.isMix(color1.getDyeColor(), color2.getDyeColor())) {
-				newColor = mix.getMix(color1.getDyeColor(), color2.getDyeColor());
+			if(mix.isMix(paintedColor.getDyeColor(), onBoardColor.getDyeColor())) {
+				newColor = mix.getMix(paintedColor.getDyeColor(), onBoardColor.getDyeColor());
 				break;
 			}
 		}
+
+
 		if(newColor != null) {
 			ColorType newType = ColorType.BASIC;
-			if(color1.getType() == color2.getType()) {
-				newType = color1.getType();
-			} else if(color1.getType() == ColorType.BASIC && color2.getType() == ColorType.BETTER || color1.getType() == ColorType.BETTER && color2.getType() == ColorType.BASIC) {
+
+			if(paintedColor.getType() == onBoardColor.getType()) {
+				newType = paintedColor.getType();
+			}
+
+			else if(paintedColor.getType() == ColorType.BASIC && onBoardColor.getType() == ColorType.BETTER || paintedColor.getType() == ColorType.BETTER && onBoardColor.getType() == ColorType.BASIC) {
 				newType = ColorType.ROUGH;
 			}
+
 			return getPixelFromDye(newColor, newType);
-		} else {
-			return color1;
+		}
+
+		else {
+			return paintedColor;
 		}
 	}
 	
 	/**
-	 * Create a new instance with parameters
-	 * @param color
-	 * @param type
+	 * Create a new instance of {@link eu.carrade.amaury.Camelia.drawing.colors.core.PixelColor}
+	 * with parameters.
+	 *
+	 * @param color The color
+	 * @param type The color's type
+	 *
 	 * @return A new PixelColor object
 	 */
 	public static PixelColor getPixelFromDye(DyeColor color, ColorType type) {
 		switch(color) {
-		case BLACK:
-			return new ColorBlack(type);
-		case BLUE:
-			return new ColorBlue(type);
-		case BROWN:
-			return new ColorBrown(type);
-		case CYAN:
-			return new ColorCyan(type);
-		case GRAY:
-			return new ColorGray(type);
-		case GREEN:
-			return new ColorGreen(type);
-		case LIGHT_BLUE:
-			return new ColorLightBlue(type);
-		case SILVER:
-			return new ColorLightGray(type);
-		case LIME:
-			return new ColorLime(type);
-		case MAGENTA:
-			return new ColorMagenta(type);	
-		case ORANGE:
-			return new ColorOrange(type);
-		case PINK:
-			return new ColorPink(type);
-		case PURPLE:
-			return new ColorPurple(type);
-		case RED:
-			return new ColorRed(type);
-		case WHITE:
-			return new ColorWhite(type);
-		case YELLOW:
-			return new ColorYellow(type);
-		default:
-			return new ColorWhite(type);
+			case BLACK:
+				return new ColorBlack(type);
+			case BLUE:
+				return new ColorBlue(type);
+			case BROWN:
+				return new ColorBrown(type);
+			case CYAN:
+				return new ColorCyan(type);
+			case GRAY:
+				return new ColorGray(type);
+			case GREEN:
+				return new ColorGreen(type);
+			case LIGHT_BLUE:
+				return new ColorLightBlue(type);
+			case SILVER:
+				return new ColorLightGray(type);
+			case LIME:
+				return new ColorLime(type);
+			case MAGENTA:
+				return new ColorMagenta(type);
+			case ORANGE:
+				return new ColorOrange(type);
+			case PINK:
+				return new ColorPink(type);
+			case PURPLE:
+				return new ColorPurple(type);
+			case RED:
+				return new ColorRed(type);
+			case WHITE:
+				return new ColorWhite(type);
+			case YELLOW:
+				return new ColorYellow(type);
+			default:
+				return new ColorWhite(type);
 		}
 	}
 }
@@ -131,14 +145,10 @@ class BasicMix {
 	}
 	
 	public boolean isMix(DyeColor c1, DyeColor c2) {
-		if(color1.equals(c1) && color2.equals(c2) || color1.equals(c2) && color2.equals(c1))
-			return true;
-		return false;
+		return color1.equals(c1) && color2.equals(c2) || color1.equals(c2) && color2.equals(c1);
 	}
 	
 	public DyeColor getMix(DyeColor c1, DyeColor c2) {
-		if(color1.equals(c1) && color2.equals(c2) || color1.equals(c2) && color2.equals(c1))
-			return this.result;
-		return null;
+		return isMix(c1, c2) ? this.result : null;
 	}
 }

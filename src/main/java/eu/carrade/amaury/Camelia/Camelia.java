@@ -70,8 +70,6 @@ public final class Camelia extends JavaPlugin {
 			PlayerJoinEvent joinEvent = new PlayerJoinEvent(player, player.getName() + " stayed on a reloaded server");
 			new PlayersConnectionListener().onPlayerJoin(joinEvent);
 		}
-		
-		ColorUtils.init();
 
 	}
 
