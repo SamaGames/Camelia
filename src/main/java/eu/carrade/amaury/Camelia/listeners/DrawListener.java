@@ -15,7 +15,6 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitTask;
 
-import javax.tools.Tool;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;

@@ -1,28 +1,16 @@
 package eu.carrade.amaury.Camelia.drawing;
 
+import eu.carrade.amaury.Camelia.Camelia;
+import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
+import eu.carrade.amaury.Camelia.drawing.drawTools.core.ToolLocator;
+import eu.carrade.amaury.Camelia.drawing.drawTools.tools.*;
+import org.apache.commons.lang.Validate;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArraySet;
-
-import eu.carrade.amaury.Camelia.drawing.drawTools.core.ToolLocator;
-import org.apache.commons.lang.Validate;
-import org.bukkit.entity.Player;
-
-import eu.carrade.amaury.Camelia.Camelia;
-import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
-import eu.carrade.amaury.Camelia.drawing.drawTools.tools.BrushTool;
-import eu.carrade.amaury.Camelia.drawing.drawTools.tools.ClearTool;
-import eu.carrade.amaury.Camelia.drawing.drawTools.tools.ColorChooserTool;
-import eu.carrade.amaury.Camelia.drawing.drawTools.tools.FillRegionTool;
-import eu.carrade.amaury.Camelia.drawing.drawTools.tools.PaintingsTools;
-import eu.carrade.amaury.Camelia.drawing.drawTools.tools.SprayTool;
-import eu.carrade.amaury.Camelia.drawing.drawTools.tools.UndoTool;
-import eu.carrade.amaury.Camelia.game.Drawer;
-import eu.carrade.amaury.Camelia.utils.Utils;
-
-import javax.tools.Tool;
 
 
 public class DrawingManager {

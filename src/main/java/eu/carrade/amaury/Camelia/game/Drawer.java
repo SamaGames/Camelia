@@ -1,21 +1,19 @@
 package eu.carrade.amaury.Camelia.game;
 
 
+import eu.carrade.amaury.Camelia.Camelia;
+import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorGreen;
+import eu.carrade.amaury.Camelia.drawing.colors.core.ColorType;
+import eu.carrade.amaury.Camelia.drawing.colors.core.PixelColor;
+import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-
-import eu.carrade.amaury.Camelia.Camelia;
-import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorYellow;
-import eu.carrade.amaury.Camelia.drawing.colors.core.ColorType;
-import eu.carrade.amaury.Camelia.drawing.colors.core.PixelColor;
-import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
 
 public class Drawer {
 
@@ -24,7 +22,7 @@ public class Drawer {
 	private boolean drawing = false;
 
 	private Map<Integer,DrawTool> drawTools = new HashMap<>();
-	private PixelColor color = new ColorYellow(ColorType.BASIC);
+	private PixelColor color = new ColorGreen(ColorType.BASIC);
 
 	public Drawer(UUID playerID) {
 		this.playerID = playerID;

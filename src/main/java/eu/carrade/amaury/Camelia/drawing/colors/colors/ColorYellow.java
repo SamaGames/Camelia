@@ -1,12 +1,11 @@
 package eu.carrade.amaury.Camelia.drawing.colors.colors;
 
-import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
-import org.bukkit.Material;
-
 import eu.carrade.amaury.Camelia.drawing.colors.core.ColorType;
 import eu.carrade.amaury.Camelia.drawing.colors.core.GameBlock;
 import eu.carrade.amaury.Camelia.drawing.colors.core.PixelColor;
+import org.bukkit.ChatColor;
+import org.bukkit.DyeColor;
+import org.bukkit.Material;
 
 public class ColorYellow extends PixelColor {
 

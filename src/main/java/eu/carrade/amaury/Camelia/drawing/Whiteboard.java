@@ -4,14 +4,10 @@ import eu.carrade.amaury.Camelia.Camelia;
 import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorWhite;
 import eu.carrade.amaury.Camelia.drawing.colors.core.ColorType;
 import eu.carrade.amaury.Camelia.drawing.colors.core.ColorUtils;
-import eu.carrade.amaury.Camelia.drawing.colors.core.GameBlock;
 import eu.carrade.amaury.Camelia.drawing.colors.core.PixelColor;
 import eu.carrade.amaury.Camelia.utils.Utils;
-
 import org.bukkit.Bukkit;
-import org.bukkit.DyeColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 

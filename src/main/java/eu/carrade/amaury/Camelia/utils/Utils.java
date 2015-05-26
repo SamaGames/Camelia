@@ -1,7 +1,6 @@
 package eu.carrade.amaury.Camelia.utils;
 
 
-import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
