@@ -19,18 +19,18 @@ public class Whiteboard {
 	/**
 	 * An angle under the whiteboard, with the smallest two coordinates (x and z).
 	 */
-	private Location bottomAngle;
+	private Location bottomAngle = null;
 
 	/**
 	 * An angle above the whiteboard, opposed to the first one, so with the biggest
 	 * two coordinates (x and z).
 	 */
-	private Location topAngle;
+	private Location topAngle = null;
 	
 	private final int width;
 	private final int height;
 	
-	private final PixelColor[][] board; 
+	private final PixelColor[][] board;
 
 	public Whiteboard() {
 		try {
@@ -48,21 +48,26 @@ public class Whiteboard {
 					Math.max(configCorner1.getBlockY(), configCorner2.getBlockY()),
 					Math.max(configCorner1.getBlockZ(), configCorner2.getBlockZ()));
 
+
 		} catch (IllegalArgumentException e) {
 			Camelia.getInstance().getLogger().log(Level.SEVERE, "Invalid whiteboard configuration!!!", e);
 			Camelia.getInstance().getLogger().log(Level.SEVERE, "Disabling the plugin.");
 			Camelia.getInstance().disable();
 		}
 
-		this.width = bottomAngle.getBlockX() == topAngle.getBlockX() ? topAngle.getBlockZ() - bottomAngle.getBlockZ() + 1 : topAngle.getBlockX() - bottomAngle.getBlockX() + 1;
-		this.height = topAngle.getBlockY() - bottomAngle.getBlockY() + 1;
 		
-		board = new PixelColor[width][height];
-		
-		System.out.println(width);
-		System.out.println(height);
-		
-		clearBoard(); // To remove all null values
+		if(bottomAngle != null && topAngle != null) {
+			width = bottomAngle.getBlockX() == topAngle.getBlockX() ? topAngle.getBlockZ() - bottomAngle.getBlockZ() : topAngle.getBlockX() - bottomAngle.getBlockX();
+			height = topAngle.getBlockY() - bottomAngle.getBlockY();
+
+			board = new PixelColor[width][height];
+
+			clearBoard(); // To remove all null values
+		}
+		else {
+			width = height = 0;
+			board = null;
+		}
 	}
 
 
@@ -85,19 +90,31 @@ public class Whiteboard {
 	 * Sets a block of the whiteboard
 	 *
 	 * @param location The location
-	 * @param type The block's type
-	 * @param data The block's data value
+	 * @param color The block to set.
 	 *
 	 * @return True if the block was set (i.e. the location is in the whiteboard)
 	 */
 	public boolean setBlock(Location location, PixelColor color) {
+		return setBlock(location, color, true);
+	}
+
+	/**
+	 * Sets a block of the whiteboard
+	 *
+	 * @param location The location
+	 * @param color The block to set.
+	 * @param mix If true, mix this color with the old one.
+	 *
+	 * @return True if the block was set (i.e. the location is in the whiteboard)
+	 */
+	public boolean setBlock(Location location, PixelColor color, boolean mix) {
 		if(!isOnTheWhiteboard(location)) {
 			return false;
 		}
 		
 		int unit = bottomAngle.getBlockX() == topAngle.getBlockX() ? location.getBlockZ() - bottomAngle.getBlockZ() : location.getBlockX() - bottomAngle.getBlockX();
 		PixelColor baseColor = board[unit][location.getBlockY() - bottomAngle.getBlockY()];
-		PixelColor finalColor = ColorUtils.getMix(color, baseColor);
+		PixelColor finalColor = mix ? ColorUtils.getMix(color, baseColor) : color;
 		
 		board[unit][location.getBlockY() - bottomAngle.getBlockY()] = finalColor;
 
@@ -133,9 +150,9 @@ public class Whiteboard {
 		for(int x = 0; x < width; x++) {
 			for(int y = 0; y < height; y++) {
 				if(bottomAngle.getBlockX() == topAngle.getBlockX()) {
-					setBlock(new Location(Bukkit.getWorlds().get(0), bottomAngle.getBlockX(), bottomAngle.getBlockY() + y, bottomAngle.getBlockZ() + x), new ColorWhite(ColorType.BASIC));
+					setBlock(new Location(Bukkit.getWorlds().get(0), bottomAngle.getBlockX(), bottomAngle.getBlockY() + y, bottomAngle.getBlockZ() + x), new ColorWhite(ColorType.BASIC), false);
 				} else {
-					setBlock(new Location(Bukkit.getWorlds().get(0), bottomAngle.getBlockX() + x, bottomAngle.getBlockY() + y, bottomAngle.getBlockZ()), new ColorWhite(ColorType.BASIC));
+					setBlock(new Location(Bukkit.getWorlds().get(0), bottomAngle.getBlockX() + x, bottomAngle.getBlockY() + y, bottomAngle.getBlockZ()), new ColorWhite(ColorType.BASIC), false);
 				}
 			}
 		}
