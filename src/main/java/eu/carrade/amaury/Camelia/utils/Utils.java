@@ -137,8 +137,8 @@ public class Utils {
 	 * @param tool The tool
 	 * @return The slot to use: the declared slot if below or equals to 8; 8 else.
 	 */
-	public static Integer getDrawToolRealSlot(DrawTool tool) {
-		return Math.min(Math.abs(tool.getSlot()), 8);
+	public static Integer getDrawToolRealSlot(int toolRawSlot) {
+		return Math.min(Math.abs(toolRawSlot), 8);
 	}
 
 

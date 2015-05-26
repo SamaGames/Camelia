@@ -1,5 +1,6 @@
 package eu.carrade.amaury.Camelia.drawing.drawTools.tools;
 
+import eu.carrade.amaury.Camelia.drawing.drawTools.core.ToolLocator;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -10,7 +11,12 @@ import eu.carrade.amaury.Camelia.drawing.colors.core.GameBlock;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.ContinuousDrawTool;
 import eu.carrade.amaury.Camelia.game.Drawer;
 
+@ToolLocator(slot = 0)
 public class BrushTool extends ContinuousDrawTool {
+
+	public BrushTool(Drawer drawer) {
+		super(drawer);
+	}
 
 	@Override
 	public String getDisplayName() {
@@ -25,11 +31,6 @@ public class BrushTool extends ContinuousDrawTool {
 	@Override
 	public ItemStack getIcon(Drawer drawer) {
 		return new ItemStack(Material.DIAMOND_SPADE);
-	}
-
-	@Override
-	public int getSlot() {
-		return 0;
 	}
 
 	@Override

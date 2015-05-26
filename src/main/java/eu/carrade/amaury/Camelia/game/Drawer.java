@@ -1,7 +1,11 @@
 package eu.carrade.amaury.Camelia.game;
 
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -18,11 +22,24 @@ public class Drawer {
 	private final UUID playerID;
 
 	private boolean drawing = false;
-	
+
+	private Map<Integer,DrawTool> drawTools = new HashMap<>();
 	private PixelColor color = new ColorYellow(ColorType.BASIC);
 
 	public Drawer(UUID playerID) {
 		this.playerID = playerID;
+
+		// Loading the tools
+		for(Map.Entry<Integer, Class<? extends DrawTool>> toolClass : Camelia.getInstance().getDrawingManager().getDrawTools().entrySet()) {
+			try {
+				DrawTool tool = toolClass.getValue().getConstructor(this.getClass()).newInstance(this);
+
+				drawTools.put(toolClass.getKey(), tool);
+
+			} catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+				Camelia.getInstance().getLogger().log(Level.SEVERE, "Cannot register the tool " + toolClass.getValue().getSimpleName() + " to the drawer " + playerID, e);
+			}
+		}
 	}
 
 	/**
@@ -102,7 +119,7 @@ public class Drawer {
 		Player player = getPlayer();
 		if(player == null) return null; // Just to be sure
 
-		return Camelia.getInstance().getDrawingManager().getDrawTools().get(getPlayer().getInventory().getHeldItemSlot());
+		return drawTools.get(getPlayer().getInventory().getHeldItemSlot());
 	}
 
 	/**
@@ -116,7 +133,7 @@ public class Drawer {
 
 		if(isDrawing()) {
 			for(int i = 0; i < 9; i++) {
-				DrawTool tool = Camelia.getInstance().getDrawingManager().getDrawTools().get(i);
+				DrawTool tool = drawTools.get(i);
 				if(tool != null)
 					player.getInventory().setItem(i, tool.constructIcon(this));
 			}

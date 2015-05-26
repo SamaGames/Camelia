@@ -1,6 +1,7 @@
 package eu.carrade.amaury.Camelia.drawing.drawTools.tools;
 
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.ClicDrawTool;
+import eu.carrade.amaury.Camelia.drawing.drawTools.core.ToolLocator;
 import eu.carrade.amaury.Camelia.game.Drawer;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -8,7 +9,13 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 
+@ToolLocator(slot = 4)
 public class PaintingsTools extends ClicDrawTool {
+
+	public PaintingsTools(Drawer drawer) {
+		super(drawer);
+	}
+
 	@Override
 	public String getDisplayName() {
 		return ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Fonds pré-définis";
@@ -22,11 +29,6 @@ public class PaintingsTools extends ClicDrawTool {
 	@Override
 	public ItemStack getIcon(Drawer drawer) {
 		return new ItemStack(Material.PAINTING);
-	}
-
-	@Override
-	public int getSlot() {
-		return 4;
 	}
 
 	@Override

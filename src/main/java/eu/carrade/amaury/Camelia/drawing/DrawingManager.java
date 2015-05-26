@@ -6,6 +6,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+import eu.carrade.amaury.Camelia.drawing.drawTools.core.ToolLocator;
+import org.apache.commons.lang.Validate;
 import org.bukkit.entity.Player;
 
 import eu.carrade.amaury.Camelia.Camelia;
@@ -20,6 +22,8 @@ import eu.carrade.amaury.Camelia.drawing.drawTools.tools.UndoTool;
 import eu.carrade.amaury.Camelia.game.Drawer;
 import eu.carrade.amaury.Camelia.utils.Utils;
 
+import javax.tools.Tool;
+
 
 public class DrawingManager {
 
@@ -33,19 +37,19 @@ public class DrawingManager {
 	 *
 	 * Map: slot -> tool
 	 */
-	private Map<Integer,DrawTool> drawTools = new HashMap<>();
+	private Map<Integer, Class<? extends DrawTool>> drawTools = new HashMap<>();
 
 
 
 	public DrawingManager() {
 
-		registerDrawTool(new BrushTool());
-		registerDrawTool(new SprayTool());
-		registerDrawTool(new FillRegionTool());
-		registerDrawTool(new PaintingsTools());
-		registerDrawTool(new ColorChooserTool());
-		registerDrawTool(new UndoTool());
-		registerDrawTool(new ClearTool());
+		registerDrawTool(BrushTool.class);
+		registerDrawTool(SprayTool.class);
+		registerDrawTool(FillRegionTool.class);
+		registerDrawTool(PaintingsTools.class);
+		registerDrawTool(ColorChooserTool.class);
+		registerDrawTool(UndoTool.class);
+		registerDrawTool(ClearTool.class);
 
 		new FollowDrawerCursorTask().runTaskTimer(Camelia.getInstance(), 10l, 1l);
 	}
@@ -58,8 +62,12 @@ public class DrawingManager {
 	 *
 	 * @param tool The tool.
 	 */
-	private void registerDrawTool(DrawTool tool) {
-		drawTools.put(Utils.getDrawToolRealSlot(tool), tool);
+	private void registerDrawTool(Class<? extends DrawTool> tool) {
+		ToolLocator locator = tool.getAnnotation(ToolLocator.class);
+
+		Validate.notNull(locator, "Cannot register the tool " + tool.getSimpleName() + ": @ToolLocator annotation not found!");
+
+		drawTools.put(locator.slot(), tool);
 	}
 
 
@@ -81,7 +89,7 @@ public class DrawingManager {
 		return rightClickingPlayers;
 	}
 
-	public Map<Integer, DrawTool> getDrawTools() {
+	public Map<Integer, Class<? extends DrawTool>> getDrawTools() {
 		return drawTools;
 	}
 }

@@ -1,6 +1,7 @@
 package eu.carrade.amaury.Camelia.drawing.drawTools.tools;
 
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.ClicDrawTool;
+import eu.carrade.amaury.Camelia.drawing.drawTools.core.ToolLocator;
 import eu.carrade.amaury.Camelia.game.Drawer;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -8,7 +9,12 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 
+@ToolLocator(slot = 1)
 public class SprayTool extends ClicDrawTool {
+
+	public SprayTool(Drawer drawer) {
+		super(drawer);
+	}
 
 	@Override
 	public String getDisplayName() {
@@ -23,11 +29,6 @@ public class SprayTool extends ClicDrawTool {
 	@Override
 	public ItemStack getIcon(Drawer drawer) {
 		return new ItemStack(Material.DEAD_BUSH);
-	}
-
-	@Override
-	public int getSlot() {
-		return 1;
 	}
 
 	@Override

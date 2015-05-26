@@ -1,6 +1,7 @@
 package eu.carrade.amaury.Camelia.drawing.drawTools.tools;
 
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.ClicDrawTool;
+import eu.carrade.amaury.Camelia.drawing.drawTools.core.ToolLocator;
 import eu.carrade.amaury.Camelia.game.Drawer;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -9,7 +10,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Dye;
 
 
+@ToolLocator(slot = 6)
 public class ColorChooserTool extends ClicDrawTool {
+
+	public ColorChooserTool(Drawer drawer) {
+		super(drawer);
+	}
+
 	@Override
 	public String getDisplayName() {
 		return ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "Sélecteur de couleurs";
@@ -26,11 +33,6 @@ public class ColorChooserTool extends ClicDrawTool {
 		icon.setColor(drawer.getColor().getDyeColor());
 
 		return icon.toItemStack(1);
-	}
-
-	@Override
-	public int getSlot() {
-		return 6;
 	}
 
 	@Override

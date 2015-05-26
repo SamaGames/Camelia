@@ -1,6 +1,7 @@
 package eu.carrade.amaury.Camelia.drawing.drawTools.tools;
 
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.ClicDrawTool;
+import eu.carrade.amaury.Camelia.drawing.drawTools.core.ToolLocator;
 import eu.carrade.amaury.Camelia.game.Drawer;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -8,7 +9,13 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 
+@ToolLocator(slot = 7)
 public class UndoTool extends ClicDrawTool {
+
+	public UndoTool(Drawer drawer) {
+		super(drawer);
+	}
+
 	@Override
 	public String getDisplayName() {
 		return ChatColor.RED + "" + ChatColor.BOLD + "Annuler la dernière action"
@@ -23,11 +30,6 @@ public class UndoTool extends ClicDrawTool {
 	@Override
 	public ItemStack getIcon(Drawer drawer) {
 		return new ItemStack(Material.BARRIER);
-	}
-
-	@Override
-	public int getSlot() {
-		return 7;
 	}
 
 	@Override

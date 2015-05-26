@@ -1,6 +1,5 @@
 package eu.carrade.amaury.Camelia.drawing.drawTools.core;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -12,6 +11,14 @@ import eu.carrade.amaury.Camelia.utils.Utils;
  * Represents a tool used to draw.
  */
 public abstract class DrawTool {
+
+	private Drawer drawer;
+
+
+	public DrawTool(Drawer drawer) {
+		this.drawer = drawer;
+	}
+
 
 	/**
 	 * Returns the display name of the tool.
@@ -39,14 +46,6 @@ public abstract class DrawTool {
 	 * @param drawer The drawer
 	 */
 	public abstract ItemStack getIcon(Drawer drawer);
-
-
-	/**
-	 * Returns the slot this tool will reside on.
-	 *
-	 * @return The slot. From 0 to 8; another value will be interpreted as 8 (don't do that!).
-	 */
-	public abstract int getSlot();
 
 
 	/**
@@ -86,4 +85,12 @@ public abstract class DrawTool {
 		return icon;
 	}
 
+	/**
+	 * Returns the drawer associated with this tool.
+	 *
+	 * @return The drawer.
+	 */
+	public Drawer getDrawer() {
+		return drawer;
+	}
 }

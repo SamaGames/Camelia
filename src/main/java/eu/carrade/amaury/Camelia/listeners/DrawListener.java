@@ -6,9 +6,12 @@ import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
 import eu.carrade.amaury.Camelia.game.Drawer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -57,7 +60,7 @@ public class DrawListener implements Listener {
 	 */
 	@EventHandler
 	public void onPlayerInteracts(PlayerInteractEvent ev) {
-		ev.setCancelled(true);
+		if(!ev.getPlayer().isOp()) ev.setCancelled(true);
 
 		Drawer drawer = Camelia.getInstance().getGameManager().getDrawer(ev.getPlayer().getUniqueId());
 
@@ -65,6 +68,9 @@ public class DrawListener implements Listener {
 
 		if(/* TODO game started and */ drawer.isDrawing()) {
 			DrawTool tool = drawer.getActiveTool();
+
+			if(tool == null) return;
+
 			Location target = Camelia.getInstance().getWhiteboard().getTargetBlock(ev.getPlayer());
 
 			switch(ev.getAction()) {
@@ -90,6 +96,22 @@ public class DrawListener implements Listener {
 				default:
 					break;
 			}
+		}
+	}
+
+	@EventHandler
+	public void onInventoryClick(InventoryClickEvent ev) {
+		if(!ev.getWhoClicked().isOp() && ev.getWhoClicked() instanceof Player) {
+			ev.setCancelled(true);
+			((Player) ev.getWhoClicked()).updateInventory();
+		}
+	}
+
+	@EventHandler
+	public void onInventoryDrag(InventoryDragEvent ev) {
+		if(!ev.getWhoClicked().isOp() && ev.getWhoClicked() instanceof Player) {
+			ev.setCancelled(true);
+			((Player) ev.getWhoClicked()).updateInventory();
 		}
 	}
 }
