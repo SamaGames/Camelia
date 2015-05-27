@@ -57,8 +57,8 @@ public class Whiteboard {
 
 		
 		if(bottomAngle != null && topAngle != null) {
-			width = bottomAngle.getBlockX() == topAngle.getBlockX() ? topAngle.getBlockZ() - bottomAngle.getBlockZ() : topAngle.getBlockX() - bottomAngle.getBlockX();
-			height = topAngle.getBlockY() - bottomAngle.getBlockY();
+			width = bottomAngle.getBlockX() == topAngle.getBlockX() ? topAngle.getBlockZ() - bottomAngle.getBlockZ() : topAngle.getBlockX() - bottomAngle.getBlockX() + 1;
+			height = topAngle.getBlockY() - bottomAngle.getBlockY() + 1;
 
 			board = new PixelColor[width][height];
 
