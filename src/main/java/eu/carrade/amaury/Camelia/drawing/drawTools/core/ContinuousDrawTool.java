@@ -11,8 +11,42 @@ import eu.carrade.amaury.Camelia.game.Drawer;
  */
 public abstract class ContinuousDrawTool extends DrawTool {
 
+	protected int size = 1;
+	protected boolean mixColors = false;
+	
 	public ContinuousDrawTool(Drawer drawer) {
 		super(drawer);
 	}
+	
+	/**
+	 * Sets the size of the brush
+	 * @param size
+	 */
+	public void setSize(int size) {
+		this.size = size;
+	}
+	
+	/**
+	 * 
+	 * @return the size of the brush
+	 */
+	public int getSize() {
+		return size;
+	}
 
+	/**
+	 * 
+	 * @return true if the colors should be mixed
+	 */
+	public boolean isMixColors() {
+		return mixColors;
+	}
+
+	/**
+	 * If the colors should be mixed
+	 * @param mixColors
+	 */
+	public void setMixColors(boolean mixColors) {
+		this.mixColors = mixColors;
+	}
 }

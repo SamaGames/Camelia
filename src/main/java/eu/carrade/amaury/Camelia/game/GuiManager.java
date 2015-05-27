@@ -7,6 +7,7 @@ import net.samagames.utils.GlowEffect;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -14,14 +15,17 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import eu.carrade.amaury.Camelia.drawing.colors.core.ColorUtils;
 import eu.carrade.amaury.Camelia.drawing.colors.core.PixelColor;
+import eu.carrade.amaury.Camelia.drawing.drawTools.core.ContinuousDrawTool;
 import eu.carrade.amaury.Camelia.listeners.InventoryListener;
 import eu.carrade.amaury.Camelia.utils.Utils;
 
 public class GuiManager {
-
+	
+	public final static String COLOR_GUI = "Choix de la couleur";
+	public final static String BRUSH_GUI = "Paramètres du pinceau";
 	
 	public Inventory getColorInventory(Drawer drawer) {
-		Inventory inventory = Bukkit.createInventory(drawer.getPlayer(), 45, InventoryListener.COLOR_GUI);
+		Inventory inventory = Bukkit.createInventory(drawer.getPlayer(), 45, COLOR_GUI);
 		
 		int slot = 0;
 		List<PixelColor> colors = ColorUtils.basicColors;
@@ -87,5 +91,26 @@ public class GuiManager {
 		} else {
 			return new ItemStack(Material.AIR);
 		}
+	}
+	
+	public Inventory getBrushInventory(Drawer drawer) {
+		Inventory inventory = Bukkit.createInventory(drawer.getPlayer(), 9, BRUSH_GUI);
+		inventory.setItem(3, Utils.quickItemStack(Material.FIREWORK_CHARGE, 1, (byte) 0, ChatColor.WHITE + "Taille 1", null));
+		inventory.setItem(4, Utils.quickItemStack(Material.FIREWORK_CHARGE, 2, (byte) 0, ChatColor.WHITE + "Taille 2", null));
+		inventory.setItem(5, Utils.quickItemStack(Material.FIREWORK_CHARGE, 3, (byte) 0, ChatColor.WHITE + "Taille 3", null));
+		
+		ItemStack selected = inventory.getItem(((ContinuousDrawTool) drawer.getTool(0)).getSize() + 2);
+		GlowEffect.addGlow(selected);
+		Utils.setName(selected, ChatColor.GREEN + "" + ChatColor.BOLD + "Taille " + ((ContinuousDrawTool) drawer.getTool(0)).getSize());
+		
+		if(((ContinuousDrawTool) drawer.getTool(0)).isMixColors()) {
+			inventory.setItem(8, Utils.quickItemStack(Material.INK_SACK, 1, DyeColor.LIME.getDyeData(), ChatColor.GREEN + "" + ChatColor.BOLD + "Mélange des couleurs : activé", Arrays.asList(ChatColor.GRAY + "Option de mélange des couleurs")));
+		} else {
+			inventory.setItem(8, Utils.quickItemStack(Material.INK_SACK, 1, DyeColor.GRAY.getDyeData(), ChatColor.RED + "" + ChatColor.BOLD + "Mélange des couleurs : désactivé", Arrays.asList(ChatColor.GRAY + "Option de mélange des couleurs")));
+		}
+		
+		inventory.setItem(0, Utils.quickItemStack(Material.INK_SACK, 1, drawer.getColor().getDyeColor().getDyeData(), ChatColor.WHITE + "" + ChatColor.BOLD + "Changer de couleur", null));
+		
+		return inventory;
 	}
 }

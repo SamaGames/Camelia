@@ -21,7 +21,7 @@ public class Drawer {
 
 	private boolean drawing = false;
 
-	private Map<Integer,DrawTool> drawTools = new HashMap<>();
+	private Map<Integer, DrawTool> drawTools = new HashMap<>();
 	private PixelColor color = new ColorGreen(ColorType.BASIC);
 	private int page = 0;
 
@@ -145,5 +145,9 @@ public class Drawer {
 
 	public void setPage(int page) {
 		this.page = page;
+	}
+	
+	public DrawTool getTool(int slot) {
+		return drawTools.get(slot);
 	}
 }
