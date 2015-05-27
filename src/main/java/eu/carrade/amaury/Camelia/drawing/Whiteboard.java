@@ -11,6 +11,9 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.logging.Level;
 
 
@@ -31,6 +34,12 @@ public class Whiteboard {
 	private final int height;
 	
 	private final PixelColor[][] board;
+
+	/**
+	 * These blocs of the screen are on cooldown: they cannot be changed when in
+	 * this list, to avoid fast color mixes when drawing.
+	 */
+	private final Set<Location> onCooldownLocations = new CopyOnWriteArraySet<>();
 
 	public Whiteboard() {
 		try {
@@ -55,10 +64,10 @@ public class Whiteboard {
 			Camelia.getInstance().disable();
 		}
 
-		
+
 		if(bottomAngle != null && topAngle != null) {
-			width = bottomAngle.getBlockX() == topAngle.getBlockX() ? topAngle.getBlockZ() - bottomAngle.getBlockZ() : topAngle.getBlockX() - bottomAngle.getBlockX();
-			height = topAngle.getBlockY() - bottomAngle.getBlockY();
+			width = bottomAngle.getBlockX() == topAngle.getBlockX() ? topAngle.getBlockZ() - bottomAngle.getBlockZ() + 1 : topAngle.getBlockX() - bottomAngle.getBlockX() + 1;
+			height = topAngle.getBlockY() - bottomAngle.getBlockY() + 1;
 
 			board = new PixelColor[width][height];
 
@@ -92,9 +101,10 @@ public class Whiteboard {
 	 * @param location The location
 	 * @param color The block to set.
 	 *
-	 * @return True if the block was set (i.e. the location is in the whiteboard)
+	 * @return True if the block was set (i.e. the location is in the whiteboard and not
+	 * on a cooldown).
 	 */
-	public boolean setBlock(Location location, PixelColor color) {
+	public boolean setBlock(final Location location, final PixelColor color) {
 		return setBlock(location, color, true);
 	}
 
@@ -105,10 +115,15 @@ public class Whiteboard {
 	 * @param color The block to set.
 	 * @param mix If true, mix this color with the old one.
 	 *
-	 * @return True if the block was set (i.e. the location is in the whiteboard)
+	 * @return True if the block was set (i.e. the location is in the whiteboard and not
+	 * on a cooldown).
 	 */
-	public boolean setBlock(Location location, PixelColor color, boolean mix) {
+	public boolean setBlock(final Location location, final PixelColor color, boolean mix) {
 		if(!isOnTheWhiteboard(location)) {
+			return false;
+		}
+
+		if(onCooldownLocations.contains(location)) {
 			return false;
 		}
 		
@@ -120,6 +135,16 @@ public class Whiteboard {
 
 		location.getBlock().setType(finalColor.getBlock().getType());
 		location.getBlock().setData(finalColor.getBlock().getData());
+
+
+		onCooldownLocations.add(location);
+
+		Bukkit.getScheduler().runTaskLaterAsynchronously(Camelia.getInstance(), new Runnable() {
+			@Override
+			public void run() {
+				onCooldownLocations.remove(location);
+			}
+		}, 5l);
 
 		return true;
 	}

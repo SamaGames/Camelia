@@ -3,6 +3,7 @@ package eu.carrade.amaury.Camelia.game;
 
 import eu.carrade.amaury.Camelia.Camelia;
 import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorGreen;
+import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorLime;
 import eu.carrade.amaury.Camelia.drawing.colors.core.ColorType;
 import eu.carrade.amaury.Camelia.drawing.colors.core.PixelColor;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
