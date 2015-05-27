@@ -7,7 +7,7 @@
 package eu.carrade.amaury.Camelia;
 
 import eu.carrade.amaury.Camelia.drawing.DrawingManager;
-import eu.carrade.amaury.Camelia.drawing.Whiteboard;
+import eu.carrade.amaury.Camelia.drawing.whiteboard.Whiteboard;
 import eu.carrade.amaury.Camelia.game.GameManager;
 import eu.carrade.amaury.Camelia.listeners.DrawListener;
 import eu.carrade.amaury.Camelia.listeners.PlayersConnectionListener;

@@ -1,4 +1,4 @@
-package eu.carrade.amaury.Camelia.drawing;
+package eu.carrade.amaury.Camelia.drawing.whiteboard;
 
 import eu.carrade.amaury.Camelia.Camelia;
 import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorWhite;
