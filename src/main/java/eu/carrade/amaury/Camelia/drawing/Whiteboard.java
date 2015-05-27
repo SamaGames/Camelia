@@ -31,6 +31,7 @@ public class Whiteboard {
 	private final int height;
 	
 	private final PixelColor[][] board;
+	private final Boolean[][] locked;
 
 	public Whiteboard() {
 		try {
@@ -62,11 +63,14 @@ public class Whiteboard {
 
 			board = new PixelColor[width][height];
 
+			locked = new Boolean[width][height];
+			
 			clearBoard(); // To remove all null values
 		}
 		else {
 			width = height = 0;
 			board = null;
+			locked = null;
 		}
 	}
 
@@ -107,21 +111,33 @@ public class Whiteboard {
 	 *
 	 * @return True if the block was set (i.e. the location is in the whiteboard)
 	 */
-	public boolean setBlock(Location location, PixelColor color, boolean mix) {
+	public boolean setBlock(final Location location, PixelColor color, boolean mix) {
 		if(!isOnTheWhiteboard(location)) {
 			return false;
 		}
 		
-		int unit = bottomAngle.getBlockX() == topAngle.getBlockX() ? location.getBlockZ() - bottomAngle.getBlockZ() : location.getBlockX() - bottomAngle.getBlockX();
+		final int unit = bottomAngle.getBlockX() == topAngle.getBlockX() ? location.getBlockZ() - bottomAngle.getBlockZ() : location.getBlockX() - bottomAngle.getBlockX();
 		PixelColor baseColor = board[unit][location.getBlockY() - bottomAngle.getBlockY()];
 		PixelColor finalColor = mix ? ColorUtils.getMix(color, baseColor) : color;
 		
-		board[unit][location.getBlockY() - bottomAngle.getBlockY()] = finalColor;
+		if(!locked[unit][location.getBlockY() - bottomAngle.getBlockY()]) {
+			Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
+				@Override
+				public void run() {
+					locked[unit][location.getBlockY() - bottomAngle.getBlockY()] = false;
+				}
+			}, 10L);
+			
+			locked[unit][location.getBlockY() - bottomAngle.getBlockY()] = true;
+		
+			board[unit][location.getBlockY() - bottomAngle.getBlockY()] = finalColor;
 
-		location.getBlock().setType(finalColor.getBlock().getType());
-		location.getBlock().setData(finalColor.getBlock().getData());
+			location.getBlock().setType(finalColor.getBlock().getType());
+			location.getBlock().setData(finalColor.getBlock().getData());
+			return true;
+		}
 
-		return true;
+		return false;
 	}
 
 
@@ -149,6 +165,7 @@ public class Whiteboard {
 	public void clearBoard() {
 		for(int x = 0; x < width; x++) {
 			for(int y = 0; y < height; y++) {
+				locked[x][y] = false;
 				if(bottomAngle.getBlockX() == topAngle.getBlockX()) {
 					setBlock(new Location(Bukkit.getWorlds().get(0), bottomAngle.getBlockX(), bottomAngle.getBlockY() + y, bottomAngle.getBlockZ() + x), new ColorWhite(ColorType.BASIC), false);
 				} else {
