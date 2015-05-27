@@ -16,16 +16,16 @@ public class ColorGreen extends PixelColor {
 
 	@Override
 	public String getBasicDisplayName() {
-		return ChatColor.GREEN + "" + ChatColor.BOLD + "Vert";
+		return ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Vert";
 	}
 
 	@Override
 	public String getBetterDisplayName() {
-		return ChatColor.GREEN + "" + ChatColor.BOLD + "Vert";
+		return ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Vert";
 	}
 
 	@Override
 	public String getRoughDisplayName() {
-		return ChatColor.GREEN + "" + ChatColor.BOLD + "Vert";
+		return ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Vert";
 	}
 }
