@@ -7,6 +7,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -138,6 +140,27 @@ public class Utils {
 	 */
 	public static Integer getDrawToolRealSlot(int toolRawSlot) {
 		return Math.min(Math.abs(toolRawSlot), 8);
+	}
+	
+	public static ItemStack quickItemStack(Material type, int amount, byte data, String str, List<String> lore) {
+		ItemStack item = new ItemStack(type, amount, data);
+		setNameLore(item, str, lore);
+		return item;
+	}
+	
+	public static ItemStack setNameLore(ItemStack item, String str, List<String> lore) {
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName(str);
+		meta.setLore(lore);
+		item.setItemMeta(meta);
+		return item;
+	}
+	
+	public static ItemStack setName(ItemStack item, String str) {
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName(str);
+		item.setItemMeta(meta);
+		return item;
 	}
 
 

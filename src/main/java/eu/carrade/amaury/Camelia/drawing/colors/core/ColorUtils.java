@@ -1,14 +1,21 @@
 package eu.carrade.amaury.Camelia.drawing.colors.core;
 
 import eu.carrade.amaury.Camelia.drawing.colors.colors.*;
+
 import org.bukkit.DyeColor;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public final class ColorUtils {
 	
-	private static Set<BasicMix> mixes = new HashSet<BasicMix>();
+	private static final Set<BasicMix> mixes = new HashSet<BasicMix>();
+	public static final List<PixelColor> basicColors = constructList(ColorType.BASIC);
+	public static final List<PixelColor> betterColors = constructList(ColorType.BETTER);
+	public static final List<PixelColor> roughColors = constructList(ColorType.ROUGH);
 	
 	static {
 
@@ -23,6 +30,19 @@ public final class ColorUtils {
 		mixes.add(new BasicMix(DyeColor.WHITE, DyeColor.GRAY, DyeColor.SILVER));
 		mixes.add(new BasicMix(DyeColor.RED, DyeColor.YELLOW, DyeColor.ORANGE));
 
+	}
+	
+	private static List<PixelColor> constructList(ColorType type) {
+		List<Integer> list = Arrays.asList(14, 12, 1, 4, 5, 13, -1, 0, 8, 9, 3, 11, 10, 2, 6, -1, 7, 15);
+		List<PixelColor> result = new ArrayList<PixelColor>();
+		for(int i : list) {
+			if(i == -1) {
+				result.add(null);
+			} else {
+				result.add(getPixelFromDye(DyeColor.getByData((byte) i), type));
+			}
+		}
+		return result;
 	}
 	
 	/**

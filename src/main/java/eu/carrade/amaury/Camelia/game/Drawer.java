@@ -23,6 +23,7 @@ public class Drawer {
 
 	private Map<Integer,DrawTool> drawTools = new HashMap<>();
 	private PixelColor color = new ColorGreen(ColorType.BASIC);
+	private int page = 0;
 
 	public Drawer(UUID playerID) {
 		this.playerID = playerID;
@@ -136,5 +137,13 @@ public class Drawer {
 					player.getInventory().setItem(i, tool.constructIcon(this));
 			}
 		}
+	}
+
+	public int getPage() {
+		return page;
+	}
+
+	public void setPage(int page) {
+		this.page = page;
 	}
 }
