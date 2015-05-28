@@ -6,7 +6,6 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,6 +16,7 @@ import eu.carrade.amaury.Camelia.drawing.colors.core.ColorType;
 import eu.carrade.amaury.Camelia.drawing.colors.core.ColorUtils;
 import eu.carrade.amaury.Camelia.drawing.colors.core.PixelColor;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.ContinuousDrawTool;
+import eu.carrade.amaury.Camelia.drawing.drawTools.tools.SprayTool;
 import eu.carrade.amaury.Camelia.game.Drawer;
 import eu.carrade.amaury.Camelia.game.GuiManager;
 
@@ -25,7 +25,7 @@ public class InventoryListener implements Listener {
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent e) {
 		Drawer drawer = Camelia.getInstance().getGameManager().getDrawer(e.getWhoClicked().getUniqueId());
-		if(drawer == null)
+		if(drawer == null || e.getRawSlot() != e.getSlot())
 			return;
 		if(e.getInventory().getTitle().equals(GuiManager.COLOR_GUI)) {
 			e.setCancelled(true);
@@ -73,6 +73,22 @@ public class InventoryListener implements Listener {
 				drawer.getPlayer().openInventory(Camelia.getInstance().getGuiManager().getBrushInventory(drawer));
 			}
 			
+		} else if(e.getInventory().getTitle().equals(GuiManager.SPRAY_GUI)) {
+			e.setCancelled(true);
+			if(e.getSlot() < 0 || e.getInventory().getItem(e.getSlot()) == null || e.getInventory().getItem(e.getSlot()).getType().equals(Material.AIR))
+				return;
+			if(e.getSlot() == 9) {
+				e.getWhoClicked().openInventory(Camelia.getInstance().getGuiManager().getColorInventory(drawer));
+			} else if(e.getSlot() == 17) {
+				((ContinuousDrawTool) drawer.getTool(1)).setMixColors(!((ContinuousDrawTool) drawer.getTool(1)).isMixColors());;
+				e.getWhoClicked().openInventory(Camelia.getInstance().getGuiManager().getSprayInventory(drawer));
+			} else if(e.getSlot() >= 3 && e.getSlot() <= 5) {
+				((ContinuousDrawTool) drawer.getTool(1)).setSize((e.getSlot() - 2) % 9);
+				e.getWhoClicked().openInventory(Camelia.getInstance().getGuiManager().getSprayInventory(drawer));
+			} else if(e.getSlot() >= 21 && e.getSlot() <= 23) {
+				((SprayTool) drawer.getTool(1)).setStrengh((e.getSlot() - 2) % 9);
+				e.getWhoClicked().openInventory(Camelia.getInstance().getGuiManager().getSprayInventory(drawer));
+			}
 		}
 	}
 	

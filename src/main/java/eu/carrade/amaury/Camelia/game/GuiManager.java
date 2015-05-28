@@ -16,13 +16,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 import eu.carrade.amaury.Camelia.drawing.colors.core.ColorUtils;
 import eu.carrade.amaury.Camelia.drawing.colors.core.PixelColor;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.ContinuousDrawTool;
-import eu.carrade.amaury.Camelia.listeners.InventoryListener;
+import eu.carrade.amaury.Camelia.drawing.drawTools.tools.SprayTool;
 import eu.carrade.amaury.Camelia.utils.Utils;
 
 public class GuiManager {
 	
 	public final static String COLOR_GUI = "Choix de la couleur";
 	public final static String BRUSH_GUI = "Paramètres du pinceau";
+	public final static String SPRAY_GUI = "Paramètres de l'aérographe";
 	
 	public Inventory getColorInventory(Drawer drawer) {
 		Inventory inventory = Bukkit.createInventory(drawer.getPlayer(), 45, COLOR_GUI);
@@ -36,7 +37,7 @@ public class GuiManager {
 		}
 		
 		for(PixelColor color : colors) {
-			inventory.setItem(slot, constructItemStack(drawer, color));
+			inventory.setItem(slot, constructColorItem(drawer, color));
 			slot++;
 		}
 		
@@ -76,7 +77,7 @@ public class GuiManager {
 		return inventory;
 	}
 	
-	private ItemStack constructItemStack(Drawer drawer, PixelColor color) {
+	private ItemStack constructColorItem(Drawer drawer, PixelColor color) {
 		if(color != null) {
 			ItemStack item = new ItemStack(color.getBlock().getType(), 1, color.getBlock().getData());
 			ItemMeta meta = item.getItemMeta();
@@ -96,7 +97,7 @@ public class GuiManager {
 	public Inventory getBrushInventory(Drawer drawer) {
 		Inventory inventory = Bukkit.createInventory(drawer.getPlayer(), 9, BRUSH_GUI);
 		
-		inventory.setItem(0, Utils.setName(drawer.getColor().getBlock().toItemStack(1), ChatColor.WHITE + "" + ChatColor.BOLD + "Changer de couleur"));
+		inventory.setItem(0, getColorPicker(drawer));
 		
 		inventory.setItem(3, Utils.quickItemStack(Material.FIREWORK_CHARGE, 1, (byte) 0, ChatColor.WHITE + "Taille 1", null));
 		inventory.setItem(4, Utils.quickItemStack(Material.FIREWORK_CHARGE, 2, (byte) 0, ChatColor.WHITE + "Taille 2", null));
@@ -113,5 +114,42 @@ public class GuiManager {
 		}
 		
 		return inventory;
+	}
+	
+	public Inventory getSprayInventory(Drawer drawer) {
+		Inventory inventory = Bukkit.createInventory(drawer.getPlayer(), 27, SPRAY_GUI);
+		
+		inventory.setItem(9, getColorPicker(drawer));
+		
+		inventory.setItem(3, Utils.quickItemStack(Material.FIREWORK_CHARGE, 1, (byte) 0, ChatColor.WHITE + "Taille 1", null));
+		inventory.setItem(4, Utils.quickItemStack(Material.FIREWORK_CHARGE, 2, (byte) 0, ChatColor.WHITE + "Taille 2", null));
+		inventory.setItem(5, Utils.quickItemStack(Material.FIREWORK_CHARGE, 3, (byte) 0, ChatColor.WHITE + "Taille 3", null));
+		
+		ItemStack selectedSize = inventory.getItem(((ContinuousDrawTool) drawer.getTool(1)).getSize() + 2);
+		GlowEffect.addGlow(selectedSize);
+		Utils.setName(selectedSize, ChatColor.GREEN + "" + ChatColor.BOLD + "Taille " + ((ContinuousDrawTool) drawer.getTool(1)).getSize());
+		
+		inventory.setItem(21, Utils.quickItemStack(Material.ANVIL, 1, (byte) 0, ChatColor.WHITE + "Dûreté 1", null));
+		inventory.setItem(22, Utils.quickItemStack(Material.ANVIL, 1, (byte) 1, ChatColor.WHITE + "Dûreté 2", null));
+		inventory.setItem(23, Utils.quickItemStack(Material.ANVIL, 1, (byte) 2, ChatColor.WHITE + "Dûreté 3", null));
+		
+		ItemStack selectedSharp = inventory.getItem(((SprayTool) drawer.getTool(1)).getStrengh() + 20);
+		GlowEffect.addGlow(selectedSharp);
+		Utils.setName(selectedSharp, ChatColor.GREEN + "" + ChatColor.BOLD + "Dûreté " + ((SprayTool) drawer.getTool(1)).getStrengh());
+		
+		if(((ContinuousDrawTool) drawer.getTool(1)).isMixColors()) {
+			inventory.setItem(17, Utils.quickItemStack(Material.INK_SACK, 1, DyeColor.LIME.getDyeData(), ChatColor.GREEN + "" + ChatColor.BOLD + "Mélange des couleurs : activé", Arrays.asList(ChatColor.GRAY + "Option de mélange des couleurs")));
+		} else {
+			inventory.setItem(17, Utils.quickItemStack(Material.INK_SACK, 1, DyeColor.GRAY.getDyeData(), ChatColor.RED + "" + ChatColor.BOLD + "Mélange des couleurs : désactivé", Arrays.asList(ChatColor.GRAY + "Option de mélange des couleurs")));
+		}
+		
+		return inventory;
+	}
+	
+	
+	/* COMMON */
+	
+	private ItemStack getColorPicker(Drawer drawer) {
+		return Utils.setName(drawer.getColor().getBlock().toItemStack(1), ChatColor.WHITE + "" + ChatColor.BOLD + "Changer de couleur");
 	}
 }

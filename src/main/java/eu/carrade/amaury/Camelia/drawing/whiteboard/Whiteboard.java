@@ -3,6 +3,7 @@ package eu.carrade.amaury.Camelia.drawing.whiteboard;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.logging.Level;
@@ -40,6 +41,8 @@ public class Whiteboard {
 	private final PixelColor[][] board;
 
 	private final WhiteboardOrientation orientation;
+	
+	private Random random = new Random();
 
 	/**
 	 * These blocs of the screen are on cooldown: they cannot be changed when in
@@ -215,7 +218,17 @@ public class Whiteboard {
 					setBlock(new WhiteboardLocation(center.getX() + x, center.getY() + y), color, mix, 3 * size + 5);
 				}
 			}
-		}		
+		}
+	}
+	
+	public void fillRandomly(final WhiteboardLocation center, int size, double probability, final PixelColor color, boolean mix) {
+		for(int x = -size; x <= size; x++) {
+			for(int y = -size; y <= size; y++) {
+				if(x * x + y * y <= size * size / 4 && random.nextDouble() <= probability) {
+					setBlock(new WhiteboardLocation(center.getX() + x, center.getY() + y), color, mix, 3 * size + 5);
+				}
+			}
+		}
 	}
 	
 	public void fillArea(final WhiteboardLocation begin, final PixelColor color) {

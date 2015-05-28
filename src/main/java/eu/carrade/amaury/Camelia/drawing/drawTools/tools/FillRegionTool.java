@@ -40,6 +40,6 @@ public class FillRegionTool extends ClicDrawTool {
 
 	@Override
 	public void onLeftClick(WhiteboardLocation targetOnScreen, Drawer drawer) {
-
+		drawer.getPlayer().openInventory(Camelia.getInstance().getGuiManager().getColorInventory(drawer));
 	}
 }

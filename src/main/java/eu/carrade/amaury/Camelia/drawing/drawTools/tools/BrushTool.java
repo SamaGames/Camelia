@@ -1,14 +1,14 @@
 package eu.carrade.amaury.Camelia.drawing.drawTools.tools;
 
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+
 import eu.carrade.amaury.Camelia.Camelia;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.ContinuousDrawTool;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.ToolLocator;
 import eu.carrade.amaury.Camelia.drawing.whiteboard.WhiteboardLocation;
 import eu.carrade.amaury.Camelia.game.Drawer;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 
 @ToolLocator(slot = 0)
 public class BrushTool extends ContinuousDrawTool {

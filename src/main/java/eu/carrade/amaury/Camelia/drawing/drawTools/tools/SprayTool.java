@@ -1,19 +1,25 @@
 package eu.carrade.amaury.Camelia.drawing.drawTools.tools;
 
-import eu.carrade.amaury.Camelia.drawing.drawTools.core.ClicDrawTool;
-import eu.carrade.amaury.Camelia.drawing.drawTools.core.ToolLocator;
-import eu.carrade.amaury.Camelia.drawing.whiteboard.WhiteboardLocation;
-import eu.carrade.amaury.Camelia.game.Drawer;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import eu.carrade.amaury.Camelia.Camelia;
+import eu.carrade.amaury.Camelia.drawing.drawTools.core.ContinuousDrawTool;
+import eu.carrade.amaury.Camelia.drawing.drawTools.core.ToolLocator;
+import eu.carrade.amaury.Camelia.drawing.whiteboard.WhiteboardLocation;
+import eu.carrade.amaury.Camelia.game.Drawer;
+
 
 @ToolLocator(slot = 1)
-public class SprayTool extends ClicDrawTool {
+public class SprayTool extends ContinuousDrawTool {
+	
+	private int strengh = 1;
 
 	public SprayTool(Drawer drawer) {
 		super(drawer);
+		
+		this.size = 3;
 	}
 
 	@Override
@@ -23,7 +29,7 @@ public class SprayTool extends ClicDrawTool {
 
 	@Override
 	public String getDescription() {
-		return ChatColor.GRAY + "Applique de la couleur aléatoirement dans une petite région, tel une bombe de peinture";
+		return ChatColor.GRAY + "Applique de la couleur aléatoirement dans une petite région, telle une bombe de peinture";
 	}
 
 	@Override
@@ -33,11 +39,21 @@ public class SprayTool extends ClicDrawTool {
 
 	@Override
 	public void onRightClick(WhiteboardLocation targetOnScreen, Drawer drawer) {
-		drawer.getPlayer().sendMessage("TODO Brush");
+		if(targetOnScreen == null) return;
+		
+		Camelia.getInstance().getWhiteboard().fillRandomly(targetOnScreen, 2 * size + 1, strengh * 0.05, drawer.getColor(), this.mixColors);
 	}
 
 	@Override
 	public void onLeftClick(WhiteboardLocation targetOnScreen, Drawer drawer) {
+		drawer.getPlayer().openInventory(Camelia.getInstance().getGuiManager().getSprayInventory(drawer));
+	}
 
+	public int getStrengh() {
+		return strengh;
+	}
+
+	public void setStrengh(int strengh) {
+		this.strengh = strengh;
 	}
 }
