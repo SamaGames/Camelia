@@ -86,7 +86,7 @@ public class InventoryListener implements Listener {
 				((ContinuousDrawTool) drawer.getTool(1)).setSize((e.getSlot() - 2) % 9);
 				e.getWhoClicked().openInventory(Camelia.getInstance().getGuiManager().getSprayInventory(drawer));
 			} else if(e.getSlot() >= 21 && e.getSlot() <= 23) {
-				((SprayTool) drawer.getTool(1)).setStrengh((e.getSlot() - 2) % 9);
+				((SprayTool) drawer.getTool(1)).setStrength((e.getSlot() - 2) % 9);
 				e.getWhoClicked().openInventory(Camelia.getInstance().getGuiManager().getSprayInventory(drawer));
 			}
 		}

@@ -132,9 +132,9 @@ public class GuiManager {
 		inventory.setItem(22, Utils.quickItemStack(Material.ANVIL, 1, (byte) 1, ChatColor.WHITE + "Dûreté 2", null));
 		inventory.setItem(23, Utils.quickItemStack(Material.ANVIL, 1, (byte) 2, ChatColor.WHITE + "Dûreté 3", null));
 		
-		ItemStack selectedSharp = inventory.getItem(((SprayTool) drawer.getTool(1)).getStrengh() + 20);
+		ItemStack selectedSharp = inventory.getItem(((SprayTool) drawer.getTool(1)).getStrength() + 20);
 		GlowEffect.addGlow(selectedSharp);
-		Utils.setName(selectedSharp, ChatColor.GREEN + "" + ChatColor.BOLD + "Dûreté " + ((SprayTool) drawer.getTool(1)).getStrengh());
+		Utils.setName(selectedSharp, ChatColor.GREEN + "" + ChatColor.BOLD + "Dûreté " + ((SprayTool) drawer.getTool(1)).getStrength());
 		
 		if(((ContinuousDrawTool) drawer.getTool(1)).isMixColors()) {
 			inventory.setItem(17, Utils.quickItemStack(Material.INK_SACK, 1, DyeColor.LIME.getDyeData(), ChatColor.GREEN + "" + ChatColor.BOLD + "Mélange des couleurs : activé", Arrays.asList(ChatColor.GRAY + "Option de mélange des couleurs")));
