@@ -130,7 +130,7 @@ public class Whiteboard {
 	 * on a cooldown).
 	 */
 	public boolean setBlock(final Location location, final PixelColor color) {
-		return setBlock(WhiteboardLocation.fromBukkitLocation(location), color, true);
+		return setBlock(WhiteboardLocation.fromBukkitLocation(location), color, false);
 	}
 
 	/**
@@ -179,7 +179,7 @@ public class Whiteboard {
 			return false;
 		}
 
-		if(onCooldownLocations.contains(location)) {
+		if(onCooldownLocations.contains(location) && mix) {
 			return false;
 		}
 
@@ -243,7 +243,7 @@ public class Whiteboard {
 
 		for(int x = 0; x < width; x++) {
 			for(int y = 0; y < height; y++) {
-				setBlock(new WhiteboardLocation(this, x, y), color, true);
+				setBlock(new WhiteboardLocation(this, x, y), color, false);
 			}
 		}
 	}
