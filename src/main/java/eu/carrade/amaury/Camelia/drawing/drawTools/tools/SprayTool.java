@@ -18,7 +18,7 @@ public class SprayTool extends ClicDrawTool {
 
 	@Override
 	public String getDisplayName() {
-		return ChatColor.GREEN + "" + ChatColor.BOLD + "Spray";
+		return ChatColor.GREEN + "" + ChatColor.BOLD + "Aérographe";
 	}
 
 	@Override
