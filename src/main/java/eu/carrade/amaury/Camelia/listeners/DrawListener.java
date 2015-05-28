@@ -3,6 +3,8 @@ package eu.carrade.amaury.Camelia.listeners;
 import eu.carrade.amaury.Camelia.Camelia;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.ClicDrawTool;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
+import eu.carrade.amaury.Camelia.drawing.whiteboard.Whiteboard;
+import eu.carrade.amaury.Camelia.drawing.whiteboard.WhiteboardLocation;
 import eu.carrade.amaury.Camelia.game.Drawer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -70,7 +72,7 @@ public class DrawListener implements Listener {
 
 			if(tool == null) return;
 
-			Location target = Camelia.getInstance().getWhiteboard().getTargetBlock(ev.getPlayer());
+			WhiteboardLocation target = WhiteboardLocation.fromBukkitLocation(Camelia.getInstance().getWhiteboard().getTargetBlock(ev.getPlayer()));
 
 			switch(ev.getAction()) {
 

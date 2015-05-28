@@ -1,5 +1,6 @@
 package eu.carrade.amaury.Camelia.drawing.drawTools.core;
 
+import eu.carrade.amaury.Camelia.drawing.whiteboard.WhiteboardLocation;
 import eu.carrade.amaury.Camelia.game.Drawer;
 import eu.carrade.amaury.Camelia.utils.Utils;
 import org.bukkit.Location;
@@ -41,8 +42,9 @@ public abstract class DrawTool {
 	 * You don't have to set the display name, lore, etc.: this will be done automatically
 	 * from the content returned by {@link #getDisplayName} and {@link #getDescription}.
 	 *
+	 * @param drawer This icon will be displayed to this drawer.
+	 *
 	 * @return The icon, as an ItemStack.
-	 * @param drawer The drawer
 	 */
 	public abstract ItemStack getIcon(Drawer drawer);
 
@@ -54,7 +56,7 @@ public abstract class DrawTool {
 	 *                       CAN BE NULL, if the drawer isn't targeting the screen.
 	 * @param drawer The drawer.
 	 */
-	public abstract void onRightClick(Location targetOnScreen, Drawer drawer);
+	public abstract void onRightClick(WhiteboardLocation targetOnScreen, Drawer drawer);
 
 	/**
 	 * Executed when the player left-clicks with the tool.
@@ -63,14 +65,15 @@ public abstract class DrawTool {
 	 *                       CAN BE NULL, if the drawer isn't targeting the screen.
 	 * @param drawer The drawer.
 	 */
-	public abstract void onLeftClick(Location targetOnScreen, Drawer drawer);
+	public abstract void onLeftClick(WhiteboardLocation targetOnScreen, Drawer drawer);
 
 
 	/**
 	 * Returns a ready-to-use ItemStack to represents this tool in the player's hotbar.
 	 *
+	 * @param drawer This icon will be displayed to this drawner.
+	 *
 	 * @return The ItemStack, with display names and lores correctly set.
-	 * @param drawer
 	 */
 	public ItemStack constructIcon(Drawer drawer) {
 		ItemStack icon = getIcon(drawer).clone();

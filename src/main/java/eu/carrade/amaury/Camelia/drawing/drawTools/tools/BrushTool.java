@@ -3,9 +3,10 @@ package eu.carrade.amaury.Camelia.drawing.drawTools.tools;
 import eu.carrade.amaury.Camelia.Camelia;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.ContinuousDrawTool;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.ToolLocator;
+import eu.carrade.amaury.Camelia.drawing.whiteboard.WhiteboardLocation;
 import eu.carrade.amaury.Camelia.game.Drawer;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -32,14 +33,14 @@ public class BrushTool extends ContinuousDrawTool {
 	}
 
 	@Override
-	public void onRightClick(Location targetOnScreen, Drawer drawer) {
+	public void onRightClick(WhiteboardLocation targetOnScreen, Drawer drawer) {
 		if(targetOnScreen == null) return;
 
 		Camelia.getInstance().getWhiteboard().setBlock(targetOnScreen, drawer.getColor());
 	}
 
 	@Override
-	public void onLeftClick(Location targetOnScreen, Drawer drawer) {
+	public void onLeftClick(WhiteboardLocation targetOnScreen, Drawer drawer) {
 	}
 
 }

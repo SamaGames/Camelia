@@ -3,6 +3,8 @@ package eu.carrade.amaury.Camelia.drawing;
 import eu.carrade.amaury.Camelia.Camelia;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.ContinuousDrawTool;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
+import eu.carrade.amaury.Camelia.drawing.whiteboard.Whiteboard;
+import eu.carrade.amaury.Camelia.drawing.whiteboard.WhiteboardLocation;
 import eu.carrade.amaury.Camelia.game.Drawer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -19,7 +21,7 @@ public class FollowDrawerCursorTask extends BukkitRunnable {
 	 * Stores the previous known target location, used to draw a line between this new location
 	 * and the previous one.
 	 */
-	private Map<UUID,Location> previousLocation = new ConcurrentHashMap<>();
+	private Map<UUID,WhiteboardLocation> previousLocation = new ConcurrentHashMap<>();
 
 	/**
 	 * Stores the milli-timestamp of the last known target location
@@ -37,8 +39,8 @@ public class FollowDrawerCursorTask extends BukkitRunnable {
 			DrawTool tool = drawer.getActiveTool();
 			if(tool == null || !(tool instanceof ContinuousDrawTool)) return;
 
-			
-			Location target = Camelia.getInstance().getWhiteboard().getTargetBlock(drawer.getPlayer());
+
+			WhiteboardLocation target = WhiteboardLocation.fromBukkitLocation(Camelia.getInstance().getWhiteboard().getTargetBlock(drawer.getPlayer()));
 
 			if(target != null) {
 
@@ -47,10 +49,10 @@ public class FollowDrawerCursorTask extends BukkitRunnable {
 				if(previousLocation.containsKey(rightClickingPlayerID)
 						&& System.currentTimeMillis() - previousLocationTime.get(rightClickingPlayerID) <= 230l) {
 
-					Location start = previousLocation.get(rightClickingPlayerID);
-					Location end = target;
+					WhiteboardLocation start = previousLocation.get(rightClickingPlayerID);
+					WhiteboardLocation end = target;
 					
-					drawLine(drawer, start.getBlockX(), start.getBlockY(), end.getBlockX(), end.getBlockY(), end.getBlockZ());
+					drawLine(drawer, start, end);
 
 				}
 
@@ -60,7 +62,8 @@ public class FollowDrawerCursorTask extends BukkitRunnable {
 		}
 	}
 
-	private void drawLine(Drawer drawer, int x1, int y1, int x2, int y2, int plan) {
+	// Drawer drawer, int x1, int y1, int x2, int y2, int plan
+	private void drawLine(Drawer drawer, WhiteboardLocation start, WhiteboardLocation end) {
 
 		DrawTool tool = drawer.getActiveTool();
 
@@ -69,18 +72,19 @@ public class FollowDrawerCursorTask extends BukkitRunnable {
 
 		// Draw a perfect line from pos1 to pos2 on a surface
 		// Source: http://java.developpez.com/telecharger/detail/id/1268/Algorithme-de-Bresenham
-		int dx, dy, i, xinc, yinc, cumul, x, y ;
+		int dx, dy, i, xinc, yinc, cumul, x, y;
 	 
-		x = x1;
-		y = y1;
-		dx = x2 - x1;
-		dy = y2 - y1;
+		x = start.getX();
+		y = start.getY();
+		dx = end.getX() - start.getX();
+		dy = end.getY() - start.getY();
+
 		xinc = ( dx > 0 ) ? 1 : -1 ;
 		yinc = ( dy > 0 ) ? 1 : -1 ;
 		dx = Math.abs(dx);
 		dy = Math.abs(dy);
 
-		tool.onRightClick(new Location(Bukkit.getServer().getWorlds().get(0), x, y, plan), drawer);
+		tool.onRightClick(new WhiteboardLocation(x, y), drawer);
 
 		if (dx > dy) {
 			cumul = dx / 2;
@@ -92,7 +96,7 @@ public class FollowDrawerCursorTask extends BukkitRunnable {
 					y += yinc;
 				}
 
-				tool.onRightClick(new Location(Bukkit.getServer().getWorlds().get(0), x, y, plan), drawer);
+				tool.onRightClick(new WhiteboardLocation(x, y), drawer);
 			}
 		}
 
@@ -106,7 +110,7 @@ public class FollowDrawerCursorTask extends BukkitRunnable {
 					x += xinc;
 				}
 
-				tool.onRightClick(new Location(Bukkit.getServer().getWorlds().get(0), x, y, plan), drawer);
+				tool.onRightClick(new WhiteboardLocation(x, y), drawer);
 			}
 		}
 	}
