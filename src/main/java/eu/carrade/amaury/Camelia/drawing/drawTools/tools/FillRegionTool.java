@@ -1,9 +1,11 @@
 package eu.carrade.amaury.Camelia.drawing.drawTools.tools;
 
+import eu.carrade.amaury.Camelia.Camelia;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.ClicDrawTool;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.ToolLocator;
 import eu.carrade.amaury.Camelia.drawing.whiteboard.WhiteboardLocation;
 import eu.carrade.amaury.Camelia.game.Drawer;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -33,7 +35,7 @@ public class FillRegionTool extends ClicDrawTool {
 
 	@Override
 	public void onRightClick(WhiteboardLocation targetOnScreen, Drawer drawer) {
-		drawer.getPlayer().sendMessage("TODO remplissage");
+		Camelia.getInstance().getWhiteboard().fillArea(targetOnScreen, drawer.getColor());
 	}
 
 	@Override

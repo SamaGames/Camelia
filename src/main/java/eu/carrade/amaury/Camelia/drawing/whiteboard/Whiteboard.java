@@ -1,21 +1,24 @@
 package eu.carrade.amaury.Camelia.drawing.whiteboard;
 
-import eu.carrade.amaury.Camelia.Camelia;
-import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorWhite;
-import eu.carrade.amaury.Camelia.drawing.colors.core.ColorType;
-import eu.carrade.amaury.Camelia.drawing.colors.core.ColorUtils;
-import eu.carrade.amaury.Camelia.drawing.colors.core.PixelColor;
-import eu.carrade.amaury.Camelia.utils.Utils;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.logging.Level;
+import eu.carrade.amaury.Camelia.Camelia;
+import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorWhite;
+import eu.carrade.amaury.Camelia.drawing.colors.core.ColorType;
+import eu.carrade.amaury.Camelia.drawing.colors.core.ColorUtils;
+import eu.carrade.amaury.Camelia.drawing.colors.core.PixelColor;
+import eu.carrade.amaury.Camelia.utils.Utils;
 
 
 public class Whiteboard {
@@ -212,8 +215,42 @@ public class Whiteboard {
 					setBlock(new WhiteboardLocation(center.getX() + x, center.getY() + y), color, mix, 3 * size + 5);
 				}
 			}
+		}		
+	}
+	
+	public void fillArea(final WhiteboardLocation begin, final PixelColor color) {
+		if(!isOnTheWhiteboard(begin)) {
+			return;
 		}
+		
+		List<WhiteboardLocation> nexts = new ArrayList<WhiteboardLocation>();
+		
+		PixelColor toReplace = board[begin.getX()][begin.getY()];
+		
+		nexts.add(begin);
+		
+		setBlock(begin, color, false);
+
+		while(nexts.size() != 0) {
+			List<WhiteboardLocation> newLocations = new ArrayList<WhiteboardLocation>();
 			
+			for(WhiteboardLocation loc : nexts) {
+				proceedLocation(loc, newLocations, toReplace, color);
+			}
+			
+			nexts = newLocations;
+		}
+	}
+	
+	private void proceedLocation(WhiteboardLocation location, List<WhiteboardLocation> newLocations, PixelColor toReplace, PixelColor color) {
+		List<WhiteboardLocation> locs = Arrays.asList(new WhiteboardLocation(this, location.getX() + 1, location.getY()), new WhiteboardLocation(this, location.getX(), location.getY() - 1), new WhiteboardLocation(this, location.getX() - 1, location.getY()), new WhiteboardLocation(this, location.getX(), location.getY() + 1));
+		for(WhiteboardLocation p : locs) {
+			if(isOnTheWhiteboard(p) && board[p.getX()][p.getY()].getDyeColor().equals(toReplace.getDyeColor()) && board[p.getX()][p.getY()].getType().equals(toReplace.getType()) && !(board[p.getX()][p.getY()].getDyeColor().equals(color.getDyeColor()) && board[p.getX()][p.getY()].getType().equals(color.getType()))) {
+				setBlock(p, color, false);
+				newLocations.add(p);
+			}
+		}
+		
 	}
 
 	/**
