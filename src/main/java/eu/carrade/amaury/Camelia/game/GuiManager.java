@@ -3,8 +3,7 @@ package eu.carrade.amaury.Camelia.game;
 import java.util.Arrays;
 import java.util.List;
 
-import net.samagames.utils.GlowEffect;
-
+import net.samagames.tools.GlowEffect;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;

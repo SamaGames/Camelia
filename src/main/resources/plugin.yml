@@ -3,3 +3,6 @@ description: Draw.
 main: eu.carrade.amaury.Camelia.Camelia
 version: 1.0
 author: "Amaury Carrade"
+
+depend:
+  - SamaGamesAPI
