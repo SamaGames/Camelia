@@ -29,7 +29,8 @@ public final class ColorUtils {
 		mixes.add(new BasicMix(DyeColor.WHITE, DyeColor.BLACK, DyeColor.GRAY));
 		mixes.add(new BasicMix(DyeColor.WHITE, DyeColor.GRAY, DyeColor.SILVER));
 		mixes.add(new BasicMix(DyeColor.RED, DyeColor.YELLOW, DyeColor.ORANGE));
-
+		mixes.add(new BasicMix(DyeColor.BLUE, DyeColor.YELLOW, DyeColor.GREEN));
+		mixes.add(new BasicMix(DyeColor.LIGHT_BLUE, DyeColor.YELLOW, DyeColor.LIME));
 	}
 	
 	private static List<PixelColor> constructList(ColorType type) {
