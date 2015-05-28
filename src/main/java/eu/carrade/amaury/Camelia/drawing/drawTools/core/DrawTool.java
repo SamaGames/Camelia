@@ -12,7 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
  */
 public abstract class DrawTool {
 
-	private Drawer drawer;
+	protected final Drawer drawer;
 
 
 	public DrawTool(Drawer drawer) {

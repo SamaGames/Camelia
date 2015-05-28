@@ -9,7 +9,9 @@ package eu.carrade.amaury.Camelia;
 import eu.carrade.amaury.Camelia.drawing.DrawingManager;
 import eu.carrade.amaury.Camelia.drawing.whiteboard.Whiteboard;
 import eu.carrade.amaury.Camelia.game.GameManager;
+import eu.carrade.amaury.Camelia.game.GuiManager;
 import eu.carrade.amaury.Camelia.listeners.DrawListener;
+import eu.carrade.amaury.Camelia.listeners.InventoryListener;
 import eu.carrade.amaury.Camelia.listeners.PlayersConnectionListener;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -28,6 +30,7 @@ public final class Camelia extends JavaPlugin {
 	private GameManager gameManager;
 	private DrawingManager drawingManager;
 	private Whiteboard whiteboard;
+	private GuiManager guiManager;
 	
 	@Override
 	public void onEnable() {
@@ -55,11 +58,13 @@ public final class Camelia extends JavaPlugin {
 		gameManager = new GameManager();
 		drawingManager = new DrawingManager();
 		whiteboard = new Whiteboard();
+		guiManager = new GuiManager();
 
 
 		/** *** Listeners *** **/
 		getServer().getPluginManager().registerEvents(new PlayersConnectionListener(), this);
 		getServer().getPluginManager().registerEvents(new DrawListener(), this);
+		getServer().getPluginManager().registerEvents(new InventoryListener(), this);
 
 
 
@@ -91,7 +96,10 @@ public final class Camelia extends JavaPlugin {
 		return arenaConfig;
 	}
 
-
+	public GuiManager getGuiManager() {
+		return guiManager;
+	}
+	
 	public void disable() {
 		setEnabled(false);
 	}

@@ -1,5 +1,6 @@
 package eu.carrade.amaury.Camelia.drawing.drawTools.tools;
 
+import eu.carrade.amaury.Camelia.Camelia;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.ClicDrawTool;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.ToolLocator;
 import eu.carrade.amaury.Camelia.drawing.whiteboard.WhiteboardLocation;
@@ -37,11 +38,12 @@ public class ColorChooserTool extends ClicDrawTool {
 
 	@Override
 	public void onRightClick(WhiteboardLocation targetOnScreen, Drawer drawer) {
-		drawer.getPlayer().sendMessage("TODO colors selector");
+		drawer.getPlayer().openInventory(Camelia.getInstance().getGuiManager().getColorInventory(drawer));
 	}
 
 	@Override
 	public void onLeftClick(WhiteboardLocation targetOnScreen, Drawer drawer) {
-
+		onRightClick(targetOnScreen, drawer);
 	}
+
 }

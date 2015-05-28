@@ -35,12 +35,12 @@ public class BrushTool extends ContinuousDrawTool {
 	@Override
 	public void onRightClick(WhiteboardLocation targetOnScreen, Drawer drawer) {
 		if(targetOnScreen == null) return;
-
-		Camelia.getInstance().getWhiteboard().setBlock(targetOnScreen, drawer.getColor());
+		
+		Camelia.getInstance().getWhiteboard().setBlock(targetOnScreen, drawer.getColor(), this.mixColors);
 	}
 
 	@Override
 	public void onLeftClick(WhiteboardLocation targetOnScreen, Drawer drawer) {
+		drawer.getPlayer().openInventory(Camelia.getInstance().getGuiManager().getBrushInventory(drawer));
 	}
-
 }

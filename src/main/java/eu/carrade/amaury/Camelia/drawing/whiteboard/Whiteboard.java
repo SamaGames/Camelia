@@ -196,7 +196,7 @@ public class Whiteboard {
 			public void run() {
 				onCooldownLocations.remove(location);
 			}
-		}, 5l);
+		}, 8l);
 
 		return true;
 	}

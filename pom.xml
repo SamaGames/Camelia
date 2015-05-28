@@ -25,7 +25,11 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
-    </repositories>
+        <repository>
+            <id>samagames-repo</id>
+            <url>http://maven.samagames.net/public/</url>
+        </repository>
+        </repositories>
 
     <dependencies>
         <dependency>
@@ -33,6 +37,12 @@
             <artifactId>bukkit</artifactId>
             <version>1.8-R0.1-SNAPSHOT</version>
             <type>jar</type>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.samagames</groupId>
+            <artifactId>MasterBundle</artifactId>
+            <version>1.8-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
