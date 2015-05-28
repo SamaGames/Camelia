@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -98,9 +99,9 @@ public class GuiManager {
 		
 		inventory.setItem(0, getColorPicker(drawer));
 		
-		inventory.setItem(3, Utils.quickItemStack(Material.FIREWORK_CHARGE, 1, (byte) 0, ChatColor.WHITE + "Taille 1", null));
-		inventory.setItem(4, Utils.quickItemStack(Material.FIREWORK_CHARGE, 2, (byte) 0, ChatColor.WHITE + "Taille 2", null));
-		inventory.setItem(5, Utils.quickItemStack(Material.FIREWORK_CHARGE, 3, (byte) 0, ChatColor.WHITE + "Taille 3", null));
+		inventory.setItem(3, Utils.quickItemStack(Material.FIREWORK_CHARGE, 1, (byte) 0, ChatColor.WHITE + "Taille 1", null, true));
+		inventory.setItem(4, Utils.quickItemStack(Material.FIREWORK_CHARGE, 2, (byte) 0, ChatColor.WHITE + "Taille 2", null, true));
+		inventory.setItem(5, Utils.quickItemStack(Material.FIREWORK_CHARGE, 3, (byte) 0, ChatColor.WHITE + "Taille 3", null, true));
 		
 		ItemStack selected = inventory.getItem(((ContinuousDrawTool) drawer.getTool(0)).getSize() + 2);
 		GlowEffect.addGlow(selected);
@@ -120,9 +121,9 @@ public class GuiManager {
 		
 		inventory.setItem(9, getColorPicker(drawer));
 		
-		inventory.setItem(3, Utils.quickItemStack(Material.FIREWORK_CHARGE, 1, (byte) 0, ChatColor.WHITE + "Taille 1", null));
-		inventory.setItem(4, Utils.quickItemStack(Material.FIREWORK_CHARGE, 2, (byte) 0, ChatColor.WHITE + "Taille 2", null));
-		inventory.setItem(5, Utils.quickItemStack(Material.FIREWORK_CHARGE, 3, (byte) 0, ChatColor.WHITE + "Taille 3", null));
+		inventory.setItem(3, Utils.quickItemStack(Material.FIREWORK_CHARGE, 1, (byte) 0, ChatColor.WHITE + "Taille 1", null, true));
+		inventory.setItem(4, Utils.quickItemStack(Material.FIREWORK_CHARGE, 2, (byte) 0, ChatColor.WHITE + "Taille 2", null, true));
+		inventory.setItem(5, Utils.quickItemStack(Material.FIREWORK_CHARGE, 3, (byte) 0, ChatColor.WHITE + "Taille 3", null, true));
 		
 		ItemStack selectedSize = inventory.getItem(((ContinuousDrawTool) drawer.getTool(1)).getSize() + 2);
 		GlowEffect.addGlow(selectedSize);
