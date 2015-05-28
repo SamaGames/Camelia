@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.logging.Level;
 
+import eu.carrade.amaury.Camelia.drawing.colors.core.GameBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -194,10 +195,7 @@ public class Whiteboard {
 		
 		board[location.getX()][location.getY()] = finalColor;
 
-		Block block = location.toBukkitLocation().getBlock();
-		block.setType(finalColor.getBlock().getType());
-		block.setData(finalColor.getBlock().getData());
-
+		sendBlock(location, finalColor.getBlock());
 
 		onCooldownLocations.add(location);
 
@@ -298,6 +296,32 @@ public class Whiteboard {
 		}
 	}
 
+
+	/**
+	 * Send a block change to all players.
+	 *
+	 * @param location The location.
+	 * @param block The block to send.
+	 */
+	private void sendBlock(WhiteboardLocation location, GameBlock block) {
+		for(Player player : Bukkit.getOnlinePlayers()) {
+			player.sendBlockChange(location.toBukkitLocation(), block.getType(), block.getData());
+		}
+	}
+
+	/**
+	 * Send the whole whiteboard to the given player.
+	 *
+	 * @param player The player.
+	 */
+	public void sendAllWhitebord(Player player) {
+		for(int x = 0; x < width; x++) {
+			for(int y = 0; y < height; y++) {
+				GameBlock block = board[x][y].getBlock();
+				player.sendBlockChange(new WhiteboardLocation(this, x, y).toBukkitLocation(), block.getType(), block.getData());
+			}
+		}
+	}
 
 
 	public World getWhiteboardWorld() {
