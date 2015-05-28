@@ -36,7 +36,7 @@ public class BrushTool extends ContinuousDrawTool {
 	public void onRightClick(WhiteboardLocation targetOnScreen, Drawer drawer) {
 		if(targetOnScreen == null) return;
 		
-		Camelia.getInstance().getWhiteboard().setBlock(targetOnScreen, drawer.getColor(), this.mixColors);
+		Camelia.getInstance().getWhiteboard().drawCircle(targetOnScreen, 2 * size - 1, drawer.getColor(), this.mixColors);
 	}
 
 	@Override

@@ -160,6 +160,10 @@ public class Whiteboard {
 		return setBlock(location, color, true);
 	}
 
+	public boolean setBlock(final WhiteboardLocation location, final PixelColor color, boolean mix) {
+		return setBlock(location, color, mix, 10);
+	}
+	
 	/**
 	 * Sets a block of the whiteboard
 	 *
@@ -170,7 +174,7 @@ public class Whiteboard {
 	 * @return True if the block was set (i.e. the location is in the whiteboard and not
 	 * on a cooldown).
 	 */
-	public boolean setBlock(final WhiteboardLocation location, final PixelColor color, boolean mix) {
+	public boolean setBlock(final WhiteboardLocation location, final PixelColor color, boolean mix, long cooldown) {
 		if(!isOnTheWhiteboard(location)) {
 			return false;
 		}
@@ -196,11 +200,21 @@ public class Whiteboard {
 			public void run() {
 				onCooldownLocations.remove(location);
 			}
-		}, 8l);
+		}, cooldown);
 
 		return true;
 	}
-
+	
+	public void drawCircle(final WhiteboardLocation center, int size, final PixelColor color, boolean mix) {
+		for(int x = -size; x <= size; x++) {
+			for(int y = -size; y <= size; y++) {
+				if(x * x + y * y <= size * size / 4) {
+					setBlock(new WhiteboardLocation(center.getX() + x, center.getY() + y), color, mix, 3 * size + 5);
+				}
+			}
+		}
+			
+	}
 
 	/**
 	 * Returns the block of the whiteboard targeted by the given player.
