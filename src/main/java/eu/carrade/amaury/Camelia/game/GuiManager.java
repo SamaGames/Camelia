@@ -95,6 +95,9 @@ public class GuiManager {
 	
 	public Inventory getBrushInventory(Drawer drawer) {
 		Inventory inventory = Bukkit.createInventory(drawer.getPlayer(), 9, BRUSH_GUI);
+		
+		inventory.setItem(0, Utils.setName(drawer.getColor().getBlock().toItemStack(1), ChatColor.WHITE + "" + ChatColor.BOLD + "Changer de couleur"));
+		
 		inventory.setItem(3, Utils.quickItemStack(Material.FIREWORK_CHARGE, 1, (byte) 0, ChatColor.WHITE + "Taille 1", null));
 		inventory.setItem(4, Utils.quickItemStack(Material.FIREWORK_CHARGE, 2, (byte) 0, ChatColor.WHITE + "Taille 2", null));
 		inventory.setItem(5, Utils.quickItemStack(Material.FIREWORK_CHARGE, 3, (byte) 0, ChatColor.WHITE + "Taille 3", null));
@@ -108,8 +111,6 @@ public class GuiManager {
 		} else {
 			inventory.setItem(8, Utils.quickItemStack(Material.INK_SACK, 1, DyeColor.GRAY.getDyeData(), ChatColor.RED + "" + ChatColor.BOLD + "Mélange des couleurs : désactivé", Arrays.asList(ChatColor.GRAY + "Option de mélange des couleurs")));
 		}
-		
-		inventory.setItem(0, Utils.quickItemStack(Material.INK_SACK, 1, drawer.getColor().getDyeColor().getDyeData(), ChatColor.WHITE + "" + ChatColor.BOLD + "Changer de couleur", null));
 		
 		return inventory;
 	}

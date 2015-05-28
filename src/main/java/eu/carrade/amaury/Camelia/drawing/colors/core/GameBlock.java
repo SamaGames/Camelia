@@ -2,6 +2,7 @@ package eu.carrade.amaury.Camelia.drawing.colors.core;
 
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 public class GameBlock {
 
@@ -27,5 +28,9 @@ public class GameBlock {
 
 	public byte getData() {
 		return data;
+	}
+	
+	public ItemStack toItemStack(int amount) {
+		return new ItemStack(type, amount, data);
 	}
 }

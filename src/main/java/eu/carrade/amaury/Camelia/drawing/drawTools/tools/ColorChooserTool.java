@@ -30,10 +30,7 @@ public class ColorChooserTool extends ClicDrawTool {
 
 	@Override
 	public ItemStack getIcon(Drawer drawer) {
-		Dye icon = new Dye(Material.INK_SACK);
-		icon.setColor(drawer.getColor().getDyeColor());
-
-		return icon.toItemStack(1);
+		return drawer.getColor().getBlock().toItemStack(1);
 	}
 
 	@Override
