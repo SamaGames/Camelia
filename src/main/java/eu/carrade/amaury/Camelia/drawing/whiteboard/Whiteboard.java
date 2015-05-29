@@ -1,5 +1,11 @@
 package eu.carrade.amaury.Camelia.drawing.whiteboard;
 
+import java.awt.Image;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,8 +14,13 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.logging.Level;
 
+import javax.imageio.ImageIO;
+
 import eu.carrade.amaury.Camelia.drawing.colors.core.GameBlock;
+
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -346,6 +357,53 @@ public class Whiteboard {
 
 	public WhiteboardOrientation getOrientation() {
 		return orientation;
+	}
+	
+	public void drawPlayerHead(Player player) {
+		String name = player.getName();
+		
+		BufferedImage image = null;
+		try {
+		    URL url = new URL("https://minotar.net/avatar/" + name + "/16");
+		    image = ImageIO.read(url);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		AffineTransform tx = new AffineTransform();
+		tx.rotate(Math.PI, image.getWidth() / 2, image.getHeight() / 2);
+	    AffineTransformOp op = new AffineTransformOp(tx,
+	    AffineTransformOp.TYPE_BILINEAR);
+	    image = op.filter(image, null);
+
+	    for(int x = 0; x < width; x++) {
+			for(int y = 0; y < height; y++) {
+				if(x >= width / 2 - 9 && x <= width / 2 + 8 && y >= height / 2 - 9 && y <= height / 2 + 8) {
+					setBlock(new WhiteboardLocation(x, y), ColorUtils.getPixelFromDye(DyeColor.RED, ColorType.BETTER), false);
+				} else {
+					setBlock(new WhiteboardLocation(x, y), ColorUtils.getPixelFromDye(DyeColor.WHITE, ColorType.BETTER), false);
+				}
+			}
+		}
+	    
+		for(int x = 0; x < image.getWidth(); x++) {
+			for(int y = 0; y < image.getHeight(); y++) {
+				final int clr = image.getRGB(x, y);
+                final int red = (clr & 0x00ff0000) >> 16;
+                final int green = (clr & 0x0000ff00) >> 8;
+                final int blue = clr & 0x000000ff;
+                final int x1 = x;
+                final int y1 = y;
+                final int imgWidth = image.getWidth();
+                final int imgHeight = image.getHeight();
+                Bukkit.getScheduler().runTaskAsynchronously(Camelia.getInstance(), new Runnable() {
+                	@Override
+                	public void run() {
+                		setBlock(new WhiteboardLocation(x1 + width / 2 - imgWidth / 2, y1 + height / 2 - imgHeight / 2), ColorUtils.getPixelFromDye(ColorUtils.getFromColor(Color.fromBGR(blue, green, red)), ColorType.BASIC), false);
+                	}
+                });
+			}
+		}
 	}
 
 

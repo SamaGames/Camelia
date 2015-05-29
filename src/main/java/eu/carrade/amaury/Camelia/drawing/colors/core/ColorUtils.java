@@ -2,6 +2,7 @@ package eu.carrade.amaury.Camelia.drawing.colors.core;
 
 import eu.carrade.amaury.Camelia.drawing.colors.colors.*;
 
+import org.bukkit.Color;
 import org.bukkit.DyeColor;
 
 import java.util.ArrayList;
@@ -134,6 +135,24 @@ public final class ColorUtils {
 			default:
 				return new ColorWhite(type);
 		}
+	}
+	
+	public static DyeColor getFromColor(Color color) {
+		DyeColor best = null;
+		int sum = 255*3;
+		for(int i = 0; i < DyeColor.values().length; i++) {
+			if(best != null) {
+				int newSum = Math.abs(color.getRed() - DyeColor.values()[i].getColor().getRed()) + Math.abs(color.getGreen() - DyeColor.values()[i].getColor().getGreen()) + Math.abs(color.getBlue() - DyeColor.values()[i].getColor().getBlue());
+				if(newSum < sum) {
+					best = DyeColor.values()[i];
+					sum = newSum;
+				}
+			} else {
+				best = DyeColor.values()[i];
+				sum = Math.abs(color.getRed() - DyeColor.values()[i].getColor().getRed()) + Math.abs(color.getGreen() - DyeColor.values()[i].getColor().getGreen()) + Math.abs(color.getBlue() - DyeColor.values()[i].getColor().getBlue());
+			}
+		}
+		return best;
 	}
 }
 

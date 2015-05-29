@@ -1,13 +1,10 @@
 package eu.carrade.amaury.Camelia.listeners;
 
-import eu.carrade.amaury.Camelia.Camelia;
-import eu.carrade.amaury.Camelia.drawing.drawTools.core.ClicDrawTool;
-import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
-import eu.carrade.amaury.Camelia.drawing.whiteboard.Whiteboard;
-import eu.carrade.amaury.Camelia.drawing.whiteboard.WhiteboardLocation;
-import eu.carrade.amaury.Camelia.game.Drawer;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,9 +14,11 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+import eu.carrade.amaury.Camelia.Camelia;
+import eu.carrade.amaury.Camelia.drawing.drawTools.core.ClicDrawTool;
+import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
+import eu.carrade.amaury.Camelia.drawing.whiteboard.WhiteboardLocation;
+import eu.carrade.amaury.Camelia.game.Drawer;
 
 
 public class DrawListener implements Listener {
