@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
@@ -135,16 +136,27 @@ public class Utils {
 	/**
 	 * Returns a valid slot to use for this tool.
 	 *
-	 * @param tool The tool
+	 * @param toolRawSlot The tool' slot
 	 * @return The slot to use: the declared slot if below or equals to 8; 8 else.
 	 */
 	public static Integer getDrawToolRealSlot(int toolRawSlot) {
 		return Math.min(Math.abs(toolRawSlot), 8);
 	}
-	
-	public static ItemStack quickItemStack(Material type, int amount, byte data, String str, List<String> lore) {
+
+	public static ItemStack quickItemStack(Material type, int amount, byte data, String name, List<String> lore) {
+		return quickItemStack(type, amount, data, name, lore, false);
+	}
+
+	public static ItemStack quickItemStack(Material type, int amount, byte data, String name, List<String> lore, boolean removeVanillaInfos) {
 		ItemStack item = new ItemStack(type, amount, data);
-		setNameLore(item, str, lore);
+		setNameLore(item, name, lore);
+
+		if(removeVanillaInfos) {
+			ItemMeta meta = item.getItemMeta();
+			meta.addItemFlags(ItemFlag.values()); // All is hidden
+			item.setItemMeta(meta);
+		}
+
 		return item;
 	}
 	

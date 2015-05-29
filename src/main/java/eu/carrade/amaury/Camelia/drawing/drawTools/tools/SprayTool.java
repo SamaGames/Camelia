@@ -14,7 +14,7 @@ import eu.carrade.amaury.Camelia.game.Drawer;
 @ToolLocator(slot = 1)
 public class SprayTool extends ContinuousDrawTool {
 	
-	private int strengh = 1;
+	private int strength = 1;
 
 	public SprayTool(Drawer drawer) {
 		super(drawer);
@@ -41,7 +41,7 @@ public class SprayTool extends ContinuousDrawTool {
 	public void onRightClick(WhiteboardLocation targetOnScreen, Drawer drawer) {
 		if(targetOnScreen == null) return;
 		
-		Camelia.getInstance().getWhiteboard().fillRandomly(targetOnScreen, 2 * size + 1, strengh * 0.05, drawer.getColor(), this.mixColors);
+		Camelia.getInstance().getWhiteboard().fillRandomly(targetOnScreen, 2 * size + 1, strength * 0.05, drawer.getColor(), this.mixColors);
 	}
 
 	@Override
@@ -49,11 +49,11 @@ public class SprayTool extends ContinuousDrawTool {
 		drawer.getPlayer().openInventory(Camelia.getInstance().getGuiManager().getSprayInventory(drawer));
 	}
 
-	public int getStrengh() {
-		return strengh;
+	public int getStrength() {
+		return strength;
 	}
 
-	public void setStrengh(int strengh) {
-		this.strengh = strengh;
+	public void setStrength(int strength) {
+		this.strength = strength;
 	}
 }
