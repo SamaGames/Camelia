@@ -26,6 +26,6 @@ public class ColorMagenta extends PixelColor {
 
 	@Override
 	public String getRoughDisplayName() {
-		return ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Magenta";
+		return ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Magenta Bleuté";
 	}
 }

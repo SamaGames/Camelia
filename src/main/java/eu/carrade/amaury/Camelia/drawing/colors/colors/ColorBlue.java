@@ -26,6 +26,6 @@ public class ColorBlue extends PixelColor {
 
 	@Override
 	public String getRoughDisplayName() {
-		return ChatColor.BLUE + "" + ChatColor.BOLD + "Bleu";
+		return ChatColor.BLUE + "" + ChatColor.BOLD + "Bleu Outremer";
 	}
 }

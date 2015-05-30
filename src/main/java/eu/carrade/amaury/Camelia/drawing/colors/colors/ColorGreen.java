@@ -26,6 +26,6 @@ public class ColorGreen extends PixelColor {
 
 	@Override
 	public String getRoughDisplayName() {
-		return ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Vert";
+		return ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Vert Moussu";
 	}
 }

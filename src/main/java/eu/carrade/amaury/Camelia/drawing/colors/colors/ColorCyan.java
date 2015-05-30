@@ -26,6 +26,6 @@ public class ColorCyan extends PixelColor {
 
 	@Override
 	public String getRoughDisplayName() {
-		return ChatColor.AQUA + "" + ChatColor.BOLD + "Cyan";
+		return ChatColor.AQUA + "" + ChatColor.BOLD + "Cyan Océan";
 	}
 }

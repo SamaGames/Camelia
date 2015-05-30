@@ -16,16 +16,16 @@ public class ColorBrown extends PixelColor {
 
 	@Override
 	public String getBasicDisplayName() {
-		return ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "Marron";
+		return ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "Brun";
 	}
 
 	@Override
 	public String getBetterDisplayName() {
-		return ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "Marron";
+		return ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "Brun";
 	}
 
 	@Override
 	public String getRoughDisplayName() {
-		return ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "Marron";
+		return ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "Brun Terreux";
 	}
 }

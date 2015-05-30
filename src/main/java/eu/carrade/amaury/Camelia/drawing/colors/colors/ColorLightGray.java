@@ -26,6 +26,6 @@ public class ColorLightGray extends PixelColor {
 
 	@Override
 	public String getRoughDisplayName() {
-		return ChatColor.GRAY + "" + ChatColor.BOLD + "Gris Clair";
+		return ChatColor.GRAY + "" + ChatColor.BOLD + "Gris Ardoise";
 	}
 }

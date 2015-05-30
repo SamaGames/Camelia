@@ -26,6 +26,6 @@ public class ColorLime extends PixelColor {
 
 	@Override
 	public String getRoughDisplayName() {
-		return ChatColor.GREEN + "" + ChatColor.BOLD + "Vert Clair";
+		return ChatColor.GREEN + "" + ChatColor.BOLD + "Vert Emeraude";
 	}
 }

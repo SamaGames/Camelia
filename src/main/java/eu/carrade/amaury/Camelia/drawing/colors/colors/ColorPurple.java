@@ -26,6 +26,6 @@ public class ColorPurple extends PixelColor {
 
 	@Override
 	public String getRoughDisplayName() {
-		return ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Violet";
+		return ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Violet Diamant";
 	}
 }

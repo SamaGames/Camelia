@@ -26,6 +26,6 @@ public class ColorWhite extends PixelColor {
 
 	@Override
 	public String getRoughDisplayName() {
-		return ChatColor.WHITE + "" + ChatColor.BOLD + "Blanc";
+		return ChatColor.WHITE + "" + ChatColor.BOLD + "Blanc Ardoise Claire";
 	}
 }

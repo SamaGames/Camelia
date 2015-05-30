@@ -16,16 +16,16 @@ public class ColorGray extends PixelColor {
 
 	@Override
 	public String getBasicDisplayName() {
-		return ChatColor.GRAY + "" + ChatColor.BOLD + "Gris";
+		return ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "Gris";
 	}
 
 	@Override
 	public String getBetterDisplayName() {
-		return ChatColor.GRAY + "" + ChatColor.BOLD + "Gris";
+		return ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "Gris";
 	}
 
 	@Override
 	public String getRoughDisplayName() {
-		return ChatColor.GRAY + "" + ChatColor.BOLD + "Gris";
+		return ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "Gris Terrestre";
 	}
 }

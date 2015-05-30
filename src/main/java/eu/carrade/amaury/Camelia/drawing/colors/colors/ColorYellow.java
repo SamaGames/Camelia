@@ -26,6 +26,6 @@ public class ColorYellow extends PixelColor {
 
 	@Override
 	public String getRoughDisplayName() {
-		return ChatColor.YELLOW + "" + ChatColor.BOLD + "Jaune";
+		return ChatColor.YELLOW + "" + ChatColor.BOLD + "Jaune Spongieux";
 	}
 }

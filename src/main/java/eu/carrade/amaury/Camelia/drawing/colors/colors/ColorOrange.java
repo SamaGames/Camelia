@@ -26,6 +26,6 @@ public class ColorOrange extends PixelColor {
 
 	@Override
 	public String getRoughDisplayName() {
-		return ChatColor.GOLD + "" + ChatColor.BOLD + "Orange";
+		return ChatColor.GOLD + "" + ChatColor.BOLD + "Orange Désert";
 	}
 }

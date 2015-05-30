@@ -26,6 +26,6 @@ public class ColorBlack extends PixelColor {
 
 	@Override
 	public String getRoughDisplayName() {
-		return ChatColor.BLACK + "" + ChatColor.BOLD + "Noir";
+		return ChatColor.BLACK + "" + ChatColor.BOLD + "Noir Fusain";
 	}
 }

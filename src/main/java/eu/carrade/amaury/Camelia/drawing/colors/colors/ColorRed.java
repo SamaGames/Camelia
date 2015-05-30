@@ -26,6 +26,6 @@ public class ColorRed extends PixelColor {
 
 	@Override
 	public String getRoughDisplayName() {
-		return ChatColor.RED + "" + ChatColor.BOLD + "Rouge";
+		return ChatColor.RED + "" + ChatColor.BOLD + "Rouge Enfers";
 	}
 }

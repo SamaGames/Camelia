@@ -26,6 +26,6 @@ public class ColorPink extends PixelColor {
 
 	@Override
 	public String getRoughDisplayName() {
-		return ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Rose";
+		return ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Rose Granit";
 	}
 }
