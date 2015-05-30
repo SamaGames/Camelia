@@ -6,6 +6,7 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -50,11 +51,13 @@ public class InventoryListener implements Listener {
 				drawer.fillInventory();
 				
 				if(e.getWhoClicked() instanceof Player) {
+					((Player) e.getWhoClicked()).playSound(((Player) e.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 0.5F, 2);
 					((Player) e.getWhoClicked()).sendMessage(ChatColor.GREEN + "Vous avez sélectionné la couleur " + pixelColor.getDisplayName());
 				}
 			} else if(e.getSlot() >= 30 && e.getSlot() <= 32 || e.getSlot() >= 39 && e.getSlot() <= 41) {
 				int page = (e.getSlot() - 3) % 9;
 				drawer.setPage(page);
+				((Player) e.getWhoClicked()).playSound(((Player) e.getWhoClicked()).getLocation(), Sound.CLICK, 0.25F, 2);
 				e.getWhoClicked().openInventory(Camelia.getInstance().getGuiManager().getColorInventory(drawer));
 			}
 			
@@ -66,9 +69,11 @@ public class InventoryListener implements Listener {
 			if(e.getSlot() == 0) {
 				drawer.getPlayer().openInventory(Camelia.getInstance().getGuiManager().getColorInventory(drawer));
 			} else if(e.getSlot() >= 3 && e.getSlot() <= 5) {
+				((Player) e.getWhoClicked()).playSound(((Player) e.getWhoClicked()).getLocation(), Sound.CLICK, 0.25F, 2);
 				((ContinuousDrawTool) drawer.getTool(0)).setSize(e.getSlot() - 2);
 				drawer.getPlayer().openInventory(Camelia.getInstance().getGuiManager().getBrushInventory(drawer));
 			} else if(e.getSlot() == 8) {
+				((Player) e.getWhoClicked()).playSound(((Player) e.getWhoClicked()).getLocation(), Sound.CLICK, 0.25F, 1.5F);
 				((ContinuousDrawTool) drawer.getTool(0)).setMixColors(!((ContinuousDrawTool) drawer.getTool(0)).isMixColors());
 				drawer.getPlayer().openInventory(Camelia.getInstance().getGuiManager().getBrushInventory(drawer));
 			}
@@ -80,12 +85,15 @@ public class InventoryListener implements Listener {
 			if(e.getSlot() == 9) {
 				e.getWhoClicked().openInventory(Camelia.getInstance().getGuiManager().getColorInventory(drawer));
 			} else if(e.getSlot() == 17) {
+				((Player) e.getWhoClicked()).playSound(((Player) e.getWhoClicked()).getLocation(), Sound.CLICK, 0.25F, 1.5F);
 				((ContinuousDrawTool) drawer.getTool(1)).setMixColors(!((ContinuousDrawTool) drawer.getTool(1)).isMixColors());;
 				e.getWhoClicked().openInventory(Camelia.getInstance().getGuiManager().getSprayInventory(drawer));
 			} else if(e.getSlot() >= 3 && e.getSlot() <= 5) {
+				((Player) e.getWhoClicked()).playSound(((Player) e.getWhoClicked()).getLocation(), Sound.CLICK, 0.25F, 2);
 				((ContinuousDrawTool) drawer.getTool(1)).setSize((e.getSlot() - 2) % 9);
 				e.getWhoClicked().openInventory(Camelia.getInstance().getGuiManager().getSprayInventory(drawer));
 			} else if(e.getSlot() >= 21 && e.getSlot() <= 23) {
+				((Player) e.getWhoClicked()).playSound(((Player) e.getWhoClicked()).getLocation(), Sound.CLICK, 0.25F, 2);
 				((SprayTool) drawer.getTool(1)).setStrength((e.getSlot() - 2) % 9);
 				e.getWhoClicked().openInventory(Camelia.getInstance().getGuiManager().getSprayInventory(drawer));
 			}

@@ -5,8 +5,10 @@ import eu.carrade.amaury.Camelia.drawing.drawTools.core.ClicDrawTool;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.ToolLocator;
 import eu.carrade.amaury.Camelia.drawing.whiteboard.WhiteboardLocation;
 import eu.carrade.amaury.Camelia.game.Drawer;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Dye;
 
@@ -36,6 +38,7 @@ public class ColorChooserTool extends ClicDrawTool {
 	@Override
 	public void onRightClick(WhiteboardLocation targetOnScreen, Drawer drawer) {
 		drawer.getPlayer().openInventory(Camelia.getInstance().getGuiManager().getColorInventory(drawer));
+		
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package eu.carrade.amaury.Camelia.drawing.drawTools.tools;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.inventory.ItemStack;
 
 import eu.carrade.amaury.Camelia.Camelia;
@@ -12,6 +13,8 @@ import eu.carrade.amaury.Camelia.game.Drawer;
 
 @ToolLocator(slot = 0)
 public class BrushTool extends ContinuousDrawTool {
+	
+	private int i = 0;
 
 	public BrushTool(Drawer drawer) {
 		super(drawer);
@@ -37,6 +40,14 @@ public class BrushTool extends ContinuousDrawTool {
 		if(targetOnScreen == null) return;
 		
 		Camelia.getInstance().getWhiteboard().drawCircle(targetOnScreen, 2 * size - 1, drawer.getColor(), this.mixColors);
+		
+		if(i < 5) {
+			i++;
+		} else {
+			drawer.getPlayer().playSound(drawer.getPlayer().getLocation(), Sound.ENDERDRAGON_WINGS, 0.1F, 2);
+			i = 0;
+		}
+			
 	}
 
 	@Override

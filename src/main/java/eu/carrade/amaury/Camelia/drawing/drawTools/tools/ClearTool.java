@@ -5,8 +5,10 @@ import eu.carrade.amaury.Camelia.drawing.drawTools.core.ClicDrawTool;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.ToolLocator;
 import eu.carrade.amaury.Camelia.drawing.whiteboard.WhiteboardLocation;
 import eu.carrade.amaury.Camelia.game.Drawer;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.inventory.ItemStack;
 
 
@@ -35,6 +37,8 @@ public class ClearTool extends ClicDrawTool {
 	@Override
 	public void onRightClick(WhiteboardLocation targetOnScreen, Drawer drawer) {
 		Camelia.getInstance().getWhiteboard().clearBoard();
+		
+		drawer.getPlayer().playSound(drawer.getPlayer().getLocation(), Sound.SPLASH, 0.25F, 2);
 	}
 
 	@Override
