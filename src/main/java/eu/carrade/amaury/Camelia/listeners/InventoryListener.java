@@ -28,8 +28,10 @@ public class InventoryListener implements Listener {
 		Drawer drawer = Camelia.getInstance().getGameManager().getDrawer(e.getWhoClicked().getUniqueId());
 		if(drawer == null || e.getRawSlot() != e.getSlot())
 			return;
+		
+		e.setCancelled(true);
+		
 		if(e.getInventory().getTitle().equals(GuiManager.COLOR_GUI)) {
-			e.setCancelled(true);
 			if(e.getSlot() < 0 || e.getInventory().getItem(e.getSlot()) == null || e.getInventory().getItem(e.getSlot()).getType().equals(Material.AIR))
 				return;
 			
@@ -62,7 +64,6 @@ public class InventoryListener implements Listener {
 			}
 			
 		} else if(e.getInventory().getTitle().equals(GuiManager.BRUSH_GUI)) {
-			e.setCancelled(true);
 			if(e.getSlot() < 0 || e.getInventory().getItem(e.getSlot()) == null || e.getInventory().getItem(e.getSlot()).getType().equals(Material.AIR))
 				return;
 			
@@ -79,9 +80,9 @@ public class InventoryListener implements Listener {
 			}
 			
 		} else if(e.getInventory().getTitle().equals(GuiManager.SPRAY_GUI)) {
-			e.setCancelled(true);
 			if(e.getSlot() < 0 || e.getInventory().getItem(e.getSlot()) == null || e.getInventory().getItem(e.getSlot()).getType().equals(Material.AIR))
 				return;
+			
 			if(e.getSlot() == 9) {
 				e.getWhoClicked().openInventory(Camelia.getInstance().getGuiManager().getColorInventory(drawer));
 			} else if(e.getSlot() == 17) {
@@ -97,6 +98,39 @@ public class InventoryListener implements Listener {
 				((SprayTool) drawer.getTool(1)).setStrength((e.getSlot() - 2) % 9);
 				e.getWhoClicked().openInventory(Camelia.getInstance().getGuiManager().getSprayInventory(drawer));
 			}
+		} else if(e.getInventory().getTitle().equals(GuiManager.BACKGROUND_GUI)) {
+			if(e.getSlot() < 0 || e.getInventory().getItem(e.getSlot()) == null || e.getInventory().getItem(e.getSlot()).getType().equals(Material.AIR))
+				return;
+			
+			boolean found = true;
+			
+			switch(e.getInventory().getItem(e.getSlot()).getType()) {
+			case DOUBLE_PLANT:
+				
+				break;
+			case CACTUS:
+				
+				break;
+			case STONE:
+				
+				break;
+				
+			default:
+				found = false;
+				e.getWhoClicked().sendMessage(ChatColor.RED + "Désolé, ce fond n'est pas disponible !");
+				System.out.println("Warning ! No background for item " + e.getInventory().getItem(e.getSlot()).getType().toString().toLowerCase());
+				break;
+			}
+			
+			e.getWhoClicked().closeInventory();
+			
+			if(found) {
+				((Player) e.getWhoClicked()).playSound(((Player) e.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 0.5F, 1F);
+				e.getWhoClicked().sendMessage(ChatColor.GREEN + "Vous avez choisi le fond " + e.getInventory().getItem(e.getSlot()).getItemMeta().getDisplayName());
+			}
+			
+		} else {
+			e.setCancelled(false);
 		}
 	}
 	

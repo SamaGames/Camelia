@@ -37,6 +37,8 @@ public class DrawListener implements Listener {
 		if(ev.getAction() != Action.RIGHT_CLICK_BLOCK && ev.getAction() != Action.RIGHT_CLICK_AIR) {
 			return;
 		}
+		
+		ev.setCancelled(true);
 
 
 		final UUID id = ev.getPlayer().getUniqueId();
@@ -67,6 +69,8 @@ public class DrawListener implements Listener {
 		if(drawer == null) return; // Moderator maybe
 
 		if(/* TODO game started and */ drawer.isDrawing()) {
+			ev.setCancelled(true);
+			
 			DrawTool tool = drawer.getActiveTool();
 
 			if(tool == null) return;

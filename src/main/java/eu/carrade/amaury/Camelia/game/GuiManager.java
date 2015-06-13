@@ -1,9 +1,11 @@
 package eu.carrade.amaury.Camelia.game;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import net.samagames.tools.GlowEffect;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
@@ -24,6 +26,7 @@ public class GuiManager {
 	public final static String COLOR_GUI = "Choix de la couleur";
 	public final static String BRUSH_GUI = "Paramètres du pinceau";
 	public final static String SPRAY_GUI = "Paramètres de l'aérographe";
+	public final static String BACKGROUND_GUI = "Fonds prédéfinis";
 	
 	public Inventory getColorInventory(Drawer drawer) {
 		Inventory inventory = Bukkit.createInventory(drawer.getPlayer(), 45, COLOR_GUI);
@@ -146,6 +149,35 @@ public class GuiManager {
 		return inventory;
 	}
 	
+	public Inventory getBackgroundInventory(Drawer drawer) {
+		List<ItemStack> items = new ArrayList<ItemStack>();
+		
+		// Examples
+		items.add(getBackgroundItem(Material.DOUBLE_PLANT, (byte) 0, ChatColor.YELLOW + "" + ChatColor.BOLD + "Coucher de soleil"));
+		items.add(getBackgroundItem(Material.CACTUS, (byte) 0, ChatColor.GOLD + "" + ChatColor.BOLD + "Désert"));
+		items.add(getBackgroundItem(Material.STONE, (byte) 0, ChatColor.GRAY + "" + ChatColor.BOLD + "Caverne"));
+		
+		double add = (double) items.size() / 7;
+		Inventory inventory = Bukkit.createInventory(drawer.getPlayer(), (int) (18 + Math.ceil(add) * 9), BACKGROUND_GUI);
+		
+		int slot = 10;
+		
+		for(ItemStack item : items) {
+			inventory.setItem(slot, item);
+			
+			if(slot % 9 == 7) {
+				slot += 3;
+			} else {
+				slot++;
+			}
+		}
+		
+		return inventory;
+	}
+	
+	private ItemStack getBackgroundItem(Material type, byte data, String name) {
+		return Utils.quickItemStack(type, 1, data, name, Arrays.asList(ChatColor.RED + "Attention " + ChatColor.GRAY + "l'application d'un fond", ChatColor.GRAY + "remplacera le dessin actuel"));
+	}
 	
 	/* COMMON */
 	
