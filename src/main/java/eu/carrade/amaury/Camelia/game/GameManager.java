@@ -5,9 +5,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class GameManager {
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
-	Map<UUID,Drawer> drawers = new HashMap<>();
+import eu.carrade.amaury.Camelia.Camelia;
+import net.samagames.api.games.IManagedGame;
+import net.samagames.api.games.Status;
+import net.samagames.api.games.StatusEnum;
+
+public class GameManager implements IManagedGame {
+
+	private final Map<UUID,Drawer> drawers = new HashMap<>();
+	private Status status = Status.WAITING_FOR_PLAYERS;
 
 	public GameManager() {
 		// Something very useful here. Soon™.
@@ -36,6 +45,10 @@ public class GameManager {
 			return getDrawer(id);
 		}
 	}
+	
+	public void unregisterDrawer(UUID id) {
+		drawers.remove(id);
+	}
 
 	/**
 	 * Returns the drawer with that UUID.
@@ -46,5 +59,61 @@ public class GameManager {
 	 */
 	public Drawer getDrawer(UUID id) {
 		return drawers.get(id);
+	}
+
+	
+
+	@Override
+	public int getMaxPlayers() {
+		return Camelia.getInstance().getArenaConfig().getInt("game.maxPlayers");
+	}
+
+	// @Override
+	// VIP thing ???
+	
+	@Override
+	public int getConnectedPlayers() {
+		return drawers.size();
+	}
+
+	@Override
+	public String getMapName() {
+		return Camelia.getInstance().getArenaConfig().getString("game.name");
+	}
+
+	@Override
+	public String getGameName() {
+		return Camelia.NAME_WHITE;
+	}
+
+	@Override
+	public void playerJoin(final Player player) {
+		registerNewDrawer(player.getUniqueId()).fillInventory();
+
+		Bukkit.getScheduler().runTaskLaterAsynchronously(Camelia.getInstance(), new Runnable() {
+			@Override
+			public void run() {
+				Camelia.getInstance().getWhiteboard().sendAllWhitebord(player);
+			}
+		}, 20l);
+	}
+
+	@Override
+	public void playerDisconnect(Player player) {
+		unregisterDrawer(player.getUniqueId());
+	}
+
+	@Override
+	public Status getStatus() {
+		return status;
+	}
+	
+	@Override
+	public void setStatus(Status arg) {
+		status = arg;
+	}
+
+	@Override
+	public void startGame() {
 	}
 }

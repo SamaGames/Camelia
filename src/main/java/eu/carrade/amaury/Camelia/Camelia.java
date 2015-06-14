@@ -13,6 +13,8 @@ import eu.carrade.amaury.Camelia.game.GuiManager;
 import eu.carrade.amaury.Camelia.listeners.DrawListener;
 import eu.carrade.amaury.Camelia.listeners.InventoryListener;
 import eu.carrade.amaury.Camelia.listeners.PlayersConnectionListener;
+import net.samagames.api.SamaGamesAPI;
+
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -24,6 +26,8 @@ import java.io.File;
 public final class Camelia extends JavaPlugin {
 
 	private static Camelia instance;
+	
+	public static final String NAME_WHITE = "Camelia";
 
 	private Configuration arenaConfig;
 
@@ -61,8 +65,10 @@ public final class Camelia extends JavaPlugin {
 		guiManager = new GuiManager();
 
 
+		SamaGamesAPI.get().getGameManager().registerGame(gameManager);
+		
 		/** *** Listeners *** **/
-		getServer().getPluginManager().registerEvents(new PlayersConnectionListener(), this);
+		//getServer().getPluginManager().registerEvents(new PlayersConnectionListener(), this);
 		getServer().getPluginManager().registerEvents(new DrawListener(), this);
 		getServer().getPluginManager().registerEvents(new InventoryListener(), this);
 
