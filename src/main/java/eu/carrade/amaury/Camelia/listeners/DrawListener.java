@@ -33,8 +33,8 @@ public class DrawListener implements Listener {
 	 */
 	@EventHandler
 	public void onPlayerRightClicks(PlayerInteractEvent ev) {
-
-		if(ev.getAction() != Action.RIGHT_CLICK_BLOCK && ev.getAction() != Action.RIGHT_CLICK_AIR) {
+		
+		if(ev.getAction() != Action.RIGHT_CLICK_BLOCK && ev.getAction() != Action.RIGHT_CLICK_AIR && ev.getAction() != Action.PHYSICAL || ev.getItem() == null) {
 			return;
 		}
 		

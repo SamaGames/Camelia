@@ -6,3 +6,11 @@ author: "Amaury Carrade"
 
 depend:
   - SamaGamesAPI
+
+commands:
+  mot:
+    description: Permet de proposer un mot.
+    usage: /mot <mot>
+  word:
+    description: Permet de proposer un mot.
+    usage: /word <mot>
