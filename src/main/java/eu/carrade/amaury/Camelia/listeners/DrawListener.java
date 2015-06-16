@@ -4,6 +4,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import net.samagames.api.games.Status;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -38,7 +40,7 @@ public class DrawListener implements Listener {
 			return;
 		}
 		
-		ev.setCancelled(true);
+		if(!ev.getPlayer().isOp()) ev.setCancelled(true);
 
 
 		final UUID id = ev.getPlayer().getUniqueId();
@@ -66,9 +68,11 @@ public class DrawListener implements Listener {
 
 		Drawer drawer = Camelia.getInstance().getGameManager().getDrawer(ev.getPlayer().getUniqueId());
 
-		if(drawer == null) return; // Moderator maybe
+		if(drawer == null || ev.getItem() == null) return; // Moderator maybe
 
-		if(/* TODO game started and */ drawer.isDrawing()) {
+		Status status = Camelia.getInstance().getGameManager().getStatus();
+		
+		if(status != Status.IN_GAME && status != Status.FINISHED && status != Status.REBOOTING && drawer.isDrawing()) {
 			ev.setCancelled(true);
 			
 			DrawTool tool = drawer.getActiveTool();

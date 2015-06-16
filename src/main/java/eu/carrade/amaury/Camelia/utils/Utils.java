@@ -174,6 +174,18 @@ public class Utils {
 		item.setItemMeta(meta);
 		return item;
 	}
+	
+	public static String getFormattedWord(String word) {
+		return ChatColor.GOLD + "" + ChatColor.BOLD + word.replace("", " ").trim().toUpperCase();
+	}
+	
+	public static String getFormattedBlank(String word) {
+		String str = "";
+		for(int i = 0; i < word.length(); i++) {
+			str += " _";
+		}
+		return ChatColor.GOLD + "" + ChatColor.BOLD + str.trim();
+	}
 
 
 }

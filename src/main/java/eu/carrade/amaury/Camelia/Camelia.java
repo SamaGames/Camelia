@@ -12,6 +12,7 @@ import eu.carrade.amaury.Camelia.game.GameManager;
 import eu.carrade.amaury.Camelia.game.GuiManager;
 import eu.carrade.amaury.Camelia.listeners.CommandListener;
 import eu.carrade.amaury.Camelia.listeners.DrawListener;
+import eu.carrade.amaury.Camelia.listeners.GameListener;
 import eu.carrade.amaury.Camelia.listeners.InventoryListener;
 import eu.carrade.amaury.Camelia.listeners.PlayersConnectionListener;
 import eu.carrade.amaury.Camelia.utils.CountdownTimer;
@@ -19,6 +20,7 @@ import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.themachine.CoherenceMachine;
 
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -84,6 +86,7 @@ public final class Camelia extends JavaPlugin {
 		//getServer().getPluginManager().registerEvents(new PlayersConnectionListener(), this);
 		getServer().getPluginManager().registerEvents(new DrawListener(), this);
 		getServer().getPluginManager().registerEvents(new InventoryListener(), this);
+		getServer().getPluginManager().registerEvents(new GameListener(), this);
 		
 		CommandListener command = new CommandListener();
 		
@@ -96,6 +99,9 @@ public final class Camelia extends JavaPlugin {
 			gameManager.playerJoin(player);
 		}
 
+		World world = getServer().getWorlds().get(0);
+		world.setGameRuleValue("doDaylightCycle", "false");
+		world.setFullTime(arenaConfig.getLong("map.hubDayTime", 6000));
 	}
 
 	public static Camelia getInstance() {

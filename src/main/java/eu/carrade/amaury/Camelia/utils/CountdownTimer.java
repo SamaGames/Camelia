@@ -37,8 +37,6 @@ public class CountdownTimer {
 		for(Player player : Camelia.getInstance().getServer().getOnlinePlayers()) {
 			player.setLevel(0);
 		}
-		
-		Camelia.getInstance().getCoherenceMachine().getMessageManager().writeNotEnougthPlayersToStart();
 	}
 
 	public void restartTimer() {

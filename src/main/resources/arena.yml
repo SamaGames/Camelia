@@ -15,5 +15,6 @@ game:
     dayTime: 6000     # Set the day period during the game
 
     hub: "0;64;0"     # "x;y;z[;yaw[;pitch]]"
+    drawing: "0;64;0"     # "x;y;z[;yaw[;pitch]]"
 
     drawings: 2       # Drawings per player
