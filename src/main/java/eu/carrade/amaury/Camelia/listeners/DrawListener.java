@@ -5,14 +5,19 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.samagames.api.games.Status;
+import net.samagames.tools.GameUtils;
+import net.samagames.tools.chat.SymbolsUtils;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -120,6 +125,32 @@ public class DrawListener implements Listener {
 		if(!ev.getWhoClicked().isOp() && ev.getWhoClicked() instanceof Player) {
 			ev.setCancelled(true);
 			((Player) ev.getWhoClicked()).updateInventory();
+		}
+	}
+	
+	@EventHandler
+	public void on(AsyncPlayerChatEvent ev) {
+		Drawer drawer = Camelia.getInstance().getGameManager().getDrawer(ev.getPlayer().getUniqueId());
+		if(drawer == null) return;
+
+		if(Camelia.getInstance().getGameManager().getWhoIsDrawing() != null && drawer.getPlayer().getUniqueId().equals(Camelia.getInstance().getGameManager().getWhoIsDrawing().getPlayer().getUniqueId())) {
+			ev.setCancelled(true);
+			drawer.getPlayer().sendMessage(ChatColor.RED + "Vous ne pouvez pas vous exprimer pendant que vous dessinez !");
+			return;
+		}
+
+		if(drawer.hasFoundCurrentWord()) {
+			ev.setCancelled(true);
+			drawer.getPlayer().sendMessage(ChatColor.RED + "Vous avez déjà trouvé, laissez les chercher !");
+			return;
+		}
+
+		String test = ev.getMessage();
+		String find = Camelia.getInstance().getGameManager().getWordToFind();
+		if(find != null && find.equalsIgnoreCase(test) && !drawer.hasFoundCurrentWord()) {
+			ev.setCancelled(true);
+
+			Camelia.getInstance().getGameManager().playerFoundWord(drawer);
 		}
 	}
 }

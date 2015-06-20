@@ -23,6 +23,7 @@ import eu.carrade.amaury.Camelia.utils.Utils;
 import net.samagames.api.games.IManagedGame;
 import net.samagames.api.games.Status;
 import net.samagames.api.games.StatusEnum;
+import net.samagames.tools.GameUtils;
 import net.samagames.tools.Titles;
 
 public class GameManager implements IManagedGame {
@@ -40,6 +41,8 @@ public class GameManager implements IManagedGame {
 	private String wordToFind = null;
 	
 	private DrawTimer timer = new DrawTimer();
+	
+	private Drawer whoIsDrawing = null;
 
 	public GameManager() {
 		// Something very useful here. Soon™.
@@ -118,7 +121,7 @@ public class GameManager implements IManagedGame {
 		player.setLevel(0);
 		teleportLobby(player);
 		
-		registerNewDrawer(player.getUniqueId());//.fillInventory();
+		Drawer drawer = registerNewDrawer(player.getUniqueId());
 		
 		Camelia.getInstance().getCoherenceMachine().getMessageManager().writePlayerJoinToAll(player);
 		
@@ -144,7 +147,7 @@ public class GameManager implements IManagedGame {
 			Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
 				@Override
 				public void run() {
-					player.sendMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + " Vous pouvez proposer des mots grâce à la commande " + ChatColor.RED + "/mot <mot>");
+					player.sendMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Vous pouvez proposer des mots grâce à la commande " + ChatColor.RED + "/mot <mot>");
 				}
 			}, 40l);
 		}
@@ -192,6 +195,7 @@ public class GameManager implements IManagedGame {
 		
 		for(Drawer drawer : drawers.values()) {
 			turns.add(drawer);
+			Camelia.getInstance().getScoreManager().displayTo(drawer);
 		}
 		
 		Collections.shuffle(turns);
@@ -246,6 +250,8 @@ public class GameManager implements IManagedGame {
 						Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.RED + "Erreur critique, nous n'avons aucun mot à vous proposer !");
 						return;
 					}
+					whoIsDrawing = drawer;
+					
 					wordToFind = words.get(0);
 					
 					words.remove(wordToFind);
@@ -265,7 +271,7 @@ public class GameManager implements IManagedGame {
 						ActionBar.sendPermanentMessage(d.getPlayer(), blank);
 					}
 				}
-			}, 30L);
+			}, 2 * 20L);
 			
 			Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
 				@Override
@@ -276,6 +282,7 @@ public class GameManager implements IManagedGame {
 					Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Le mot était " + ChatColor.GOLD + "" + ChatColor.BOLD + wordToFind.toUpperCase());
 					
 					wordToFind = null;
+					whoIsDrawing = null;
 					
 					for(Drawer drawer : drawers.values()) {
 						ActionBar.sendPermanentMessage(drawer.getPlayer(), word);
@@ -294,8 +301,12 @@ public class GameManager implements IManagedGame {
 						}
 					}, 5 * 20L);
 					
+					for(Drawer drawer : drawers.values()) {
+						drawer.setFoundCurrentWord(false);
+					}
+					
 				}
-			}, 30L + DrawTimer.SECONDS * 20L);
+			}, 2 * 20L + DrawTimer.SECONDS * 20L);
 		} else {
 			nextWave();
 		}
@@ -329,5 +340,41 @@ public class GameManager implements IManagedGame {
 	
 	public void teleportDrawing(Player player) {
 		player.teleport(Utils.stringToLocation(Camelia.getInstance().getArenaConfig().getString("game.drawing")));
+	}
+	
+	public void playerFoundWord(Drawer drawer) {
+		drawer.getPlayer().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "" + ChatColor.BOLD + drawer.getPlayer().getName() + ChatColor.GREEN + "" + ChatColor.BOLD + " a trouvé !");
+		GameUtils.broadcastSound(Sound.LEVEL_UP);
+		
+		int found = getTotalFound();
+		int points = 2;
+		
+		if(found <= 2) {
+			points = 8 - 2 * found;
+		}
+		
+		drawer.getPlayer().sendMessage(ChatColor.GREEN + "Vous gagnez " + ChatColor.AQUA + "" + ChatColor.BOLD + points + ChatColor.GREEN + " points !");
+		drawer.increasePoints(points);
+		
+		whoIsDrawing.getPlayer().sendMessage(ChatColor.GREEN + "Vous gagnez " + ChatColor.AQUA + "" + ChatColor.BOLD + "3" + ChatColor.GREEN + " points !");
+		whoIsDrawing.increasePoints(3);
+		
+		drawer.setFoundCurrentWord(true);
+	}
+	
+	public String getWordToFind() {
+		return wordToFind;
+	}
+	
+	public int getTotalFound() {
+		int n = 0;
+		for(Drawer drawer : drawers.values()) {
+			if(drawer.hasFoundCurrentWord()) n++;
+		}
+		return n;
+	}
+
+	public Drawer getWhoIsDrawing() {
+		return whoIsDrawing;
 	}
 }

@@ -25,6 +25,8 @@ public class Drawer {
 	private Map<Integer, DrawTool> drawTools = new HashMap<>();
 	private PixelColor color = new ColorGreen(ColorType.BASIC);
 	private int page = 0;
+	private boolean foundCurrentWord = false;
+	private int points = 0;
 
 	public Drawer(UUID playerID) {
 		this.playerID = playerID;
@@ -150,5 +152,23 @@ public class Drawer {
 	
 	public DrawTool getTool(int slot) {
 		return drawTools.get(slot);
+	}
+
+	public boolean hasFoundCurrentWord() {
+		return foundCurrentWord;
+	}
+
+	public void setFoundCurrentWord(boolean foundCurrentWord) {
+		this.foundCurrentWord = foundCurrentWord;
+	}
+
+	public int getPoints() {
+		return points;
+	}
+
+	public void increasePoints(int points) {
+		this.points += points;
+		getPlayer().setLevel(this.points);
+		Camelia.getInstance().getScoreManager().updatePlayer(this);
 	}
 }

@@ -10,6 +10,7 @@ import eu.carrade.amaury.Camelia.drawing.DrawingManager;
 import eu.carrade.amaury.Camelia.drawing.whiteboard.Whiteboard;
 import eu.carrade.amaury.Camelia.game.GameManager;
 import eu.carrade.amaury.Camelia.game.GuiManager;
+import eu.carrade.amaury.Camelia.game.ScoreManager;
 import eu.carrade.amaury.Camelia.listeners.CommandListener;
 import eu.carrade.amaury.Camelia.listeners.DrawListener;
 import eu.carrade.amaury.Camelia.listeners.GameListener;
@@ -37,6 +38,7 @@ public final class Camelia extends JavaPlugin {
 	
 	public static final String NAME_WHITE = "Camelia";
 	public static final String NAME_COLORED = ChatColor.AQUA + "Camelia";
+	public static final String NAME_COLORED_BOLD = ChatColor.AQUA + "" + ChatColor.BOLD + "Camelia";
 
 	private Configuration arenaConfig;
 
@@ -45,6 +47,7 @@ public final class Camelia extends JavaPlugin {
 	private Whiteboard whiteboard;
 	private GuiManager guiManager;
 	private CountdownTimer timer;
+	private ScoreManager scoreManager;
 	
 	private CoherenceMachine machine;
 	
@@ -76,6 +79,7 @@ public final class Camelia extends JavaPlugin {
 		whiteboard = new Whiteboard();
 		guiManager = new GuiManager();
 		timer = new CountdownTimer();
+		scoreManager = new ScoreManager();
 
 
 		SamaGamesAPI.get().getGameManager().registerGame(gameManager);
@@ -135,7 +139,11 @@ public final class Camelia extends JavaPlugin {
 	public CountdownTimer getCountdownTimer() {
 		return timer;
 	}
-
+	
+	public ScoreManager getScoreManager() {
+		return scoreManager;
+	}
+	
 	public void disable() {
 		setEnabled(false);
 	}
