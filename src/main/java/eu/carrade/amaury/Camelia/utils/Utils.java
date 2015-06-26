@@ -182,9 +182,25 @@ public class Utils {
 	public static String getFormattedBlank(String word) {
 		String str = "";
 		for(int i = 0; i < word.length(); i++) {
-			str += " _";
+			if(word.charAt(i) == ' ') {
+				str += "   " + word.charAt(i);
+			} else {
+				str += " " + word.charAt(i);
+			}
 		}
 		return ChatColor.GOLD + "" + ChatColor.BOLD + str.trim();
+	}
+	
+	public static String getNewWordBlank(String word) {
+		String str = "";
+		for(int i = 0; i < word.length(); i++) {
+			if(word.charAt(i) == ' ') {
+				str += " ";
+			} else {
+				str += "_";
+			}
+		}
+		return str.trim();
 	}
 
 

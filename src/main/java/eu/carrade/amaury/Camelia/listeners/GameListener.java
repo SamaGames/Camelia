@@ -10,6 +10,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerAchievementAwardedEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -26,8 +27,17 @@ public class GameListener implements Listener {
 
 	@EventHandler
 	public void onPlayerDropItem(PlayerDropItemEvent e) {
-		if (e.getPlayer().getGameMode() == GameMode.ADVENTURE)
+		if (e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
 			e.setCancelled(true);
+			e.getPlayer().updateInventory();
+		}
+	}
+	
+	@EventHandler
+	public void onInventoryClick(InventoryClickEvent e) {
+		if (e.getWhoClicked().getGameMode() == GameMode.ADVENTURE) {
+			e.setCancelled(true);
+		}
 	}
 	
 	@EventHandler

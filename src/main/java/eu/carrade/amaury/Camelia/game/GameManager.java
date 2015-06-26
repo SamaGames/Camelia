@@ -1,6 +1,12 @@
 package eu.carrade.amaury.Camelia.game;
 
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -8,6 +14,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -31,7 +38,7 @@ public class GameManager implements IManagedGame {
 	private final Map<UUID,Drawer> drawers = new HashMap<>();
 	private Status status = Status.WAITING_FOR_PLAYERS;
 	
-	private final List<String> words = new ArrayList<String>(Arrays.asList("maison", "voiture", "arbre", "pomme"));
+	private List<String> words = new ArrayList<String>();
 	
 	private final List<Drawer> turns = new ArrayList<Drawer>();
 	private List<Drawer> wave = new ArrayList<Drawer>();
@@ -39,13 +46,22 @@ public class GameManager implements IManagedGame {
 	
 	private Drawer drawing = null;
 	private String wordToFind = null;
+	private String wordHelp = null;
 	
 	private DrawTimer timer = new DrawTimer();
 	
 	private Drawer whoIsDrawing = null;
-
+	
+	private Random random = new Random();
+	
 	public GameManager() {
-		// Something very useful here. Soon™.
+		// Very important to run as soon as possible !
+		Bukkit.getScheduler().runTaskAsynchronously(Camelia.getInstance(), new Runnable() {
+			@Override
+			public void run() {
+				words = getWords();
+			}
+		});
 	}
 
 
@@ -253,6 +269,7 @@ public class GameManager implements IManagedGame {
 					whoIsDrawing = drawer;
 					
 					wordToFind = words.get(0);
+					wordHelp = Utils.getNewWordBlank(wordToFind);
 					
 					words.remove(wordToFind);
 					
@@ -264,7 +281,7 @@ public class GameManager implements IManagedGame {
 					player.playSound(player.getLocation(), Sound.NOTE_PLING, 1, 1);
 					player.sendMessage(ChatColor.GREEN + "Vous devrez dessiner " + ChatColor.GOLD + "" + ChatColor.BOLD + wordToFind.toUpperCase());
 					
-					String blank = Utils.getFormattedBlank(wordToFind);
+					String blank = Utils.getFormattedBlank(wordHelp);
 					
 					for(Drawer d : drawers.values()) {
 						if(d.equals(drawer)) continue;
@@ -276,12 +293,20 @@ public class GameManager implements IManagedGame {
 			Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
 				@Override
 				public void run() {
+					throwHelp();
+				}
+			}, random.nextInt(20) + 40);
+			
+			Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
+				@Override
+				public void run() {
 					String word = Utils.getFormattedWord(wordToFind);
 					
 					Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Le temps est écoulé !");
 					Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Le mot était " + ChatColor.GOLD + "" + ChatColor.BOLD + wordToFind.toUpperCase());
 					
 					wordToFind = null;
+					wordHelp = null;
 					whoIsDrawing = null;
 					
 					for(Drawer drawer : drawers.values()) {
@@ -332,6 +357,33 @@ public class GameManager implements IManagedGame {
 	
 	public void onEnd() {
 		Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Les " + ChatColor.BOLD + waveId + ChatColor.AQUA + " manches ont été jouées, la partie est terminée. Place aux résultats !");
+		
+		Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
+			@Override
+			public void run() {
+				Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Le grand gagnant est...");
+			}
+		}, 20L);
+		
+		Drawer drawer = null;
+		
+		for(Drawer d : drawers.values()) {
+			if(drawer != null || d.getPoints() > drawer.getPoints())
+				drawer = d;
+		}
+		
+		final Player player = drawer.getPlayer();
+		Bukkit.getScheduler().runTaskAsynchronously(Camelia.getInstance(), new Runnable() {
+			@Override
+			public void run() {
+				try {
+				Camelia.getInstance().getWhiteboard().drawPlayerHead(player);
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
 	}
 	
 	public void teleportLobby(Player player) {
@@ -376,5 +428,83 @@ public class GameManager implements IManagedGame {
 
 	public Drawer getWhoIsDrawing() {
 		return whoIsDrawing;
+	}
+	
+	public List<String> getWords() {
+		URL url;
+	    InputStream is = null;
+	    BufferedReader br;
+
+	    try {
+	        url = new URL("http://lnfinity.net/tasks/camelia-getwords.php?pass=jmgqygafryrq0dnqcm2ys6ubvauop24sx5z7uz2c36pxq4vf5nn1rbnjd6qsnt8s&words=" + (getMaxPlayers() * getWavesCount()));
+	        is = url.openStream();
+	        br = new BufferedReader(new InputStreamReader(is));
+	        String line = br.readLine();
+	        System.out.println("Got reply " + line);
+	        String[] array = line.split(",");
+	        List<String> list = new ArrayList<String>();
+	        for(int i = 0; i < array.length; i++) {
+	        	list.add(array[i]);
+	        }
+	        System.out.println("Succefully loaded " + list.size() + " words !");
+	        return list;
+	    } catch (MalformedURLException mue) {
+	         mue.printStackTrace();
+	    } catch (IOException ioe) {
+	         ioe.printStackTrace();
+	    } finally {
+	        try {
+	            if (is != null) is.close();
+	        } catch (IOException ioe) {
+	        }
+	    }
+	    
+	    return new ArrayList<String>();
+	}
+	
+	public void throwHelp() {
+		// TODO & FIXME
+		boolean full = true;
+		int blanks = 0;
+		for(int i = 0; i < wordToFind.length(); i++) {
+			if(wordHelp.charAt(i) == '_') {
+				full = false;
+			} else {
+				blanks++;
+			}
+		}
+		System.out.println("ok");
+		if(full) return;
+		int letter = random.nextInt(blanks);
+		int n = 0;
+		
+		for(int i = 0; i < wordToFind.length(); i++) {
+			if(wordToFind.charAt(i) == '_') {
+				if(letter == n) {
+					char[] chars = wordHelp.toCharArray();
+					chars[i] = wordToFind.charAt(i);
+					wordToFind = String.valueOf(chars);
+					break;
+				}
+				n++;
+			}
+		}
+		
+		for(Drawer drawer : drawers.values()) {
+			if(drawer.isDrawing()) continue;
+			drawer.getPlayer().playSound(drawer.getPlayer().getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
+			ActionBar.sendPermanentMessage(drawer.getPlayer(), Utils.getFormattedBlank(wordHelp));
+		}
+		
+		int rnd = random.nextInt(200) + 50;
+		if(timer.getSeconds() > rnd) {
+			Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
+				@Override
+				public void run() {
+					throwHelp();
+				}
+			}, rnd * 2);
+		}
+		System.out.println("lol");
 	}
 }

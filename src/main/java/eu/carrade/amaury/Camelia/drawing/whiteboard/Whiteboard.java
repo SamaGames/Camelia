@@ -360,6 +360,7 @@ public class Whiteboard {
 	}
 	
 	public void drawPlayerHead(Player player) {
+		try {
 		String name = player.getName();
 		
 		BufferedImage image = null;
@@ -396,13 +397,11 @@ public class Whiteboard {
                 final int y1 = y;
                 final int imgWidth = image.getWidth();
                 final int imgHeight = image.getHeight();
-                Bukkit.getScheduler().runTaskAsynchronously(Camelia.getInstance(), new Runnable() {
-                	@Override
-                	public void run() {
-                		setBlock(new WhiteboardLocation(x1 + width / 2 - imgWidth / 2, y1 + height / 2 - imgHeight / 2), ColorUtils.getPixelFromDye(ColorUtils.getFromColor(Color.fromBGR(blue, green, red)), ColorType.BASIC), false);
-                	}
-                });
+                setBlock(new WhiteboardLocation(x1 + width / 2 - imgWidth / 2, y1 + height / 2 - imgHeight / 2), ColorUtils.getPixelFromDye(ColorUtils.getFromColor(Color.fromBGR(blue, green, red)), ColorType.BASIC), false);
 			}
+		}
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 

@@ -9,7 +9,7 @@ import eu.carrade.amaury.Camelia.Camelia;
 
 public class DrawTimer implements Runnable {
 
-	public final static int SECONDS = 59;
+	public final static int SECONDS = 30;
 	private int seconds = SECONDS * 10;
 	private BukkitTask task = null;
 	
