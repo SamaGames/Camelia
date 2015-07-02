@@ -45,6 +45,10 @@ public class CommandListener implements CommandExecutor {
 			player.openInventory(Camelia.getInstance().getGuiManager().getTipLocationOptionInventory(drawer));
 
 			return true;
+		} else if(commandName.equals("hint")) {
+			Camelia.getInstance().getGameManager().throwHelp();
+			player.sendMessage(ChatColor.GREEN + "Un indice miraculeux apparait !");
+			return true;
 		}
 		return false;
 	}

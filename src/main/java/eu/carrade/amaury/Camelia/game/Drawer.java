@@ -227,7 +227,7 @@ public class Drawer {
 	}
 
 	/**
-     * Where the world to guess is displayed?
+     * Where the word to guess is displayed?
      */
     public enum DisplayType {
 

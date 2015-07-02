@@ -9,6 +9,7 @@ import net.samagames.api.games.IManagedGame;
 import net.samagames.api.games.Status;
 import net.samagames.tools.GameUtils;
 import net.samagames.tools.Titles;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -308,7 +309,7 @@ public class GameManager extends IManagedGame {
 				public void run() {
 					throwHelp();
 				}
-			}, random.nextInt(20) + 40);
+			}, random.nextInt(20 * 20) + 5 * 20);
 			
 			Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
 				@Override
@@ -476,27 +477,30 @@ public class GameManager extends IManagedGame {
 	}
 	
 	public void throwHelp() {
-		// TODO & FIXME
+		// TODO & FIXME -> done 03/07
 		boolean full = true;
 		int blanks = 0;
-		for(int i = 0; i < wordToFind.length(); i++) {
-			if(wordHelp.charAt(i) == '_') {  // Arrête de me regarder comme ça, toi
-				full = false;
-			} else {
-				blanks++;
-			}
-		}
-		System.out.println("ok");
-		if(full) return;
-		int letter = random.nextInt(blanks);
-		int n = 0;
+		
+		if(wordToFind == null) return;
 		
 		for(int i = 0; i < wordToFind.length(); i++) {
-			if(wordToFind.charAt(i) == '_') {
+			if(wordHelp.charAt(i) == '_') {  // Arrête de me regarder comme ça, toi
+				blanks++;
+				full = false;
+			}
+		}
+		
+		if(full) return;
+		if(blanks <= 2) return;
+		int letter = random.nextInt(blanks);
+		int n = 0;
+
+		for(int i = 0; i < wordToFind.length(); i++) {
+			if(wordHelp.charAt(i) == '_') {
 				if(letter == n) {
 					char[] chars = wordHelp.toCharArray();
 					chars[i] = wordToFind.charAt(i);
-					wordToFind = String.valueOf(chars);
+					wordHelp = String.valueOf(chars).toUpperCase();
 					break;
 				}
 				n++;
@@ -504,12 +508,12 @@ public class GameManager extends IManagedGame {
 		}
 		
 		for(Drawer drawer : drawers.values()) {
-			if(drawer.isDrawing()) continue;
+			if(drawer.equals(whoIsDrawing)) continue;
 			drawer.getPlayer().playSound(drawer.getPlayer().getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
 			drawer.displayWord(Utils.getFormattedBlank(wordHelp));
 		}
 		
-		int rnd = random.nextInt(200) + 50;
+		int rnd = random.nextInt(2000 / wordToFind.length()) + 4 * 20;
 		if(timer.getSeconds() > rnd) {
 			Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
 				@Override
@@ -518,6 +522,5 @@ public class GameManager extends IManagedGame {
 				}
 			}, rnd * 2);
 		}
-		System.out.println("lol");
 	}
 }
