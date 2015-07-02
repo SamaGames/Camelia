@@ -63,7 +63,9 @@ public class InventoryListener implements Listener {
 				e.getWhoClicked().openInventory(Camelia.getInstance().getGuiManager().getColorInventory(drawer));
 			}
 			
-		} else if(e.getInventory().getTitle().equals(GuiManager.BRUSH_GUI)) {
+		}
+
+		else if(e.getInventory().getTitle().equals(GuiManager.BRUSH_GUI)) {
 			if(e.getSlot() < 0 || e.getInventory().getItem(e.getSlot()) == null || e.getInventory().getItem(e.getSlot()).getType().equals(Material.AIR))
 				return;
 			
@@ -79,7 +81,9 @@ public class InventoryListener implements Listener {
 				drawer.getPlayer().openInventory(Camelia.getInstance().getGuiManager().getBrushInventory(drawer));
 			}
 			
-		} else if(e.getInventory().getTitle().equals(GuiManager.SPRAY_GUI)) {
+		}
+
+		else if(e.getInventory().getTitle().equals(GuiManager.SPRAY_GUI)) {
 			if(e.getSlot() < 0 || e.getInventory().getItem(e.getSlot()) == null || e.getInventory().getItem(e.getSlot()).getType().equals(Material.AIR))
 				return;
 			
@@ -98,28 +102,30 @@ public class InventoryListener implements Listener {
 				((SprayTool) drawer.getTool(1)).setStrength((e.getSlot() - 2) % 9);
 				e.getWhoClicked().openInventory(Camelia.getInstance().getGuiManager().getSprayInventory(drawer));
 			}
-		} else if(e.getInventory().getTitle().equals(GuiManager.BACKGROUND_GUI)) {
+		}
+
+		else if(e.getInventory().getTitle().equals(GuiManager.BACKGROUND_GUI)) {
 			if(e.getSlot() < 0 || e.getInventory().getItem(e.getSlot()) == null || e.getInventory().getItem(e.getSlot()).getType().equals(Material.AIR))
 				return;
 			
 			boolean found = true;
 			
 			switch(e.getInventory().getItem(e.getSlot()).getType()) {
-			case DOUBLE_PLANT:
-				
-				break;
-			case CACTUS:
-				
-				break;
-			case STONE:
-				
-				break;
-				
-			default:
-				found = false;
-				e.getWhoClicked().sendMessage(ChatColor.RED + "Désolé, ce fond n'est pas disponible !");
-				System.out.println("Warning ! No background for item " + e.getInventory().getItem(e.getSlot()).getType().toString().toLowerCase());
-				break;
+				case DOUBLE_PLANT:
+
+					break;
+				case CACTUS:
+
+					break;
+				case STONE:
+
+					break;
+
+				default:
+					found = false;
+					e.getWhoClicked().sendMessage(ChatColor.RED + "Désolé, ce fond n'est pas disponible !");
+					System.out.println("Warning ! No background for item " + e.getInventory().getItem(e.getSlot()).getType().toString().toLowerCase());
+					break;
 			}
 			
 			e.getWhoClicked().closeInventory();
@@ -129,7 +135,38 @@ public class InventoryListener implements Listener {
 				e.getWhoClicked().sendMessage(ChatColor.GREEN + "Vous avez choisi le fond " + e.getInventory().getItem(e.getSlot()).getItemMeta().getDisplayName());
 			}
 			
-		} else {
+		}
+
+		else if(e.getInventory().getTitle().equals(GuiManager.TIP_LOCATION_GUI)) {
+			if(e.getSlot() < 0 || e.getInventory().getItem(e.getSlot()) == null || e.getInventory().getItem(e.getSlot()).getType().equals(Material.AIR))
+				return;
+
+			String newDisplayTypeName = null;
+			Drawer.DisplayType newDisplayType = null;
+
+
+			if(e.getSlot() == 11) { // Bottom, action bar
+				newDisplayTypeName = "en bas";
+				newDisplayType = Drawer.DisplayType.ACTION_BAR;
+			}
+			else if(e.getSlot() == 13) { // Center, title
+				newDisplayTypeName = "au centre";
+				newDisplayType = Drawer.DisplayType.TITLE;
+			}
+			else if(e.getSlot() == 15) { // Top, boss bar
+				newDisplayTypeName = "en haut";
+				newDisplayType = Drawer.DisplayType.BOSS_BAR;
+			}
+
+			if(newDisplayType != null) {
+				drawer.setWordDisplay(newDisplayType);
+				e.getWhoClicked().sendMessage(ChatColor.GREEN + "L'indice sera désormais affiché " + ChatColor.BOLD + newDisplayTypeName + ChatColor.GREEN + ".");
+				e.getWhoClicked().closeInventory();
+			}
+
+		}
+
+		else {
 			e.setCancelled(false);
 		}
 	}

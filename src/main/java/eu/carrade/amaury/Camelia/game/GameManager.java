@@ -1,39 +1,31 @@
 package eu.carrade.amaury.Camelia.game;
 
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
-
 import eu.carrade.amaury.Camelia.Camelia;
 import eu.carrade.amaury.Camelia.utils.ActionBar;
 import eu.carrade.amaury.Camelia.utils.DrawTimer;
 import eu.carrade.amaury.Camelia.utils.Utils;
 import net.samagames.api.games.IManagedGame;
 import net.samagames.api.games.Status;
-import net.samagames.api.games.StatusEnum;
 import net.samagames.tools.GameUtils;
 import net.samagames.tools.Titles;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
-public class GameManager implements IManagedGame {
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.*;
+
+
+public class GameManager extends IManagedGame {
 
 	private final Map<UUID,Drawer> drawers = new HashMap<>();
 	private Status status = Status.WAITING_FOR_PLAYERS;
@@ -43,7 +35,7 @@ public class GameManager implements IManagedGame {
 	private final List<Drawer> turns = new ArrayList<Drawer>();
 	private List<Drawer> wave = new ArrayList<Drawer>();
 	private int waveId = 0;
-	
+
 	private Drawer drawing = null;
 	private String wordToFind = null;
 	private String wordHelp = null;
@@ -56,6 +48,7 @@ public class GameManager implements IManagedGame {
 	
 	public GameManager() {
 		// Very important to run as soon as possible !
+		// TODO per-player world list with difficulty taken into account
 		Bukkit.getScheduler().runTaskAsynchronously(Camelia.getInstance(), new Runnable() {
 			@Override
 			public void run() {
@@ -223,7 +216,24 @@ public class GameManager implements IManagedGame {
 			}
 		}, 20L);
 		
-		
+		// Tips
+
+		for(final Player player : Bukkit.getOnlinePlayers()) {
+			if (/* New player or ? */ Math.random() < 1) {
+				Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
+					@Override
+					public void run() {
+						player.sendMessage(ChatColor.GOLD + "-----------------------------------------------------");
+
+						player.sendMessage(ChatColor.YELLOW + "La position de l'indice ne vous plaît pas ? (Visibilité, goût...)");
+						player.sendMessage(ChatColor.YELLOW + "Vous pouvez le mettre en haut ou au centre de l'écran !");
+						player.sendMessage(ChatColor.YELLOW + "Tapez simplement " + ChatColor.GOLD + "/indice" + ChatColor.YELLOW + " à tout moment.");
+
+						player.sendMessage(ChatColor.GOLD + "-----------------------------------------------------");
+					}
+				}, 200L);
+			}
+		}
 	}
 	
 	public int getMinPlayers() {
@@ -285,7 +295,7 @@ public class GameManager implements IManagedGame {
 					
 					for(Drawer d : drawers.values()) {
 						if(d.equals(drawer)) continue;
-						ActionBar.sendPermanentMessage(d.getPlayer(), blank);
+						d.displayWord(blank);
 					}
 				}
 			}, 2 * 20L);
@@ -432,34 +442,34 @@ public class GameManager implements IManagedGame {
 	
 	public List<String> getWords() {
 		URL url;
-	    InputStream is = null;
-	    BufferedReader br;
+		InputStream is = null;
+		BufferedReader br;
 
-	    try {
-	        url = new URL("http://lnfinity.net/tasks/camelia-getwords.php?pass=jmgqygafryrq0dnqcm2ys6ubvauop24sx5z7uz2c36pxq4vf5nn1rbnjd6qsnt8s&words=" + (getMaxPlayers() * getWavesCount()));
-	        is = url.openStream();
-	        br = new BufferedReader(new InputStreamReader(is));
-	        String line = br.readLine();
-	        System.out.println("Got reply " + line);
-	        String[] array = line.split(",");
-	        List<String> list = new ArrayList<String>();
-	        for(int i = 0; i < array.length; i++) {
-	        	list.add(array[i]);
-	        }
-	        System.out.println("Succefully loaded " + list.size() + " words !");
-	        return list;
-	    } catch (MalformedURLException mue) {
-	         mue.printStackTrace();
-	    } catch (IOException ioe) {
-	         ioe.printStackTrace();
-	    } finally {
-	        try {
-	            if (is != null) is.close();
-	        } catch (IOException ioe) {
-	        }
-	    }
-	    
-	    return new ArrayList<String>();
+		try {
+			url = new URL("http://lnfinity.net/tasks/camelia-getwords.php?pass=jmgqygafryrq0dnqcm2ys6ubvauop24sx5z7uz2c36pxq4vf5nn1rbnjd6qsnt8s&words=" + (getMaxPlayers() * getWavesCount()));
+			is = url.openStream();
+			br = new BufferedReader(new InputStreamReader(is));
+			String line = br.readLine();
+			System.out.println("Got reply " + line);
+			String[] array = line.split(",");
+			List<String> list = new ArrayList<String>();
+			for(int i = 0; i < array.length; i++) {
+				list.add(array[i]);
+			}
+			System.out.println("Succefully loaded " + list.size() + " words !");
+			return list;
+		} catch (MalformedURLException mue) {
+			 mue.printStackTrace();
+		} catch (IOException ioe) {
+			 ioe.printStackTrace();
+		} finally {
+			try {
+				if (is != null) is.close();
+			} catch (IOException ioe) {
+			}
+		}
+
+		return new ArrayList<String>();
 	}
 	
 	public void throwHelp() {
@@ -467,7 +477,7 @@ public class GameManager implements IManagedGame {
 		boolean full = true;
 		int blanks = 0;
 		for(int i = 0; i < wordToFind.length(); i++) {
-			if(wordHelp.charAt(i) == '_') {
+			if(wordHelp.charAt(i) == '_') {  // Arrête de me regarder comme ça, toi
 				full = false;
 			} else {
 				blanks++;
@@ -493,7 +503,7 @@ public class GameManager implements IManagedGame {
 		for(Drawer drawer : drawers.values()) {
 			if(drawer.isDrawing()) continue;
 			drawer.getPlayer().playSound(drawer.getPlayer().getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
-			ActionBar.sendPermanentMessage(drawer.getPlayer(), Utils.getFormattedBlank(wordHelp));
+			drawer.displayWord(Utils.getFormattedBlank(wordHelp));
 		}
 		
 		int rnd = random.nextInt(200) + 50;

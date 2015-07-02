@@ -11,6 +11,9 @@ commands:
   mot:
     description: Permet de proposer un mot.
     usage: /mot <mot>
-  word:
-    description: Permet de proposer un mot.
-    usage: /word <mot>
+    aliases:
+      - word
+
+  indice:
+    description: Permet de changer l'endroit où est affiché l'indice
+    usage: /<command>

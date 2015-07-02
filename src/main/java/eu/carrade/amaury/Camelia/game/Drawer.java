@@ -7,6 +7,9 @@ import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorLime;
 import eu.carrade.amaury.Camelia.drawing.colors.core.ColorType;
 import eu.carrade.amaury.Camelia.drawing.colors.core.PixelColor;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
+import eu.carrade.amaury.Camelia.utils.ActionBar;
+import net.samagames.tools.BarAPI.BarAPI;
+import net.samagames.tools.Titles;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -24,9 +27,13 @@ public class Drawer {
 
 	private Map<Integer, DrawTool> drawTools = new HashMap<>();
 	private PixelColor color = new ColorGreen(ColorType.BASIC);
+
 	private int page = 0;
+
 	private boolean foundCurrentWord = false;
 	private int points = 0;
+
+    private DisplayType wordDisplay = DisplayType.ACTION_BAR;
 
 	public Drawer(UUID playerID) {
 		this.playerID = playerID;
@@ -171,4 +178,72 @@ public class Drawer {
 		getPlayer().setLevel(this.points);
 		Camelia.getInstance().getScoreManager().updatePlayer(this);
 	}
+
+
+    /**
+     * Clears the display for this drawer.
+     */
+    public void clearWordDisplay() {
+        ActionBar.removeMessage(playerID, true);
+
+        Player player = getPlayer();
+        if(player != null) {
+            Titles.sendTitle(getPlayer(), 0, 0, 0, "", "");
+            BarAPI.removeBar(getPlayer());
+        }
+    }
+
+    /**
+     * Displays a word to this player
+     * @param word The word to display.
+     */
+    public void displayWord(String word) {
+        Player player = getPlayer();
+        if(player == null) return;
+
+        switch(wordDisplay) {
+            case ACTION_BAR:
+                ActionBar.sendPermanentMessage(playerID, word);
+                break;
+
+            case TITLE:
+                Titles.sendTitle(player, 0, 100000, 0, "", word);
+                break;
+
+            case BOSS_BAR:
+                BarAPI.setMessage(player, word);
+                break;
+        }
+    }
+
+	public DisplayType getWordDisplay() {
+		return wordDisplay;
+	}
+
+	public void setWordDisplay(DisplayType wordDisplay) {
+		this.wordDisplay = wordDisplay;
+		clearWordDisplay();
+		// TODO send the word again (internal API not ready yet)
+	}
+
+	/**
+     * Where the world to guess is displayed?
+     */
+    public enum DisplayType {
+
+        /**
+         * Displayed in the action bar, just above the inventory.
+         */
+        ACTION_BAR,
+
+        /**
+         * Displayed as a /title (subtitle in fact).
+         */
+        TITLE,
+
+        /**
+         * Displayed in the boss bar
+         */
+        BOSS_BAR
+    }
 }
