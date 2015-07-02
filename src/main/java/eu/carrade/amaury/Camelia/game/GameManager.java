@@ -173,6 +173,9 @@ public class GameManager extends IManagedGame {
 			Camelia.getInstance().getCountdownTimer().cancelTimer();
 			Camelia.getInstance().getCoherenceMachine().getMessageManager().writeNotEnougthPlayersToStart();
 		}
+
+		// Workaround for a Minecraft bug (titles times not reset when the server changes)
+		Titles.sendTitle(player, 10, 60, 10, "", "");
 	}
 
 	@Override
