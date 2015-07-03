@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -202,6 +203,28 @@ public class Utils {
 		}
 		return str.trim();
 	}
+	
+	/**
+	 * 
+	 * @autor http://stackoverflow.com/questions/3322152/is-there-a-way-to-get-rid-of-accents-and-convert-a-whole-string-to-regular-lette
+	 * 
+	 */
+	public static String removeAccents(String string) {
+		 StringBuilder sb = new StringBuilder(string.length());
+		 string = Normalizer.normalize(string, Normalizer.Form.NFD);
+		 for (char c : string.toCharArray()) {
+			 if (c <= '\u007F') sb.append(c);
+		 }
+		 return sb.toString();
+	}
 
-
+	public static boolean wideComparison(String str1, String str2) {
+		if(str1 == null && str2 == null) return true;
+		if(str1 == null || str2 == null) return false;
+		
+		if(removeAccents(str1.toLowerCase()).equals(removeAccents(str2.toLowerCase())))
+			return true;
+		
+		return false;
+	}
 }
