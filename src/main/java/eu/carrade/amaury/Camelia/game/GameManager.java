@@ -222,7 +222,7 @@ public class GameManager extends IManagedGame {
 		// Tips
 
 		for(final Player player : Bukkit.getOnlinePlayers()) {
-			if (/* New player or ? */ Math.random() < 1) {
+			if (/* New player or ? */ Math.random() < 0.1) {
 				Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
 					@Override
 					public void run() {
