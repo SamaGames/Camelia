@@ -26,6 +26,7 @@ import eu.carrade.amaury.Camelia.drawing.drawTools.core.ClicDrawTool;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
 import eu.carrade.amaury.Camelia.drawing.whiteboard.WhiteboardLocation;
 import eu.carrade.amaury.Camelia.game.Drawer;
+import eu.carrade.amaury.Camelia.utils.Utils;
 
 
 public class DrawListener implements Listener {
@@ -129,7 +130,7 @@ public class DrawListener implements Listener {
 	}
 	
 	@EventHandler
-	public void on(AsyncPlayerChatEvent ev) {
+	public void onPlayerChat(AsyncPlayerChatEvent ev) {
 		Drawer drawer = Camelia.getInstance().getGameManager().getDrawer(ev.getPlayer().getUniqueId());
 		if(drawer == null) return;
 
@@ -141,13 +142,13 @@ public class DrawListener implements Listener {
 
 		if(drawer.hasFoundCurrentWord()) {
 			ev.setCancelled(true);
-			drawer.getPlayer().sendMessage(ChatColor.RED + "Vous avez déjà trouvé, laissez les chercher !");
+			drawer.getPlayer().sendMessage(ChatColor.RED + "Vous avez déjà trouvé, laissez les autres chercher !");
 			return;
 		}
 
 		String test = ev.getMessage();
 		String find = Camelia.getInstance().getGameManager().getWordToFind();
-		if(find != null && find.equalsIgnoreCase(test) && !drawer.hasFoundCurrentWord()) {
+		if(find != null && Utils.wideComparison(test, find) && !drawer.hasFoundCurrentWord()) {
 			ev.setCancelled(true);
 
 			Camelia.getInstance().getGameManager().playerFoundWord(drawer);
