@@ -222,6 +222,8 @@ public class Turn {
 
 			// TODO Save the whiteboard somewhere (inside this object?).
 
+			Camelia.getInstance().getGameManager().getDrawers().forEach(Drawer::clearWordDisplay);
+
 			Camelia.getInstance().getDrawTurnsManager().nextTurn();
 		}, 5 * 20L);
 
