@@ -185,19 +185,18 @@ public class GameManager extends IManagedGame {
 
 		// Tips
 
-		for(final Player player : Bukkit.getOnlinePlayers()) {
-			if (/* New player or ? */ Math.random() < 0.1) {
-				Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), () -> {
-					player.sendMessage(ChatColor.GOLD + "-----------------------------------------------------");
+		/* New player or ? */
+		Bukkit.getOnlinePlayers().stream().filter(player -> Math.random() < 0.1).forEach(player -> {
+			Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), () -> {
+				player.sendMessage(ChatColor.GOLD + "-----------------------------------------------------");
 
-					player.sendMessage(ChatColor.YELLOW + "La position de l'indice ne vous plaît pas ? (Visibilité, goût...)");
-					player.sendMessage(ChatColor.YELLOW + "Vous pouvez le mettre en haut ou au centre de l'écran !");
-					player.sendMessage(ChatColor.YELLOW + "Tapez simplement " + ChatColor.GOLD + "/indice" + ChatColor.YELLOW + " à tout moment.");
+				player.sendMessage(ChatColor.YELLOW + "La position de l'indice ne vous plaît pas ? (Visibilité, goût...)");
+				player.sendMessage(ChatColor.YELLOW + "Vous pouvez le mettre en haut ou au centre de l'écran !");
+				player.sendMessage(ChatColor.YELLOW + "Tapez simplement " + ChatColor.GOLD + "/indice" + ChatColor.YELLOW + " à tout moment.");
 
-					player.sendMessage(ChatColor.GOLD + "-----------------------------------------------------");
-				}, 200L);
-			}
-		}
+				player.sendMessage(ChatColor.GOLD + "-----------------------------------------------------");
+			}, 200L);
+		});
 
 		setStatus(Status.IN_GAME);
 	}
