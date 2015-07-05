@@ -2,6 +2,7 @@ package eu.carrade.amaury.Camelia.game;
 
 
 import eu.carrade.amaury.Camelia.Camelia;
+import eu.carrade.amaury.Camelia.game.turns.DrawTurnsManager;
 import eu.carrade.amaury.Camelia.utils.ActionBar;
 import eu.carrade.amaury.Camelia.utils.DrawTimer;
 import eu.carrade.amaury.Camelia.utils.Utils;
@@ -30,22 +31,6 @@ public class GameManager extends IManagedGame {
 
 	private final Map<UUID,Drawer> drawers = new HashMap<>();
 	private Status status = Status.WAITING_FOR_PLAYERS;
-	
-	private List<String> words = new ArrayList<String>();
-	
-	private final List<Drawer> turns = new ArrayList<Drawer>();
-	private List<Drawer> wave = new ArrayList<Drawer>();
-	private int waveId = 0;
-
-	private Drawer drawing = null;
-	private String wordToFind = null;
-	private String wordHelp = null;
-	
-	private DrawTimer timer = new DrawTimer();
-	
-	private Drawer whoIsDrawing = null;
-	
-	private Random random = new Random();
 
 
 
@@ -226,7 +211,7 @@ public class GameManager extends IManagedGame {
 	}
 	
 	public void onEnd() {
-		Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Les " + ChatColor.BOLD + waveId + ChatColor.AQUA + " manches ont été jouées, la partie est terminée. Place aux résultats !");
+		Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Les " + ChatColor.BOLD + DrawTurnsManager.getWavesCount() + ChatColor.AQUA + " manches ont été jouées, la partie est terminée. Place aux résultats !");
 		
 		Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), () -> Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Le grand gagnant est..."), 20L);
 		

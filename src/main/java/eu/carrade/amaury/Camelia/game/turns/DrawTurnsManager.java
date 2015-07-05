@@ -185,4 +185,8 @@ public class DrawTurnsManager {
 	public Turn getCurrentTurn() {
 		return currentTurn;
 	}
+
+	public static Integer getWavesCount() {
+		return WAVES_COUNT;
+	}
 }
