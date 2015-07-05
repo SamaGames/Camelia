@@ -212,25 +212,30 @@ public class GameManager extends IManagedGame {
 	public void onEnd() {
 		Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Les " + ChatColor.BOLD + DrawTurnsManager.getWavesCount() + ChatColor.AQUA + " manches ont été jouées, la partie est terminée. Place aux résultats !");
 		
-		Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), () -> Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Le grand gagnant est..."), 20L);
-		
-		Drawer drawer = null;
-		
-		for(Drawer d : drawers.values()) {
-			if(drawer == null || d.getPoints() > drawer.getPoints())
-				drawer = d;
-		}
+		Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), () -> {
+			Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Le grand gagnant est...");
 
-		if(drawer != null) {
-			final Player player = drawer.getPlayer();
-			Bukkit.getScheduler().runTaskAsynchronously(Camelia.getInstance(), () -> {
-				try {
-					Camelia.getInstance().getWhiteboard().drawPlayerHead(player);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			});
-		}
+			Drawer drawer = null;
+
+			for(Drawer d : drawers.values()) {
+				if(drawer == null || d.getPoints() > drawer.getPoints())
+					drawer = d;
+			}
+
+			if(drawer != null) {
+				final Player player = drawer.getPlayer();
+
+				Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "..." + player.getName() + " !");
+
+				Bukkit.getScheduler().runTaskAsynchronously(Camelia.getInstance(), () -> {
+					try {
+						Camelia.getInstance().getWhiteboard().drawPlayerHead(player);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				});
+			}
+		}, 20L);
 	}
 	
 	public void teleportLobby(Player player) {
