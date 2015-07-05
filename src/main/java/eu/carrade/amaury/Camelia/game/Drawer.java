@@ -222,8 +222,9 @@ public class Drawer {
 
 	public void setWordDisplay(DisplayType wordDisplay) {
 		this.wordDisplay = wordDisplay;
+
 		clearWordDisplay();
-		// TODO send the word again (internal API not ready yet)
+		Camelia.getInstance().getDrawTurnsManager().getCurrentTurn().displayWord(getPlayer());
 	}
 
 	/**
@@ -246,4 +247,20 @@ public class Drawer {
          */
         BOSS_BAR
     }
+
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Drawer drawer = (Drawer) o;
+
+		return !(playerID != null ? !playerID.equals(drawer.playerID) : drawer.playerID != null);
+	}
+
+	@Override
+	public int hashCode() {
+		return playerID != null ? playerID.hashCode() : 0;
+	}
 }

@@ -46,17 +46,6 @@ public class GameManager extends IManagedGame {
 	private Drawer whoIsDrawing = null;
 	
 	private Random random = new Random();
-	
-	public GameManager() {
-		// Very important to run as soon as possible !
-		// TODO per-player world list with difficulty taken into account
-		Bukkit.getScheduler().runTaskAsynchronously(Camelia.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				words = getWords();
-			}
-		});
-	}
 
 
 
@@ -97,6 +86,10 @@ public class GameManager extends IManagedGame {
 		return drawers.get(id);
 	}
 
+	public List<Drawer> getDrawers() {
+		return new ArrayList<>(drawers.values());
+	}
+
 	
 
 	@Override
@@ -131,7 +124,7 @@ public class GameManager extends IManagedGame {
 		player.setLevel(0);
 		teleportLobby(player);
 		
-		Drawer drawer = registerNewDrawer(player.getUniqueId());
+		registerNewDrawer(player.getUniqueId());
 		
 		Camelia.getInstance().getCoherenceMachine().getMessageManager().writePlayerJoinToAll(player);
 		
@@ -170,9 +163,16 @@ public class GameManager extends IManagedGame {
 	@Override
 	public void playerDisconnect(Player player) {
 		unregisterDrawer(player.getUniqueId());
-		if(getConnectedPlayers() < getMinPlayers()) {
+
+		if(getConnectedPlayers() < getMinPlayers()
+				&& getStatus() != Status.IN_GAME && getStatus() != Status.FINISHED) {
 			Camelia.getInstance().getCountdownTimer().cancelTimer();
 			Camelia.getInstance().getCoherenceMachine().getMessageManager().writeNotEnougthPlayersToStart();
+		}
+
+		// Rechecks if everyone left found the word.
+		if(getStatus() == Status.IN_GAME) {
+			Camelia.getInstance().getDrawTurnsManager().getCurrentTurn().checkIfEverybodyFoundTheWord();
 		}
 
 		// Workaround for a Minecraft bug (titles times not reset when the server changes)
@@ -191,11 +191,14 @@ public class GameManager extends IManagedGame {
 
 	@Override
 	public void startGame() {
+
+		if(getStatus() == Status.IN_GAME) return;
+
 		Camelia.getInstance().getCountdownTimer().cancelTimer();
 		
 		Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "A vos pinceaux... C'est parti !");
 		
-		// TP
+		// Start of the game
 		
 		Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
 			@Override
@@ -207,19 +210,11 @@ public class GameManager extends IManagedGame {
 		}, 1L);
 		
 		for(Drawer drawer : drawers.values()) {
-			turns.add(drawer);
 			Camelia.getInstance().getScoreManager().displayTo(drawer);
 		}
-		
-		Collections.shuffle(turns);
-		
-		Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				nextWave();
-			}
-		}, 20L);
-		
+
+		Camelia.getInstance().getDrawTurnsManager().startTurns();
+
 		// Tips
 
 		for(final Player player : Bukkit.getOnlinePlayers()) {
@@ -238,6 +233,8 @@ public class GameManager extends IManagedGame {
 				}, 200L);
 			}
 		}
+
+		setStatus(Status.IN_GAME);
 	}
 	
 	public int getMinPlayers() {
@@ -246,127 +243,6 @@ public class GameManager extends IManagedGame {
 	
 	public int getCountdownTime() {
 		return Camelia.getInstance().getArenaConfig().getInt("game.waiting");
-	}
-	
-	public int getWavesCount() {
-		return Camelia.getInstance().getArenaConfig().getInt("game.drawings");
-	}
-	
-	public void createWave() {
-		wave.clear();
-		for(Drawer drawer : turns) {
-			if(drawer.getPlayer().isOnline()) wave.add(drawer);
-		}
-	}
-	
-	public void nextTurn() {
-		if(wave.size() > 0 && wave.get(0).getPlayer().isOnline()) {
-			final Drawer drawer = wave.get(0);
-			wave.remove(0);
-			final Player player = drawer.getPlayer();
-			
-			Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "C'est au tour de " + ChatColor.GOLD + player.getName());
-			
-			teleportDrawing(player);
-			
-			for(Drawer d : drawers.values()) {
-				ActionBar.removeMessage(d.getPlayer());
-			}
-			
-			Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
-				@Override
-				public void run() {
-					if(words.size() == 0) {
-						Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.RED + "Erreur critique, nous n'avons aucun mot à vous proposer !");
-						return;
-					}
-					whoIsDrawing = drawer;
-					
-					wordToFind = words.get(0);
-					wordHelp = Utils.getNewWordBlank(wordToFind);
-					
-					words.remove(wordToFind);
-					
-					timer.startTimer();
-					
-					drawer.setDrawing(true);
-					drawer.fillInventory();
-					ActionBar.sendPermanentMessage(player, Utils.getFormattedWord(wordToFind));
-					player.playSound(player.getLocation(), Sound.NOTE_PLING, 1, 1);
-					player.sendMessage(ChatColor.GREEN + "Vous devrez dessiner " + ChatColor.GOLD + "" + ChatColor.BOLD + wordToFind.toUpperCase());
-					
-					String blank = Utils.getFormattedBlank(wordHelp);
-					
-					for(Drawer d : drawers.values()) {
-						if(d.equals(drawer)) continue;
-						d.displayWord(blank);
-					}
-				}
-			}, 2 * 20L);
-			
-			Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
-				@Override
-				public void run() {
-					throwHelp();
-				}
-			}, random.nextInt(20 * 20) + 5 * 20);
-			
-			Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
-				@Override
-				public void run() {
-					String word = Utils.getFormattedWord(wordToFind);
-					
-					Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Le temps est écoulé !");
-					Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Le mot était " + ChatColor.GOLD + "" + ChatColor.BOLD + wordToFind.toUpperCase());
-					
-					wordToFind = null;
-					wordHelp = null;
-					whoIsDrawing = null;
-					
-					for(Drawer drawer : drawers.values()) {
-						ActionBar.sendPermanentMessage(drawer.getPlayer(), word);
-					}
-					
-					drawer.setDrawing(false);
-					player.getInventory().clear();
-					teleportLobby(player);
-					
-					Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
-						@Override
-						public void run() {
-							Camelia.getInstance().getWhiteboard().clearBoard();
-							
-							nextTurn();
-						}
-					}, 5 * 20L);
-					
-					for(Drawer drawer : drawers.values()) {
-						drawer.setFoundCurrentWord(false);
-					}
-					
-				}
-			}, 2 * 20L + DrawTimer.SECONDS * 20L);
-		} else {
-			nextWave();
-		}
-	}
-	
-	public void nextWave() {
-		if(waveId < getWavesCount()) {
-			waveId++;
-			Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Début de la manche " + ChatColor.BOLD + waveId);
-		
-			createWave();
-		
-			Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
-				@Override
-				public void run() {
-					nextTurn();
-				}
-			}, 40L);
-		} else {
-			onEnd();
-		}
 	}
 	
 	public void onEnd() {
@@ -382,22 +258,23 @@ public class GameManager extends IManagedGame {
 		Drawer drawer = null;
 		
 		for(Drawer d : drawers.values()) {
-			if(drawer != null || d.getPoints() > drawer.getPoints())
+			if(drawer == null || d.getPoints() > drawer.getPoints())
 				drawer = d;
 		}
-		
-		final Player player = drawer.getPlayer();
-		Bukkit.getScheduler().runTaskAsynchronously(Camelia.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				try {
-				Camelia.getInstance().getWhiteboard().drawPlayerHead(player);
-				} catch(Exception e) {
-					e.printStackTrace();
+
+		if(drawer != null) {
+			final Player player = drawer.getPlayer();
+			Bukkit.getScheduler().runTaskAsynchronously(Camelia.getInstance(), new Runnable() {
+				@Override
+				public void run() {
+					try {
+						Camelia.getInstance().getWhiteboard().drawPlayerHead(player);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
-			}
-		});
-		
+			});
+		}
 	}
 	
 	public void teleportLobby(Player player) {
@@ -406,121 +283,5 @@ public class GameManager extends IManagedGame {
 	
 	public void teleportDrawing(Player player) {
 		player.teleport(Utils.stringToLocation(Camelia.getInstance().getArenaConfig().getString("game.drawing")));
-	}
-	
-	public void playerFoundWord(Drawer drawer) {
-		drawer.getPlayer().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "" + ChatColor.BOLD + drawer.getPlayer().getName() + ChatColor.GREEN + "" + ChatColor.BOLD + " a trouvé !");
-		GameUtils.broadcastSound(Sound.LEVEL_UP);
-		
-		int found = getTotalFound();
-		int points = 2;
-		
-		if(found <= 2) {
-			points = 8 - 2 * found;
-		}
-		
-		drawer.getPlayer().sendMessage(ChatColor.GREEN + "Vous gagnez " + ChatColor.AQUA + "" + ChatColor.BOLD + points + ChatColor.GREEN + " points !");
-		drawer.increasePoints(points);
-		
-		whoIsDrawing.getPlayer().sendMessage(ChatColor.GREEN + "Vous gagnez " + ChatColor.AQUA + "" + ChatColor.BOLD + "3" + ChatColor.GREEN + " points !");
-		whoIsDrawing.increasePoints(3);
-		
-		drawer.setFoundCurrentWord(true);
-	}
-	
-	public String getWordToFind() {
-		return wordToFind;
-	}
-	
-	public int getTotalFound() {
-		int n = 0;
-		for(Drawer drawer : drawers.values()) {
-			if(drawer.hasFoundCurrentWord()) n++;
-		}
-		return n;
-	}
-
-	public Drawer getWhoIsDrawing() {
-		return whoIsDrawing;
-	}
-	
-	public List<String> getWords() {
-		URL url;
-		InputStream is = null;
-		BufferedReader br;
-
-		try {
-			url = new URL("http://lnfinity.net/tasks/camelia-getwords.php?pass=jmgqygafryrq0dnqcm2ys6ubvauop24sx5z7uz2c36pxq4vf5nn1rbnjd6qsnt8s&words=" + (getMaxPlayers() * getWavesCount()));
-			is = url.openStream();
-			br = new BufferedReader(new InputStreamReader(is));
-			String line = br.readLine();
-			System.out.println("Got reply " + line);
-			String[] array = line.split(",");
-			List<String> list = new ArrayList<String>();
-			for(int i = 0; i < array.length; i++) {
-				list.add(array[i]);
-			}
-			System.out.println("Succefully loaded " + list.size() + " words !");
-			return list;
-		} catch (MalformedURLException mue) {
-			 mue.printStackTrace();
-		} catch (IOException ioe) {
-			 ioe.printStackTrace();
-		} finally {
-			try {
-				if (is != null) is.close();
-			} catch (IOException ioe) {
-			}
-		}
-
-		return new ArrayList<String>();
-	}
-	
-	public void throwHelp() {
-		// TODO & FIXME -> done 03/07
-		boolean full = true;
-		int blanks = 0;
-		
-		if(wordToFind == null) return;
-		
-		for(int i = 0; i < wordToFind.length(); i++) {
-			if(wordHelp.charAt(i) == '_') {  // Arrête de me regarder comme ça, toi
-				blanks++;
-				full = false;
-			}
-		}
-		
-		if(full) return;
-		if(blanks <= 2) return;
-		int letter = random.nextInt(blanks);
-		int n = 0;
-
-		for(int i = 0; i < wordToFind.length(); i++) {
-			if(wordHelp.charAt(i) == '_') {
-				if(letter == n) {
-					char[] chars = wordHelp.toCharArray();
-					chars[i] = wordToFind.charAt(i);
-					wordHelp = String.valueOf(chars).toUpperCase();
-					break;
-				}
-				n++;
-			}
-		}
-		
-		for(Drawer drawer : drawers.values()) {
-			if(drawer.equals(whoIsDrawing)) continue;
-			drawer.getPlayer().playSound(drawer.getPlayer().getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
-			drawer.displayWord(Utils.getFormattedBlank(wordHelp));
-		}
-		
-		int rnd = random.nextInt(2000 / wordToFind.length()) + 4 * 20;
-		if(timer.getSeconds() > rnd) {
-			Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
-				@Override
-				public void run() {
-					throwHelp();
-				}
-			}, rnd * 2);
-		}
 	}
 }

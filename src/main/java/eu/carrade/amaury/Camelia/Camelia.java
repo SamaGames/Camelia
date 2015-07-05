@@ -11,6 +11,7 @@ import eu.carrade.amaury.Camelia.drawing.whiteboard.Whiteboard;
 import eu.carrade.amaury.Camelia.game.GameManager;
 import eu.carrade.amaury.Camelia.game.GuiManager;
 import eu.carrade.amaury.Camelia.game.ScoreManager;
+import eu.carrade.amaury.Camelia.game.turns.DrawTurnsManager;
 import eu.carrade.amaury.Camelia.listeners.CommandListener;
 import eu.carrade.amaury.Camelia.listeners.DrawListener;
 import eu.carrade.amaury.Camelia.listeners.GameListener;
@@ -43,6 +44,7 @@ public final class Camelia extends JavaPlugin {
 	private Configuration arenaConfig;
 
 	private GameManager gameManager;
+	private DrawTurnsManager drawTurnsManager;
 	private DrawingManager drawingManager;
 	private Whiteboard whiteboard;
 	private GuiManager guiManager;
@@ -75,6 +77,7 @@ public final class Camelia extends JavaPlugin {
 
 		/** *** Managers *** **/
 		gameManager = new GameManager();
+		drawTurnsManager = new DrawTurnsManager();
 		drawingManager = new DrawingManager();
 		whiteboard = new Whiteboard();
 		guiManager = new GuiManager();
@@ -116,6 +119,10 @@ public final class Camelia extends JavaPlugin {
 
 	public GameManager getGameManager() {
 		return gameManager;
+	}
+
+	public DrawTurnsManager getDrawTurnsManager() {
+		return drawTurnsManager;
 	}
 
 	public DrawingManager getDrawingManager() {

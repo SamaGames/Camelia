@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import eu.carrade.amaury.Camelia.game.turns.Turn;
 import net.samagames.api.games.Status;
 import net.samagames.tools.GameUtils;
 import net.samagames.tools.chat.SymbolsUtils;
@@ -77,7 +78,7 @@ public class DrawListener implements Listener {
 		if(drawer == null || ev.getItem() == null) return; // Moderator maybe
 
 		Status status = Camelia.getInstance().getGameManager().getStatus();
-		
+
 		if(status != Status.IN_GAME && status != Status.FINISHED && status != Status.REBOOTING && drawer.isDrawing()) {
 			ev.setCancelled(true);
 			
@@ -134,24 +135,37 @@ public class DrawListener implements Listener {
 		Drawer drawer = Camelia.getInstance().getGameManager().getDrawer(ev.getPlayer().getUniqueId());
 		if(drawer == null) return;
 
-		if(Camelia.getInstance().getGameManager().getWhoIsDrawing() != null && drawer.getPlayer().getUniqueId().equals(Camelia.getInstance().getGameManager().getWhoIsDrawing().getPlayer().getUniqueId())) {
+		Turn currentTurn = Camelia.getInstance().getDrawTurnsManager().getCurrentTurn();
+		if(currentTurn == null || !currentTurn.isActive()) {
+			return;
+		}
+
+		if(currentTurn.getDrawer() != null && drawer.equals(currentTurn.getDrawer())) {
 			ev.setCancelled(true);
 			drawer.getPlayer().sendMessage(ChatColor.RED + "Vous ne pouvez pas vous exprimer pendant que vous dessinez !");
 			return;
 		}
 
+		// TODO Allow players to talk if they say something totally unrelated to the word (comments about the draw...)
 		if(drawer.hasFoundCurrentWord()) {
 			ev.setCancelled(true);
 			drawer.getPlayer().sendMessage(ChatColor.RED + "Vous avez déjà trouvé, laissez les autres chercher !");
 			return;
 		}
 
-		String test = ev.getMessage();
-		String find = Camelia.getInstance().getGameManager().getWordToFind();
-		if(find != null && Utils.wideComparison(test, find) && !drawer.hasFoundCurrentWord()) {
-			ev.setCancelled(true);
 
-			Camelia.getInstance().getGameManager().playerFoundWord(drawer);
+		String word = ev.getMessage().trim();
+		Turn.FoundState found = currentTurn.checkIfFound(ev.getPlayer(), word);
+
+		switch (found) {
+			case NEAR:
+				ev.setCancelled(true);
+				ev.getPlayer().sendMessage(ChatColor.GREEN + "« " + word + " » n'est pas très loin...");
+				break;
+
+			case FOUND:
+				ev.setCancelled(true);
+				break;
 		}
 	}
 }
