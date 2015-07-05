@@ -80,56 +80,40 @@ public class Turn {
 
 		Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "C'est au tour de " + ChatColor.GOLD + drawPlayer.getName());
 
-		for(Drawer d : Camelia.getInstance().getGameManager().getDrawers()) {
-			d.clearWordDisplay();
-		}
+		Camelia.getInstance().getGameManager().getDrawers().forEach(Drawer::clearWordDisplay);
 
 		Camelia.getInstance().getGameManager().teleportDrawing(drawPlayer);
 
 		// Word given, timer starts.
 
-		Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
-			@Override
-			public void run() {
+		Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), () -> {
+			timer.startTimer();
 
-				timer.startTimer();
+			drawer.setDrawing(true);
+			drawer.fillInventory();
 
-				drawer.setDrawing(true);
-				drawer.fillInventory();
-
-				ActionBar.sendPermanentMessage(drawPlayer, Utils.getFormattedWord(word));
-				drawPlayer.playSound(drawPlayer.getLocation(), Sound.NOTE_PLING, 1, 1);
-				drawPlayer.sendMessage(ChatColor.GREEN + "Vous devrez dessiner " + ChatColor.GOLD + "" + ChatColor.BOLD + word.toUpperCase());
+			ActionBar.sendPermanentMessage(drawPlayer, Utils.getFormattedWord(word));
+			drawPlayer.playSound(drawPlayer.getLocation(), Sound.NOTE_PLING, 1, 1);
+			drawPlayer.sendMessage(ChatColor.GREEN + "Vous devrez dessiner " + ChatColor.GOLD + "" + ChatColor.BOLD + word.toUpperCase());
 
 
-				String blank = Utils.getFormattedBlank(tip);
+			String blank = Utils.getFormattedBlank(tip);
 
-				for(Drawer d : Camelia.getInstance().getGameManager().getDrawers()) {
-					if(d.equals(drawer)) continue;
-					d.displayWord(blank);
-				}
+			for(Drawer d : Camelia.getInstance().getGameManager().getDrawers()) {
+				if(d.equals(drawer)) continue;
+				d.displayWord(blank);
 			}
 		}, 2 * 20L);
 
 
 		// Next tip
 
-		Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				throwTip();
-			}
-		}, random.nextInt(20 * 20) + 5 * 20);
+		Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), Turn.this::throwTip, random.nextInt(20 * 20) + 5 * 20);
 
 
 		// End of the turn
 
-		Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				endTurn(EndReason.TIMEOUT);
-			}
-		}, 2 * 20L + DrawTimer.SECONDS * 20L);
+		Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), () -> endTurn(EndReason.TIMEOUT), 2 * 20L + DrawTimer.SECONDS * 20L);
 	}
 
 	/**
@@ -176,12 +160,7 @@ public class Turn {
 
 		int rnd = random.nextInt(2000 / word.length()) + 4 * 20;
 		if(timer.getSeconds() > rnd) {
-			Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
-				@Override
-				public void run() {
-					throwTip();
-				}
-			}, rnd * 2);
+			Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), Turn.this::throwTip, rnd * 2);
 		}
 	}
 
@@ -238,15 +217,12 @@ public class Turn {
 		if(drawPlayer != null) Camelia.getInstance().getGameManager().teleportLobby(drawPlayer);
 
 
-		Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				Camelia.getInstance().getWhiteboard().clearBoard();
+		Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), () -> {
+			Camelia.getInstance().getWhiteboard().clearBoard();
 
-				// TODO Save the whiteboard somewhere (inside this object?).
+			// TODO Save the whiteboard somewhere (inside this object?).
 
-				Camelia.getInstance().getDrawTurnsManager().nextTurn();
-			}
+			Camelia.getInstance().getDrawTurnsManager().nextTurn();
 		}, 5 * 20L);
 
 
@@ -324,9 +300,7 @@ public class Turn {
 	 * player and moderator in BTP.
 	 */
 	public void displayWord() {
-		for(Player player : Bukkit.getOnlinePlayers()) {
-			displayWord(player);
-		}
+		Bukkit.getOnlinePlayers().forEach(this::displayWord);
 	}
 
 	/**

@@ -104,9 +104,7 @@ public final class Camelia extends JavaPlugin {
 		
 
 		/** *** Reload handling *** **/
-		for(Player player : getServer().getOnlinePlayers()) {
-			gameManager.playerJoin(player);
-		}
+		getServer().getOnlinePlayers().forEach(gameManager::playerJoin);
 
 		World world = getServer().getWorlds().get(0);
 		world.setGameRuleValue("doDaylightCycle", "false");

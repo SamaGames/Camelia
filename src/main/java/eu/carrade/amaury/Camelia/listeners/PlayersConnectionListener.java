@@ -17,11 +17,6 @@ public class PlayersConnectionListener implements Listener {
 
 
 		// TODO check for concurrent mod exceptions
-		Bukkit.getScheduler().runTaskLaterAsynchronously(Camelia.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				Camelia.getInstance().getWhiteboard().sendAllWhitebord(ev.getPlayer());
-			}
-		}, 20l);
+		Bukkit.getScheduler().runTaskLaterAsynchronously(Camelia.getInstance(), () -> Camelia.getInstance().getWhiteboard().sendAllWhitebord(ev.getPlayer()), 20l);
 	}
 }

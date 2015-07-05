@@ -57,39 +57,37 @@ public class DrawTurnsManager {
 	 * TODO Fallback server if the main one is down (mirror).
 	 */
 	private void loadWords() {
-		Bukkit.getScheduler().runTaskAsynchronously(Camelia.getInstance(), new Runnable() {
-			public void run() {
-				InputStream is = null;
+		Bukkit.getScheduler().runTaskAsynchronously(Camelia.getInstance(), () -> {
+			InputStream is = null;
 
-				try {
+			try {
 
-					Integer wordCount = (WAVES_COUNT + 1) * Camelia.getInstance().getGameManager().getMaxPlayers();
-					Camelia.getInstance().getLogger().info("Loading " + wordCount + " words...");
+				Integer wordCount = (WAVES_COUNT + 1) * Camelia.getInstance().getGameManager().getMaxPlayers();
+				Camelia.getInstance().getLogger().info("Loading " + wordCount + " words...");
 
-					URL url = new URL(API_URL + "?pass=" + API_KEY + "&words=" + wordCount);
+				URL url = new URL(API_URL + "?pass=" + API_KEY + "&words=" + wordCount);
 
-					is = url.openStream();
-					BufferedReader br = new BufferedReader(new InputStreamReader(is));
+				is = url.openStream();
+				BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
-					String rawWords = br.readLine();
-					Camelia.getInstance().getLogger().info("Got reply " + rawWords);
+				String rawWords = br.readLine();
+				Camelia.getInstance().getLogger().info("Got reply " + rawWords);
 
-					List<String> words = Arrays.asList(rawWords.split(","));
-					Collections.shuffle(words);
+				List<String> words = Arrays.asList(rawWords.split(","));
+				Collections.shuffle(words);
 
-					simpleWords.clear();
-					simpleWords.addAll(words);
+				simpleWords.clear();
+				simpleWords.addAll(words);
 
-					Camelia.getInstance().getLogger().info("Succefully loaded " + simpleWords.size() + " words !");
-				}
+				Camelia.getInstance().getLogger().info("Succefully loaded " + simpleWords.size() + " words !");
+			}
 
-				catch (IOException ioe) {
-					ioe.printStackTrace();
-				}
+			catch (IOException ioe) {
+				ioe.printStackTrace();
+			}
 
-				finally {
-					try { if (is != null) is.close(); } catch (IOException ignored) {}
-				}
+			finally {
+				try { if (is != null) is.close(); } catch (IOException ignored) {}
 			}
 		});
 	}
@@ -144,12 +142,7 @@ public class DrawTurnsManager {
 	public void startTurns() {
 		generateWaves();
 
-		Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				nextTurn();
-			}
-		}, 20L);
+		Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), DrawTurnsManager.this::nextTurn, 20L);
 	}
 
 	/**

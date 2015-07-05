@@ -131,28 +131,14 @@ public class GameManager extends IManagedGame {
 		Camelia.getInstance().getCoherenceMachine().getMessageManager().writeWelcomeInGameToPlayer(player);
 		player.sendMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + " Le jeu dans lequel vous êtes l'artiste !");
 
-		Bukkit.getScheduler().runTaskLaterAsynchronously(Camelia.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				Camelia.getInstance().getWhiteboard().sendAllWhitebord(player);
-			}
-		}, 20l);
+		Bukkit.getScheduler().runTaskLaterAsynchronously(Camelia.getInstance(), () -> Camelia.getInstance().getWhiteboard().sendAllWhitebord(player), 20l);
 		
-		Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-					Titles.sendTitle(player, 10, 80, 10, Camelia.NAME_COLORED, ChatColor.WHITE + "Bienvenue en "
-							+ Camelia.NAME_COLORED);
-			}
-		}, 40l);
-		
+		Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), () -> Titles.sendTitle(player, 10, 80, 10, Camelia.NAME_COLORED, ChatColor.WHITE + "Bienvenue en "
+				+ Camelia.NAME_COLORED), 40l);
+
+		// TODO use a standard format for these tips
 		if(Math.random() < 0.2) {
-			Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
-				@Override
-				public void run() {
-					player.sendMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Vous pouvez proposer des mots grâce à la commande " + ChatColor.RED + "/mot <mot>");
-				}
-			}, 40l);
+			Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), () -> player.sendMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Vous pouvez proposer des mots grâce à la commande " + ChatColor.RED + "/mot <mot>"), 40l);
 		}
 		
 		if(getConnectedPlayers() == getMinPlayers() && (status == Status.WAITING_FOR_PLAYERS || status == Status.STARTING || status == Status.READY_TO_START)) {
@@ -200,12 +186,9 @@ public class GameManager extends IManagedGame {
 		
 		// Start of the game
 		
-		Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				for (Player player : Camelia.getInstance().getServer().getOnlinePlayers()) {
-					player.playSound(player.getLocation(), Sound.SPLASH2, 1, 1);
-				}
+		Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), () -> {
+			for (Player player : Camelia.getInstance().getServer().getOnlinePlayers()) {
+				player.playSound(player.getLocation(), Sound.SPLASH2, 1, 1);
 			}
 		}, 1L);
 		
@@ -219,17 +202,14 @@ public class GameManager extends IManagedGame {
 
 		for(final Player player : Bukkit.getOnlinePlayers()) {
 			if (/* New player or ? */ Math.random() < 0.1) {
-				Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
-					@Override
-					public void run() {
-						player.sendMessage(ChatColor.GOLD + "-----------------------------------------------------");
+				Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), () -> {
+					player.sendMessage(ChatColor.GOLD + "-----------------------------------------------------");
 
-						player.sendMessage(ChatColor.YELLOW + "La position de l'indice ne vous plaît pas ? (Visibilité, goût...)");
-						player.sendMessage(ChatColor.YELLOW + "Vous pouvez le mettre en haut ou au centre de l'écran !");
-						player.sendMessage(ChatColor.YELLOW + "Tapez simplement " + ChatColor.GOLD + "/indice" + ChatColor.YELLOW + " à tout moment.");
+					player.sendMessage(ChatColor.YELLOW + "La position de l'indice ne vous plaît pas ? (Visibilité, goût...)");
+					player.sendMessage(ChatColor.YELLOW + "Vous pouvez le mettre en haut ou au centre de l'écran !");
+					player.sendMessage(ChatColor.YELLOW + "Tapez simplement " + ChatColor.GOLD + "/indice" + ChatColor.YELLOW + " à tout moment.");
 
-						player.sendMessage(ChatColor.GOLD + "-----------------------------------------------------");
-					}
+					player.sendMessage(ChatColor.GOLD + "-----------------------------------------------------");
 				}, 200L);
 			}
 		}
@@ -248,12 +228,7 @@ public class GameManager extends IManagedGame {
 	public void onEnd() {
 		Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Les " + ChatColor.BOLD + waveId + ChatColor.AQUA + " manches ont été jouées, la partie est terminée. Place aux résultats !");
 		
-		Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Le grand gagnant est...");
-			}
-		}, 20L);
+		Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), () -> Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Le grand gagnant est..."), 20L);
 		
 		Drawer drawer = null;
 		
@@ -264,14 +239,11 @@ public class GameManager extends IManagedGame {
 
 		if(drawer != null) {
 			final Player player = drawer.getPlayer();
-			Bukkit.getScheduler().runTaskAsynchronously(Camelia.getInstance(), new Runnable() {
-				@Override
-				public void run() {
-					try {
-						Camelia.getInstance().getWhiteboard().drawPlayerHead(player);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+			Bukkit.getScheduler().runTaskAsynchronously(Camelia.getInstance(), () -> {
+				try {
+					Camelia.getInstance().getWhiteboard().drawPlayerHead(player);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			});
 		}
