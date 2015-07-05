@@ -84,8 +84,7 @@ public class Drawer {
 	 * @return True if he is drawing
 	 */
 	public boolean isDrawing() {
-		//return drawing;
-		return true; // TODO testing purposes only.
+		return drawing;
 	}
 
 	/**

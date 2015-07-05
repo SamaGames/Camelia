@@ -77,9 +77,7 @@ public class DrawListener implements Listener {
 
 		if(drawer == null || ev.getItem() == null) return; // Moderator maybe
 
-		Status status = Camelia.getInstance().getGameManager().getStatus();
-
-		if(status != Status.IN_GAME && status != Status.FINISHED && status != Status.REBOOTING && drawer.isDrawing()) {
+		if(drawer.isDrawing()) {
 			ev.setCancelled(true);
 			
 			DrawTool tool = drawer.getActiveTool();
