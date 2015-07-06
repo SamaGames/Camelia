@@ -3,6 +3,7 @@ package eu.carrade.amaury.Camelia.drawing.whiteboard;
 
 import org.bukkit.Location;
 
+
 public enum WhiteboardOrientation {
 
 	/**
@@ -19,7 +20,7 @@ public enum WhiteboardOrientation {
 	/**
 	 * Returns the X whiteboard-coordinate following to this orientation.
 	 *
-	 * @param board The whiteboard.
+	 * @param board    The whiteboard.
 	 * @param location The Bukkit location.
 	 *
 	 * @return The X-coordinate in the whiteboard.
@@ -31,14 +32,14 @@ public enum WhiteboardOrientation {
 	/**
 	 * Returns the X whiteboard-coordinate following to this orientation.
 	 *
-	 * @param board The whiteboard.
+	 * @param board      The whiteboard.
 	 * @param minecraftX The X-coordinate in the world.
 	 * @param minecraftZ The Z-coordinate in the world.
 	 *
 	 * @return The X-coordinate in the whiteboard.
 	 */
 	public Integer getWhiteboardX(Whiteboard board, Integer minecraftX, Integer minecraftZ) {
-		switch(this) {
+		switch (this) {
 			case FOLLOWING_X_AXIS:
 				return minecraftZ - board.getBottomAngle().getBlockZ();
 
@@ -59,7 +60,7 @@ public enum WhiteboardOrientation {
 	public Location getBukkitLocation(WhiteboardLocation location) {
 		int x = 0, z = 0;
 
-		switch(this) {
+		switch (this) {
 			case FOLLOWING_X_AXIS:
 				x = location.getWhiteboard().getTopAngle().getBlockX();
 				z = location.getWhiteboard().getBottomAngle().getBlockZ() + location.getX();

@@ -11,7 +11,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
+import java.util.UUID;
 
 
 public class Turn {
@@ -57,7 +60,6 @@ public class Turn {
 
 
 	/**
-	 *
 	 * @param drawer The drawer of this turn. A word will be generated according to his preferences.
 	 */
 	public Turn(Drawer drawer) {
@@ -99,8 +101,8 @@ public class Turn {
 
 			String blank = Utils.getFormattedBlank(tip);
 
-			for(Drawer d : Camelia.getInstance().getGameManager().getDrawers()) {
-				if(d.equals(drawer)) continue;
+			for (Drawer d : Camelia.getInstance().getGameManager().getDrawers()) {
+				if (d.equals(drawer)) continue;
 				d.displayWord(blank);
 			}
 		}, 2 * 20L);
@@ -123,22 +125,22 @@ public class Turn {
 		boolean full = true;
 		int blanks = 0;
 
-		for(int i = 0; i < word.length(); i++) {
-			if(tip.charAt(i) == '_') {  // Arrête de me regarder comme ça, toi
+		for (int i = 0; i < word.length(); i++) {
+			if (tip.charAt(i) == '_') {  // Arrête de me regarder comme ça, toi
 				blanks++;
 				full = false;
 			}
 		}
 
-		if(full)        return;
-		if(blanks <= 2) return;
+		if (full) return;
+		if (blanks <= 2) return;
 
 		int letter = random.nextInt(blanks);
 		int n = 0;
 
-		for(int i = 0; i < word.length(); i++) {
-			if(tip.charAt(i) == '_') {
-				if(letter == n) {
+		for (int i = 0; i < word.length(); i++) {
+			if (tip.charAt(i) == '_') {
+				if (letter == n) {
 					char[] chars = tip.toCharArray();
 
 					chars[i] = word.charAt(i);
@@ -151,15 +153,15 @@ public class Turn {
 			}
 		}
 
-		for(Drawer d : Camelia.getInstance().getGameManager().getDrawers()) {
-			if(d.equals(drawer)) continue;
+		for (Drawer d : Camelia.getInstance().getGameManager().getDrawers()) {
+			if (d.equals(drawer)) continue;
 
 			d.getPlayer().playSound(d.getPlayer().getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
 			d.displayWord(Utils.getFormattedBlank(tip));
 		}
 
 		int rnd = random.nextInt(2000 / word.length()) + 4 * 20;
-		if(timer.getSeconds() > rnd) {
+		if (timer.getSeconds() > rnd) {
 			Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), Turn.this::throwTip, rnd * 2);
 		}
 	}
@@ -175,12 +177,11 @@ public class Turn {
 
 		// Broadcast
 
-		String displayedWord = Utils.getFormattedWord(word);
-		String endMessage = "";
+		String endMessage    = "";
 
-		if(reason == null) reason = EndReason.UNKNOWN;
+		if (reason == null) reason = EndReason.UNKNOWN;
 
-		switch(reason) {
+		switch (reason) {
 			case TIMEOUT:
 				endMessage = "Le temps est écoulé !";
 				break;
@@ -205,7 +206,7 @@ public class Turn {
 		Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + endMessage);
 		Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Le mot était " + ChatColor.GOLD + "" + ChatColor.BOLD + word.toUpperCase() + ChatColor.AQUA + ".");
 
-		if(winnersOfThisTurn.size() > 0)
+		if (winnersOfThisTurn.size() > 0)
 			Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Il a été trouvé par " + winnersOfThisTurn.size() + " personne" + (winnersOfThisTurn.size() > 1 ? "s" : "") + ".");
 
 		displayWord();
@@ -214,7 +215,7 @@ public class Turn {
 		drawer.setDrawing(false);
 		drawer.fillInventory();
 
-		if(drawPlayer != null) Camelia.getInstance().getGameManager().teleportLobby(drawPlayer);
+		if (drawPlayer != null) Camelia.getInstance().getGameManager().teleportLobby(drawPlayer);
 
 
 		Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), () -> {
@@ -228,7 +229,7 @@ public class Turn {
 		}, 5 * 20L);
 
 
-		for(Drawer d : Camelia.getInstance().getGameManager().getDrawers()) {
+		for (Drawer d : Camelia.getInstance().getGameManager().getDrawers()) {
 			d.setFoundCurrentWord(false);
 		}
 	}
@@ -239,24 +240,24 @@ public class Turn {
 	 * TODO Notice the player if he's near the solution (like iSketch).
 	 *
 	 * @param player The player.
-	 * @param input The input.
+	 * @param input  The input.
 	 *
 	 * @return {@code true} if the player found the word.
 	 */
 	public FoundState checkIfFound(Player player, String input) {
 		Drawer checkedDrawer = Camelia.getInstance().getGameManager().getDrawer(player.getUniqueId());
 
-		if(checkedDrawer == null)               return FoundState.NOT_FOUND;
-		if(checkedDrawer.hasFoundCurrentWord()) return FoundState.FOUND;
+		if (checkedDrawer == null)               return FoundState.NOT_FOUND;
+		if (checkedDrawer.hasFoundCurrentWord()) return FoundState.FOUND;
 
-		if(input != null && Utils.wideComparison(input, word)) {
+		if (input != null && Utils.wideComparison(input, word)) {
 			checkedDrawer.getPlayer().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "" + ChatColor.BOLD + checkedDrawer.getPlayer().getName() + ChatColor.GREEN + "" + ChatColor.BOLD + " a trouvé le mot !");
 			GameUtils.broadcastSound(Sound.LEVEL_UP);
 
 			int found = winnersOfThisTurn.size();
 			int points = 2;
 
-			if(found <= 2) {
+			if (found <= 2) {
 				points = 8 - 2 * found;
 			}
 
@@ -282,60 +283,62 @@ public class Turn {
 	 */
 	public void checkIfEverybodyFoundTheWord() {
 
-		Boolean everyonFound = true;
+		Boolean everyoneFound = true;
 
-		for(Drawer d : Camelia.getInstance().getGameManager().getDrawers()) {
+		for (Drawer d : Camelia.getInstance().getGameManager().getDrawers()) {
 			Player dPlayer = d.getPlayer();
-			if(!d.equals(drawer) && dPlayer != null && dPlayer.isOnline() && !d.hasFoundCurrentWord()) {
-				everyonFound = false;
+			if (!d.equals(drawer) && dPlayer != null && dPlayer.isOnline() && !d.hasFoundCurrentWord()) {
+				everyoneFound = false;
 				break;
 			}
 		}
 
-		if(everyonFound) {
+		if (everyoneFound) {
 			endTurn(EndReason.EVERYONE_FOUND);
 		}
 	}
 
 	/**
-	 * Display the word to everyone: complete display to the drawer, partial display to every other
-	 * player and moderator in BTP.
+	 * Display the word to everyone: complete display to the drawer, partial display to every other player and moderator
+	 * in BTP.
 	 */
 	public void displayWord() {
 		Bukkit.getOnlinePlayers().forEach(this::displayWord);
 	}
 
 	/**
-	 * Displays the word to this specific player.
-	 * Complete display to the drawer, partial display to every other player and moderator in BTP.
+	 * Displays the word to this specific player. Complete display to the drawer, partial display to every other player
+	 * and moderator in BTP.
 	 *
 	 * @param player The player.
 	 */
 	public void displayWord(Player player) {
-		if(player == null || !player.isOnline()) return;
+		if (player == null || !player.isOnline()) return;
 
 		Drawer pDrawer = Camelia.getInstance().getGameManager().getDrawer(player.getUniqueId());
 
 		// First case: after the end of the turn. The whole word is displayed to everyone.
-		if(!isActive()) {
+		if (!isActive()) {
 			String displayedWord = Utils.getFormattedWord(word);
 
-			if(pDrawer != null) pDrawer.displayWord(displayedWord);
-			else                ActionBar.sendPermanentMessage(player, displayedWord);
+			if (pDrawer != null) pDrawer.displayWord(displayedWord);
+			else                 ActionBar.sendPermanentMessage(player, displayedWord);
 		}
 
 		// Other case: during the turn. The whole word is displayed to the drawer.
 		// The partial one, to everyone else.
 		else {
 
-			if (pDrawer == null || !pDrawer.isDrawing()) { // Moderator or spectator
+			// Moderator or spectator
+			if (pDrawer == null || !pDrawer.isDrawing()) {
 				String displayedWord = Utils.getFormattedWord(tip);
 
-				if(pDrawer != null) pDrawer.displayWord(displayedWord);
-				else                ActionBar.sendPermanentMessage(player, displayedWord);
+				if (pDrawer != null) pDrawer.displayWord(displayedWord);
+				else                 ActionBar.sendPermanentMessage(player, displayedWord);
 			}
 
-			else { // Drawer
+			// Drawer
+			else {
 				pDrawer.displayWord(Utils.getFormattedWord(word));
 			}
 		}
@@ -395,9 +398,7 @@ public class Turn {
 
 
 	/**
-	 * Does the player found the word?
-	 *
-	 * Used as an answer of the {@link #checkIfFound(Player, String)} method.
+	 * Does the player found the word? <p/> Used as an answer of the {@link #checkIfFound(Player, String)} method.
 	 */
 	public enum FoundState {
 		/**
@@ -413,6 +414,6 @@ public class Turn {
 		/**
 		 * The player found the word.
 		 */
-		FOUND;
+		FOUND
 	}
 }

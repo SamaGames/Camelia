@@ -16,9 +16,10 @@ import org.bukkit.event.player.PlayerAchievementAwardedEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
+
 public class GameListener implements Listener {
 
-	
+
 	@EventHandler
 	public boolean onFoodLevelChange(FoodLevelChangeEvent event) {
 		event.setFoodLevel(100);
@@ -32,14 +33,14 @@ public class GameListener implements Listener {
 			e.getPlayer().updateInventory();
 		}
 	}
-	
+
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent e) {
 		if (e.getWhoClicked().getGameMode() == GameMode.ADVENTURE) {
 			e.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler
 	public void onEntityRegainHealthEvent(EntityRegainHealthEvent e) {
 		e.setCancelled(true);
@@ -51,7 +52,7 @@ public class GameListener implements Listener {
 			e.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler
 	public void onWeatherChange(WeatherChangeEvent e) {
 		if (e.toWeatherState()) {
@@ -61,19 +62,19 @@ public class GameListener implements Listener {
 
 	@EventHandler
 	public void onCreatureSpawn(CreatureSpawnEvent e) {
-			e.setCancelled(true);
+		e.setCancelled(true);
 	}
 
 	@EventHandler
 	public void onAchievementAwarded(PlayerAchievementAwardedEvent e) {
 		e.setCancelled(true);
 	}
-	
+
 	@EventHandler
 	public void onBlockSpread(BlockSpreadEvent e) {
 		e.setCancelled(true);
 	}
-	
+
 	@EventHandler
 	public void onEntityDamage(EntityDamageEvent e) {
 		e.setCancelled(true);

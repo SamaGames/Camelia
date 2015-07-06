@@ -3,8 +3,8 @@ package eu.carrade.amaury.Camelia.drawing.whiteboard;
 
 import eu.carrade.amaury.Camelia.Camelia;
 import org.apache.commons.lang.Validate;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
+
 
 /**
  * A location on the whiteboard, world- and whiteboard-orientation-independent.
@@ -27,8 +27,7 @@ public class WhiteboardLocation {
 	private int y;
 
 	/**
-	 * The {@link org.bukkit.Location} object representing the block in the
-	 * world.
+	 * The {@link org.bukkit.Location} object representing the block in the world.
 	 */
 	private Location bukkitLocation;
 
@@ -37,8 +36,8 @@ public class WhiteboardLocation {
 	 * Constructor, using a custom whiteboard.
 	 *
 	 * @param whiteboard The {@link Whiteboard} to use.
-	 * @param x The x-coordinate (horizontal)
-	 * @param y The y-coordinate (vertical)
+	 * @param x          The x-coordinate (horizontal)
+	 * @param y          The y-coordinate (vertical)
 	 */
 	public WhiteboardLocation(Whiteboard whiteboard, int x, int y) {
 
@@ -91,8 +90,7 @@ public class WhiteboardLocation {
 	/**
 	 * Converts this WhiteboardLocation to a Bukkit one.
 	 *
-	 * @return The {@link org.bukkit.Location} object representing the block in the
-	 * world.
+	 * @return The {@link org.bukkit.Location} object representing the block in the world.
 	 */
 	public Location toBukkitLocation() {
 		return bukkitLocation.clone();
@@ -139,8 +137,7 @@ public class WhiteboardLocation {
 	 *
 	 * @param bukkitLocation The Bukkit Location.
 	 *
-	 * @return The WhiteboardLocation object, or {@code null} if this location is not
-	 * in the default whiteboard.
+	 * @return The WhiteboardLocation object, or {@code null} if this location is not in the default whiteboard.
 	 */
 	public static WhiteboardLocation fromBukkitLocation(Location bukkitLocation) {
 		return fromBukkitLocation(Camelia.getInstance().getWhiteboard(), bukkitLocation);
@@ -149,14 +146,13 @@ public class WhiteboardLocation {
 	/**
 	 * Converts a Bukkit Location to a WhiteboardLocation.
 	 *
-	 * @param board The {@link Whiteboard} to use.
+	 * @param board          The {@link Whiteboard} to use.
 	 * @param bukkitLocation The Bukkit Location.
 	 *
-	 * @return The WhiteboardLocation object, or {@code null} if this location is not
-	 * in the given whiteboard.
+	 * @return The WhiteboardLocation object, or {@code null} if this location is not in the given whiteboard.
 	 */
 	public static WhiteboardLocation fromBukkitLocation(Whiteboard board, Location bukkitLocation) {
-		if(bukkitLocation == null) return null;
+		if (bukkitLocation == null) return null;
 
 		return new WhiteboardLocation(
 				board,

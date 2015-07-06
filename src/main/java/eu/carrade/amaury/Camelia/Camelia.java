@@ -1,7 +1,6 @@
 /**
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, you can obtain one at http://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not
+ * distributed with this file, you can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
 package eu.carrade.amaury.Camelia;
@@ -16,27 +15,22 @@ import eu.carrade.amaury.Camelia.listeners.CommandListener;
 import eu.carrade.amaury.Camelia.listeners.DrawListener;
 import eu.carrade.amaury.Camelia.listeners.GameListener;
 import eu.carrade.amaury.Camelia.listeners.InventoryListener;
-import eu.carrade.amaury.Camelia.listeners.PlayersConnectionListener;
 import eu.carrade.amaury.Camelia.utils.CountdownTimer;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.themachine.CoherenceMachine;
-
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
+
 
 public final class Camelia extends JavaPlugin {
 
 	private static Camelia instance;
-	
+
 	public static final String NAME_WHITE = "Camelia";
 	public static final String NAME_COLORED = ChatColor.AQUA + "Camelia";
 	public static final String NAME_COLORED_BOLD = ChatColor.AQUA + "" + ChatColor.BOLD + "Camelia";
@@ -50,9 +44,9 @@ public final class Camelia extends JavaPlugin {
 	private GuiManager guiManager;
 	private CountdownTimer timer;
 	private ScoreManager scoreManager;
-	
+
 	private CoherenceMachine machine;
-	
+
 	@Override
 	public void onEnable() {
 
@@ -86,22 +80,22 @@ public final class Camelia extends JavaPlugin {
 
 
 		SamaGamesAPI.get().getGameManager().registerGame(gameManager);
-		
+
 		machine = SamaGamesAPI.get().getGameManager().getCoherenceMachine();
-		
+
 		/** *** Listeners *** **/
 		//getServer().getPluginManager().registerEvents(new PlayersConnectionListener(), this);
 		getServer().getPluginManager().registerEvents(new DrawListener(), this);
 		getServer().getPluginManager().registerEvents(new InventoryListener(), this);
 		getServer().getPluginManager().registerEvents(new GameListener(), this);
-		
+
 		CommandListener command = new CommandListener();
-		
+
 		getCommand("mot").setExecutor(command);
 		getCommand("word").setExecutor(command);
 		getCommand("indice").setExecutor(command);
 		getCommand("hint").setExecutor(command);
-		
+
 
 		/** *** Reload handling *** **/
 		getServer().getOnlinePlayers().forEach(gameManager::playerJoin);
@@ -138,19 +132,19 @@ public final class Camelia extends JavaPlugin {
 	public GuiManager getGuiManager() {
 		return guiManager;
 	}
-	
+
 	public CoherenceMachine getCoherenceMachine() {
 		return machine;
 	}
-	
+
 	public CountdownTimer getCountdownTimer() {
 		return timer;
 	}
-	
+
 	public ScoreManager getScoreManager() {
 		return scoreManager;
 	}
-	
+
 	public void disable() {
 		setEnabled(false);
 	}

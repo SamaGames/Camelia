@@ -1,14 +1,12 @@
 package eu.carrade.amaury.Camelia.utils;
 
+import eu.carrade.amaury.Camelia.Camelia;
 import net.samagames.api.games.Status;
 import net.samagames.tools.Titles;
-
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
-import eu.carrade.amaury.Camelia.Camelia;
 
 public class CountdownTimer {
 
@@ -34,7 +32,7 @@ public class CountdownTimer {
 
 		Camelia.getInstance().getGameManager().setStatus(Status.WAITING_FOR_PLAYERS);
 
-		for(Player player : Camelia.getInstance().getServer().getOnlinePlayers()) {
+		for (Player player : Camelia.getInstance().getServer().getOnlinePlayers()) {
 			player.setLevel(0);
 		}
 	}

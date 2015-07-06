@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 
+
 public class ColorCyan extends PixelColor {
 
 	public ColorCyan(ColorType type) {

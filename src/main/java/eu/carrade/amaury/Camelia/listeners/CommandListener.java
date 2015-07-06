@@ -2,13 +2,12 @@ package eu.carrade.amaury.Camelia.listeners;
 
 import eu.carrade.amaury.Camelia.Camelia;
 import eu.carrade.amaury.Camelia.game.Drawer;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
+
 
 public class CommandListener implements CommandExecutor {
 
@@ -24,20 +23,18 @@ public class CommandListener implements CommandExecutor {
 
 		String commandName = command.getName();
 
-		if(commandName.equalsIgnoreCase("mot")) {
-			if(args == null || args.length == 0) {
+		if (commandName.equalsIgnoreCase("mot")) {
+			if (args == null || args.length == 0) {
 				player.sendMessage(ChatColor.GREEN + "Pour proposer un mot, utilisez la commande: " + ChatColor.RED + "/mot <mot>");
 			} else {
 				player.sendMessage(ChatColor.GREEN + "Votre mot a bien été pris en compte, il sera peut-être ajouté !");
-                // TODO Envoi
+				// TODO Envoi
 			}
 			return true;
-		}
-
-		else if(commandName.equals("indice")) {
+		} else if (commandName.equals("indice")) {
 			Drawer drawer = Camelia.getInstance().getGameManager().getDrawer(player.getUniqueId());
 
-			if(drawer == null) {
+			if (drawer == null) {
 				player.sendMessage(ChatColor.RED + "Vous ne pouvez configurer ceci sans être un joueur actif de la partie.");
 				return true;
 			}
@@ -45,11 +42,9 @@ public class CommandListener implements CommandExecutor {
 			player.openInventory(Camelia.getInstance().getGuiManager().getTipLocationOptionInventory(drawer));
 
 			return true;
-		}
+		} else if (commandName.equals("hint")) {
 
-		else if(commandName.equals("hint")) {
-
-			if(!player.isOp()) {
+			if (!player.isOp()) {
 				player.sendMessage(ChatColor.RED + "Tricheur ! :>");
 				return true;
 			}

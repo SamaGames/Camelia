@@ -1,15 +1,14 @@
 package eu.carrade.amaury.Camelia.utils;
 
+import eu.carrade.amaury.Camelia.Camelia;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
-import eu.carrade.amaury.Camelia.Camelia;
 
 
 /**
@@ -28,14 +27,13 @@ public class ActionBar {
 	private static Class<?> iChatBaseComponentClass;
 	private static Class<?> chatComponentTextClass;
 
-	private static Map<UUID,String> actionMessages = new ConcurrentHashMap<>();
+	private static Map<UUID, String> actionMessages = new ConcurrentHashMap<>();
 
 	/**
-	 * Sends a constant message to the given player.
+	 * Sends a constant message to the given player. <p/> This message will remain on the screen until the {@link
+	 * #removeMessage} method is called.
 	 *
-	 * This message will remain on the screen until the {@link #removeMessage} method is called.
-	 *
-	 * @param player The player.
+	 * @param player  The player.
 	 * @param message The message to display.
 	 */
 	public static void sendPermanentMessage(Player player, String message) {
@@ -44,12 +42,11 @@ public class ActionBar {
 	}
 
 	/**
-	 * Sends a constant message to the given player.
-	 *
-	 * This message will remain on the screen until the {@link #removeMessage} method is called.
+	 * Sends a constant message to the given player. <p/> This message will remain on the screen until the {@link
+	 * #removeMessage} method is called.
 	 *
 	 * @param playerUUID The player's UUID.
-	 * @param message The message to display.
+	 * @param message    The message to display.
 	 */
 	public static void sendPermanentMessage(UUID playerUUID, String message) {
 		actionMessages.put(playerUUID, message);
@@ -58,30 +55,26 @@ public class ActionBar {
 
 
 	/**
-	 * Sends an action-bar message to the given player.
-	 *
-	 * This message will remain approximately three seconds.
+	 * Sends an action-bar message to the given player. <p/> This message will remain approximately three seconds.
 	 *
 	 * @param playerUUID The player's UUID.
-	 * @param message The message.
+	 * @param message    The message.
 	 */
 	public static void sendMessage(UUID playerUUID, String message) {
 		sendMessage(Bukkit.getPlayer(playerUUID), message);
 	}
 
 	/**
-	 * Sends an action-bar message to the given player.
+	 * Sends an action-bar message to the given player. <p/> This message will remain approximately three seconds.
 	 *
-	 * This message will remain approximately three seconds.
-	 *
-	 * @param player The player.
+	 * @param player  The player.
 	 * @param message The message.
 	 *
 	 * @author ConnorLinfoot (https://github.com/ConnorLinfoot/ActionBarAPI/).
 	 */
 	public static void sendMessage(Player player, String message) {
 
-		if(!enabled || player == null || message == null) return;
+		if (!enabled || player == null || message == null) return;
 
 		try {
 			Object craftPlayer = craftPlayerClass.cast(player);
@@ -90,12 +83,10 @@ public class ActionBar {
 			if (nmsver.equalsIgnoreCase("v1_8_R1") || !nmsver.startsWith("v1_8_")) {
 				Method m3 = chatSerializerClass.getDeclaredMethod("a", String.class);
 				Object cbc = iChatBaseComponentClass.cast(m3.invoke(chatSerializerClass, "{\"text\": \"" + message + "\"}"));
-				chatPacket = packetPlayOutChatClass.getConstructor(new Class<?>[] {iChatBaseComponentClass, byte.class}).newInstance(cbc, (byte) 2);
-			}
-
-			else {
-				Object o = chatComponentTextClass.getConstructor(new Class<?>[] {String.class}).newInstance(message);
-				chatPacket = packetPlayOutChatClass.getConstructor(new Class<?>[] {iChatBaseComponentClass, byte.class}).newInstance(o, (byte) 2);
+				chatPacket = packetPlayOutChatClass.getConstructor(new Class<?>[]{iChatBaseComponentClass, byte.class}).newInstance(cbc, (byte) 2);
+			} else {
+				Object o = chatComponentTextClass.getConstructor(new Class<?>[]{String.class}).newInstance(message);
+				chatPacket = packetPlayOutChatClass.getConstructor(new Class<?>[]{iChatBaseComponentClass, byte.class}).newInstance(o, (byte) 2);
 			}
 
 			Method playerHandleMethod = craftPlayerClass.getDeclaredMethod("getHandle");
@@ -106,9 +97,7 @@ public class ActionBar {
 
 			Method sendPacketMethod = playerConnection.getClass().getDeclaredMethod("sendPacket", packetClass);
 			sendPacketMethod.invoke(playerConnection, chatPacket);
-		}
-
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -117,14 +106,14 @@ public class ActionBar {
 	/**
 	 * Removes the action bar message displayed to the given player.
 	 *
-	 * @param player The player.
+	 * @param player  The player.
 	 * @param instant If {@code true}, the message will be removed instantly. Else, it will dismiss progressively.
 	 *                Please note that in that case, the message may be displayed a few more seconds.
 	 */
 	public static void removeMessage(Player player, boolean instant) {
 		actionMessages.remove(player.getUniqueId());
 
-		if(instant) {
+		if (instant) {
 			sendMessage(player, "");
 		}
 	}
@@ -133,13 +122,13 @@ public class ActionBar {
 	 * Removes the action bar message displayed to the given player.
 	 *
 	 * @param playerUUID The UUID of the player.
-	 * @param instant If {@code true}, the message will be removed instantly. Else, it will dismiss progressively.
-	 *                Please note that in that case, the message may be displayed a few more seconds.
+	 * @param instant    If {@code true}, the message will be removed instantly. Else, it will dismiss progressively.
+	 *                   Please note that in that case, the message may be displayed a few more seconds.
 	 */
 	public static void removeMessage(UUID playerUUID, boolean instant) {
 		actionMessages.remove(playerUUID);
 
-		if(instant) {
+		if (instant) {
 			sendMessage(playerUUID, "");
 		}
 	}
@@ -163,7 +152,6 @@ public class ActionBar {
 	}
 
 
-
 	/**
 	 * Initializes the task that will resent the permanent action messages to the players.
 	 */
@@ -171,16 +159,15 @@ public class ActionBar {
 		Bukkit.getScheduler().runTaskTimer(Camelia.getInstance(), new Runnable() {
 			@Override
 			public void run() {
-				for(Map.Entry<UUID, String> entry : actionMessages.entrySet()) {
+				for (Map.Entry<UUID, String> entry : actionMessages.entrySet()) {
 					Player player = Bukkit.getPlayer(entry.getKey());
-					if(player != null && player.isOnline()) {
+					if (player != null && player.isOnline()) {
 						sendMessage(player, entry.getValue());
 					}
 				}
 			}
 		}, 2l, 30l);
 	}
-
 
 
 	static {
@@ -196,12 +183,11 @@ public class ActionBar {
 
 			if (nmsver.equalsIgnoreCase("v1_8_R1") || !nmsver.startsWith("v1_8_")) {
 				chatSerializerClass = Class.forName("net.minecraft.server." + nmsver + ".ChatSerializer");
-			}
-			else {
+			} else {
 				chatComponentTextClass = Class.forName("net.minecraft.server." + nmsver + ".ChatComponentText");
 			}
 
-		} catch(Exception e) {
+		} catch (Exception e) {
 			enabled = false;
 		}
 

@@ -3,7 +3,13 @@ package eu.carrade.amaury.Camelia.drawing;
 import eu.carrade.amaury.Camelia.Camelia;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.ToolLocator;
-import eu.carrade.amaury.Camelia.drawing.drawTools.tools.*;
+import eu.carrade.amaury.Camelia.drawing.drawTools.tools.BrushTool;
+import eu.carrade.amaury.Camelia.drawing.drawTools.tools.ClearTool;
+import eu.carrade.amaury.Camelia.drawing.drawTools.tools.ColorChooserTool;
+import eu.carrade.amaury.Camelia.drawing.drawTools.tools.FillRegionTool;
+import eu.carrade.amaury.Camelia.drawing.drawTools.tools.PaintingsTools;
+import eu.carrade.amaury.Camelia.drawing.drawTools.tools.SprayTool;
+import eu.carrade.amaury.Camelia.drawing.drawTools.tools.UndoTool;
 import org.apache.commons.lang.Validate;
 
 import java.util.HashMap;
@@ -21,12 +27,9 @@ public class DrawingManager {
 	private Set<UUID> rightClickingPlayers = new CopyOnWriteArraySet<>();
 
 	/**
-	 * The draw tools.
-	 *
-	 * Map: slot -> tool
+	 * The draw tools. <p/> Map: slot -> tool
 	 */
 	private Map<Integer, Class<? extends DrawTool>> drawTools = new HashMap<>();
-
 
 
 	public DrawingManager() {
@@ -62,7 +65,7 @@ public class DrawingManager {
 	/* ***  Right-clicking players tracking  *** */
 
 	public void setRightClicking(UUID id, boolean rightClicking) {
-		if(rightClicking) {
+		if (rightClicking) {
 			rightClickingPlayers.add(id);
 		} else {
 			rightClickingPlayers.remove(id);

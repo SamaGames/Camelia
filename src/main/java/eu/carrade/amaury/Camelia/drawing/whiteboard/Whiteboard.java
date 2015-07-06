@@ -1,6 +1,21 @@
 package eu.carrade.amaury.Camelia.drawing.whiteboard;
 
-import java.awt.Image;
+import eu.carrade.amaury.Camelia.Camelia;
+import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorWhite;
+import eu.carrade.amaury.Camelia.drawing.colors.core.ColorType;
+import eu.carrade.amaury.Camelia.drawing.colors.core.ColorUtils;
+import eu.carrade.amaury.Camelia.drawing.colors.core.GameBlock;
+import eu.carrade.amaury.Camelia.drawing.colors.core.PixelColor;
+import eu.carrade.amaury.Camelia.utils.Utils;
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.DyeColor;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+
+import javax.imageio.ImageIO;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -14,25 +29,6 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.logging.Level;
 
-import javax.imageio.ImageIO;
-
-import eu.carrade.amaury.Camelia.drawing.colors.core.GameBlock;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-
-import eu.carrade.amaury.Camelia.Camelia;
-import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorWhite;
-import eu.carrade.amaury.Camelia.drawing.colors.core.ColorType;
-import eu.carrade.amaury.Camelia.drawing.colors.core.ColorUtils;
-import eu.carrade.amaury.Camelia.drawing.colors.core.PixelColor;
-import eu.carrade.amaury.Camelia.utils.Utils;
-
 
 public class Whiteboard {
 
@@ -42,23 +38,22 @@ public class Whiteboard {
 	private Location bottomAngle = null;
 
 	/**
-	 * An angle above the whiteboard, opposed to the first one, so with the biggest
-	 * two coordinates (x and z).
+	 * An angle above the whiteboard, opposed to the first one, so with the biggest two coordinates (x and z).
 	 */
 	private Location topAngle = null;
-	
+
 	private final int width;
 	private final int height;
-	
+
 	private final PixelColor[][] board;
 
 	private final WhiteboardOrientation orientation;
-	
+
 	private Random random = new Random();
 
 	/**
-	 * These blocs of the screen are on cooldown: they cannot be changed when in
-	 * this list, to avoid fast color mixes when drawing.
+	 * These blocs of the screen are on cooldown: they cannot be changed when in this list, to avoid fast color mixes
+	 * when drawing.
 	 */
 	private final Set<WhiteboardLocation> onCooldownLocations = new CopyOnWriteArraySet<>();
 
@@ -86,7 +81,7 @@ public class Whiteboard {
 		}
 
 
-		if(bottomAngle != null && topAngle != null) {
+		if (bottomAngle != null && topAngle != null) {
 
 			orientation = bottomAngle.getBlockX() == topAngle.getBlockX() ? WhiteboardOrientation.FOLLOWING_X_AXIS : WhiteboardOrientation.FOLLOWING_Z_AXIS;
 
@@ -96,8 +91,7 @@ public class Whiteboard {
 			board = new PixelColor[width][height];
 
 			clearBoard(); // To remove all null values
-		}
-		else {
+		} else {
 			orientation = null;
 			width = height = 0;
 			board = null;
@@ -142,10 +136,9 @@ public class Whiteboard {
 	 * Sets a block of the whiteboard
 	 *
 	 * @param location The location
-	 * @param color The block to set.
+	 * @param color    The block to set.
 	 *
-	 * @return True if the block was set (i.e. the location is in the whiteboard and not
-	 * on a cooldown).
+	 * @return True if the block was set (i.e. the location is in the whiteboard and not on a cooldown).
 	 */
 	public boolean setBlock(final Location location, final PixelColor color) {
 		return setBlock(WhiteboardLocation.fromBukkitLocation(location), color, false);
@@ -155,11 +148,10 @@ public class Whiteboard {
 	 * Sets a block of the whiteboard
 	 *
 	 * @param location The location
-	 * @param color The block to set.
-	 * @param mix If true, mix this color with the old one.
+	 * @param color    The block to set.
+	 * @param mix      If true, mix this color with the old one.
 	 *
-	 * @return True if the block was set (i.e. the location is in the whiteboard and not
-	 * on a cooldown).
+	 * @return True if the block was set (i.e. the location is in the whiteboard and not on a cooldown).
 	 */
 	public boolean setBlock(final Location location, final PixelColor color, boolean mix) {
 		return setBlock(WhiteboardLocation.fromBukkitLocation(location), color, mix);
@@ -169,10 +161,9 @@ public class Whiteboard {
 	 * Sets a block of the whiteboard
 	 *
 	 * @param location The location
-	 * @param color The block to set.
+	 * @param color    The block to set.
 	 *
-	 * @return True if the block was set (i.e. the location is in the whiteboard and not
-	 * on a cooldown).
+	 * @return True if the block was set (i.e. the location is in the whiteboard and not on a cooldown).
 	 */
 	public boolean setBlock(final WhiteboardLocation location, final PixelColor color) {
 		return setBlock(location, color, true);
@@ -181,29 +172,28 @@ public class Whiteboard {
 	public boolean setBlock(final WhiteboardLocation location, final PixelColor color, boolean mix) {
 		return setBlock(location, color, mix, 10);
 	}
-	
+
 	/**
 	 * Sets a block of the whiteboard
 	 *
 	 * @param location The location
-	 * @param color The block to set.
-	 * @param mix If true, mix this color with the old one.
+	 * @param color    The block to set.
+	 * @param mix      If true, mix this color with the old one.
 	 *
-	 * @return True if the block was set (i.e. the location is in the whiteboard and not
-	 * on a cooldown).
+	 * @return True if the block was set (i.e. the location is in the whiteboard and not on a cooldown).
 	 */
 	public boolean setBlock(final WhiteboardLocation location, final PixelColor color, boolean mix, long cooldown) {
-		if(!isOnTheWhiteboard(location)) {
+		if (!isOnTheWhiteboard(location)) {
 			return false;
 		}
 
-		if(onCooldownLocations.contains(location) && mix) {
+		if (onCooldownLocations.contains(location) && mix) {
 			return false;
 		}
 
 		PixelColor baseColor = board[location.getX()][location.getY()];
 		PixelColor finalColor = mix ? ColorUtils.getMix(color, baseColor) : color;
-		
+
 		board[location.getX()][location.getY()] = finalColor;
 
 		sendBlock(location, finalColor.getBlock());
@@ -219,60 +209,60 @@ public class Whiteboard {
 
 		return true;
 	}
-	
+
 	public void drawCircle(final WhiteboardLocation center, int size, final PixelColor color, boolean mix) {
-		for(int x = -size; x <= size; x++) {
-			for(int y = -size; y <= size; y++) {
-				if(x * x + y * y <= size * size / 4) {
+		for (int x = -size; x <= size; x++) {
+			for (int y = -size; y <= size; y++) {
+				if (x * x + y * y <= size * size / 4) {
 					setBlock(new WhiteboardLocation(center.getX() + x, center.getY() + y), color, mix, 3 * size + 5);
 				}
 			}
 		}
 	}
-	
+
 	public void fillRandomly(final WhiteboardLocation center, int size, double probability, final PixelColor color, boolean mix) {
-		for(int x = -size; x <= size; x++) {
-			for(int y = -size; y <= size; y++) {
-				if(x * x + y * y <= size * size / 4 && random.nextDouble() <= probability) {
+		for (int x = -size; x <= size; x++) {
+			for (int y = -size; y <= size; y++) {
+				if (x * x + y * y <= size * size / 4 && random.nextDouble() <= probability) {
 					setBlock(new WhiteboardLocation(center.getX() + x, center.getY() + y), color, mix, 3 * size + 5);
 				}
 			}
 		}
 	}
-	
+
 	public void fillArea(final WhiteboardLocation begin, final PixelColor color) {
-		if(!isOnTheWhiteboard(begin)) {
+		if (!isOnTheWhiteboard(begin)) {
 			return;
 		}
-		
+
 		List<WhiteboardLocation> nexts = new ArrayList<WhiteboardLocation>();
-		
+
 		PixelColor toReplace = board[begin.getX()][begin.getY()];
-		
+
 		nexts.add(begin);
-		
+
 		setBlock(begin, color, false);
 
-		while(nexts.size() != 0) {
+		while (nexts.size() != 0) {
 			List<WhiteboardLocation> newLocations = new ArrayList<WhiteboardLocation>();
-			
-			for(WhiteboardLocation loc : nexts) {
+
+			for (WhiteboardLocation loc : nexts) {
 				proceedLocation(loc, newLocations, toReplace, color);
 			}
-			
+
 			nexts = newLocations;
 		}
 	}
-	
+
 	private void proceedLocation(WhiteboardLocation location, List<WhiteboardLocation> newLocations, PixelColor toReplace, PixelColor color) {
 		List<WhiteboardLocation> locs = Arrays.asList(new WhiteboardLocation(this, location.getX() + 1, location.getY()), new WhiteboardLocation(this, location.getX(), location.getY() - 1), new WhiteboardLocation(this, location.getX() - 1, location.getY()), new WhiteboardLocation(this, location.getX(), location.getY() + 1));
-		for(WhiteboardLocation p : locs) {
-			if(isOnTheWhiteboard(p) && board[p.getX()][p.getY()].getDyeColor().equals(toReplace.getDyeColor()) && board[p.getX()][p.getY()].getType().equals(toReplace.getType()) && !(board[p.getX()][p.getY()].getDyeColor().equals(color.getDyeColor()) && board[p.getX()][p.getY()].getType().equals(color.getType()))) {
+		for (WhiteboardLocation p : locs) {
+			if (isOnTheWhiteboard(p) && board[p.getX()][p.getY()].getDyeColor().equals(toReplace.getDyeColor()) && board[p.getX()][p.getY()].getType().equals(toReplace.getType()) && !(board[p.getX()][p.getY()].getDyeColor().equals(color.getDyeColor()) && board[p.getX()][p.getY()].getType().equals(color.getType()))) {
 				setBlock(p, color, false);
 				newLocations.add(p);
 			}
 		}
-		
+
 	}
 
 	/**
@@ -285,11 +275,11 @@ public class Whiteboard {
 	public Location getTargetBlock(Player player) {
 		Block targetBlock = Utils.getTargetBlock(player, 200);
 
-		if(targetBlock == null) return null;
+		if (targetBlock == null) return null;
 
 		Location target = targetBlock.getLocation();
 
-		if(isOnTheWhiteboard(target)) {
+		if (isOnTheWhiteboard(target)) {
 			return target;
 		}
 
@@ -300,8 +290,8 @@ public class Whiteboard {
 	public void clearBoard() {
 		PixelColor color = new ColorWhite(ColorType.BASIC);
 
-		for(int x = 0; x < width; x++) {
-			for(int y = 0; y < height; y++) {
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
 				setBlock(new WhiteboardLocation(this, x, y), color, false);
 			}
 		}
@@ -312,10 +302,10 @@ public class Whiteboard {
 	 * Send a block change to all players.
 	 *
 	 * @param location The location.
-	 * @param block The block to send.
+	 * @param block    The block to send.
 	 */
 	private void sendBlock(WhiteboardLocation location, GameBlock block) {
-		for(Player player : Bukkit.getOnlinePlayers()) {
+		for (Player player : Bukkit.getOnlinePlayers()) {
 			player.sendBlockChange(location.toBukkitLocation(), block.getType(), block.getData());
 		}
 	}
@@ -326,8 +316,8 @@ public class Whiteboard {
 	 * @param player The player.
 	 */
 	public void sendAllWhitebord(Player player) {
-		for(int x = 0; x < width; x++) {
-			for(int y = 0; y < height; y++) {
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
 				GameBlock block = board[x][y].getBlock();
 				player.sendBlockChange(new WhiteboardLocation(this, x, y).toBukkitLocation(), block.getType(), block.getData());
 			}
@@ -358,48 +348,48 @@ public class Whiteboard {
 	public WhiteboardOrientation getOrientation() {
 		return orientation;
 	}
-	
+
 	public void drawPlayerHead(Player player) {
 		try {
-		String name = player.getName();
-		
-		BufferedImage image = null;
-		try {
-		    URL url = new URL("https://minotar.net/avatar/" + name + "/16");
-		    image = ImageIO.read(url);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+			String name = player.getName();
 
-		AffineTransform tx = new AffineTransform();
-		tx.rotate(Math.PI, image.getWidth() / 2, image.getHeight() / 2);
-	    AffineTransformOp op = new AffineTransformOp(tx,
-	    AffineTransformOp.TYPE_BILINEAR);
-	    image = op.filter(image, null);
+			BufferedImage image = null;
+			try {
+				URL url = new URL("https://minotar.net/avatar/" + name + "/16");
+				image = ImageIO.read(url);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 
-	    for(int x = 0; x < width; x++) {
-			for(int y = 0; y < height; y++) {
-				if(x >= width / 2 - 9 && x <= width / 2 + 8 && y >= height / 2 - 9 && y <= height / 2 + 8) {
-					setBlock(new WhiteboardLocation(x, y), ColorUtils.getPixelFromDye(DyeColor.RED, ColorType.BETTER), false);
-				} else {
-					setBlock(new WhiteboardLocation(x, y), ColorUtils.getPixelFromDye(DyeColor.WHITE, ColorType.BETTER), false);
+			AffineTransform tx = new AffineTransform();
+			tx.rotate(Math.PI, image.getWidth() / 2, image.getHeight() / 2);
+			AffineTransformOp op = new AffineTransformOp(tx,
+					AffineTransformOp.TYPE_BILINEAR);
+			image = op.filter(image, null);
+
+			for (int x = 0; x < width; x++) {
+				for (int y = 0; y < height; y++) {
+					if (x >= width / 2 - 9 && x <= width / 2 + 8 && y >= height / 2 - 9 && y <= height / 2 + 8) {
+						setBlock(new WhiteboardLocation(x, y), ColorUtils.getPixelFromDye(DyeColor.RED, ColorType.BETTER), false);
+					} else {
+						setBlock(new WhiteboardLocation(x, y), ColorUtils.getPixelFromDye(DyeColor.WHITE, ColorType.BETTER), false);
+					}
 				}
 			}
-		}
-	    
-		for(int x = 0; x < image.getWidth(); x++) {
-			for(int y = 0; y < image.getHeight(); y++) {
-				final int clr = image.getRGB(x, y);
-                final int red = (clr & 0x00ff0000) >> 16;
-                final int green = (clr & 0x0000ff00) >> 8;
-                final int blue = clr & 0x000000ff;
-                final int x1 = x;
-                final int y1 = y;
-                final int imgWidth = image.getWidth();
-                final int imgHeight = image.getHeight();
-                setBlock(new WhiteboardLocation(x1 + width / 2 - imgWidth / 2, y1 + height / 2 - imgHeight / 2), ColorUtils.getPixelFromDye(ColorUtils.getFromColor(Color.fromBGR(blue, green, red)), ColorType.BASIC), false);
+
+			for (int x = 0; x < image.getWidth(); x++) {
+				for (int y = 0; y < image.getHeight(); y++) {
+					final int clr = image.getRGB(x, y);
+					final int red = (clr & 0x00ff0000) >> 16;
+					final int green = (clr & 0x0000ff00) >> 8;
+					final int blue = clr & 0x000000ff;
+					final int x1 = x;
+					final int y1 = y;
+					final int imgWidth = image.getWidth();
+					final int imgHeight = image.getHeight();
+					setBlock(new WhiteboardLocation(x1 + width / 2 - imgWidth / 2, y1 + height / 2 - imgHeight / 2), ColorUtils.getPixelFromDye(ColorUtils.getFromColor(Color.fromBGR(blue, green, red)), ColorType.BASIC), false);
+				}
 			}
-		}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

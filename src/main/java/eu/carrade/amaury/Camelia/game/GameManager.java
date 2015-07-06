@@ -3,35 +3,27 @@ package eu.carrade.amaury.Camelia.game;
 
 import eu.carrade.amaury.Camelia.Camelia;
 import eu.carrade.amaury.Camelia.game.turns.DrawTurnsManager;
-import eu.carrade.amaury.Camelia.utils.ActionBar;
-import eu.carrade.amaury.Camelia.utils.DrawTimer;
 import eu.carrade.amaury.Camelia.utils.Utils;
 import net.samagames.api.games.IManagedGame;
 import net.samagames.api.games.Status;
-import net.samagames.tools.GameUtils;
 import net.samagames.tools.Titles;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 
 public class GameManager extends IManagedGame {
 
-	private final Map<UUID,Drawer> drawers = new HashMap<>();
+	private final Map<UUID, Drawer> drawers = new HashMap<>();
 	private Status status = Status.WAITING_FOR_PLAYERS;
-
 
 
 	/** *** Players management *** **/
@@ -45,17 +37,16 @@ public class GameManager extends IManagedGame {
 	 * @return The new Drawer object just created.
 	 */
 	public Drawer registerNewDrawer(UUID id) {
-		if(!drawers.containsKey(id)) {
+		if (!drawers.containsKey(id)) {
 			Drawer drawer = new Drawer(id);
 
 			drawers.put(id, drawer);
 			return drawer;
-		}
-		else {
+		} else {
 			return getDrawer(id);
 		}
 	}
-	
+
 	public void unregisterDrawer(UUID id) {
 		drawers.remove(id);
 	}
@@ -75,7 +66,6 @@ public class GameManager extends IManagedGame {
 		return new ArrayList<>(drawers.values());
 	}
 
-	
 
 	@Override
 	public int getMaxPlayers() {
@@ -84,7 +74,7 @@ public class GameManager extends IManagedGame {
 
 	// @Override
 	// VIP thing ???
-	
+
 	@Override
 	public int getConnectedPlayers() {
 		return drawers.size();
@@ -101,32 +91,32 @@ public class GameManager extends IManagedGame {
 	}
 
 	@Override
-	public void playerJoin(final Player player) {		
+	public void playerJoin(final Player player) {
 		player.setGameMode(GameMode.ADVENTURE);
 		player.getInventory().clear();
 		player.getInventory().setArmorContents(null);
 		player.setExp(0);
 		player.setLevel(0);
 		teleportLobby(player);
-		
+
 		registerNewDrawer(player.getUniqueId());
-		
+
 		Camelia.getInstance().getCoherenceMachine().getMessageManager().writePlayerJoinToAll(player);
-		
+
 		Camelia.getInstance().getCoherenceMachine().getMessageManager().writeWelcomeInGameToPlayer(player);
 		player.sendMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + " Le jeu dans lequel vous êtes l'artiste !");
 
 		Bukkit.getScheduler().runTaskLaterAsynchronously(Camelia.getInstance(), () -> Camelia.getInstance().getWhiteboard().sendAllWhitebord(player), 20l);
-		
+
 		Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), () -> Titles.sendTitle(player, 10, 80, 10, Camelia.NAME_COLORED, ChatColor.WHITE + "Bienvenue en "
 				+ Camelia.NAME_COLORED), 40l);
 
 		// TODO use a standard format for these tips
-		if(Math.random() < 0.2) {
+		if (Math.random() < 0.2) {
 			Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), () -> player.sendMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Vous pouvez proposer des mots grâce à la commande " + ChatColor.RED + "/mot <mot>"), 40l);
 		}
-		
-		if(getConnectedPlayers() == getMinPlayers() && (status == Status.WAITING_FOR_PLAYERS || status == Status.STARTING || status == Status.READY_TO_START)) {
+
+		if (getConnectedPlayers() == getMinPlayers() && (status == Status.WAITING_FOR_PLAYERS || status == Status.STARTING || status == Status.READY_TO_START)) {
 			Camelia.getInstance().getCountdownTimer().restartTimer();
 		}
 	}
@@ -135,14 +125,14 @@ public class GameManager extends IManagedGame {
 	public void playerDisconnect(Player player) {
 		unregisterDrawer(player.getUniqueId());
 
-		if(getConnectedPlayers() < getMinPlayers()
+		if (getConnectedPlayers() < getMinPlayers()
 				&& getStatus() != Status.IN_GAME && getStatus() != Status.FINISHED) {
 			Camelia.getInstance().getCountdownTimer().cancelTimer();
 			Camelia.getInstance().getCoherenceMachine().getMessageManager().writeNotEnougthPlayersToStart();
 		}
 
 		// Rechecks if everyone left found the word.
-		if(getStatus() == Status.IN_GAME) {
+		if (getStatus() == Status.IN_GAME) {
 			Camelia.getInstance().getDrawTurnsManager().getCurrentTurn().checkIfEverybodyFoundTheWord();
 		}
 
@@ -154,7 +144,7 @@ public class GameManager extends IManagedGame {
 	public Status getStatus() {
 		return status;
 	}
-	
+
 	@Override
 	public void setStatus(Status arg) {
 		status = arg;
@@ -163,21 +153,21 @@ public class GameManager extends IManagedGame {
 	@Override
 	public void startGame() {
 
-		if(getStatus() == Status.IN_GAME) return;
+		if (getStatus() == Status.IN_GAME) return;
 
 		Camelia.getInstance().getCountdownTimer().cancelTimer();
-		
+
 		Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "A vos pinceaux... C'est parti !");
-		
+
 		// Start of the game
-		
+
 		Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), () -> {
 			for (Player player : Camelia.getInstance().getServer().getOnlinePlayers()) {
 				player.playSound(player.getLocation(), Sound.SPLASH2, 1, 1);
 			}
 		}, 1L);
-		
-		for(Drawer drawer : drawers.values()) {
+
+		for (Drawer drawer : drawers.values()) {
 			Camelia.getInstance().getScoreManager().displayTo(drawer);
 		}
 
@@ -200,29 +190,29 @@ public class GameManager extends IManagedGame {
 
 		setStatus(Status.IN_GAME);
 	}
-	
+
 	public int getMinPlayers() {
 		return Camelia.getInstance().getArenaConfig().getInt("game.minPlayers");
 	}
-	
+
 	public int getCountdownTime() {
 		return Camelia.getInstance().getArenaConfig().getInt("game.waiting");
 	}
-	
+
 	public void onEnd() {
 		Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Les " + ChatColor.BOLD + DrawTurnsManager.getWavesCount() + ChatColor.AQUA + " manches ont été jouées, la partie est terminée. Place aux résultats !");
-		
+
 		Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), () -> {
 			Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Le grand gagnant est...");
 
 			Drawer drawer = null;
 
-			for(Drawer d : drawers.values()) {
-				if(drawer == null || d.getPoints() > drawer.getPoints())
+			for (Drawer d : drawers.values()) {
+				if (drawer == null || d.getPoints() > drawer.getPoints())
 					drawer = d;
 			}
 
-			if(drawer != null) {
+			if (drawer != null) {
 				final Player player = drawer.getPlayer();
 
 				Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "..." + player.getName() + " !");
@@ -237,11 +227,11 @@ public class GameManager extends IManagedGame {
 			}
 		}, 20L);
 	}
-	
+
 	public void teleportLobby(Player player) {
 		player.teleport(Utils.stringToLocation(Camelia.getInstance().getArenaConfig().getString("game.hub")));
 	}
-	
+
 	public void teleportDrawing(Player player) {
 		player.teleport(Utils.stringToLocation(Camelia.getInstance().getArenaConfig().getString("game.drawing")));
 	}

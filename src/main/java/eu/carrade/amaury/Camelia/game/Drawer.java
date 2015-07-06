@@ -3,7 +3,6 @@ package eu.carrade.amaury.Camelia.game;
 
 import eu.carrade.amaury.Camelia.Camelia;
 import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorGreen;
-import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorLime;
 import eu.carrade.amaury.Camelia.drawing.colors.core.ColorType;
 import eu.carrade.amaury.Camelia.drawing.colors.core.PixelColor;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
@@ -19,6 +18,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 
+
 public class Drawer {
 
 	private final UUID playerID;
@@ -33,13 +33,13 @@ public class Drawer {
 	private boolean foundCurrentWord = false;
 	private int points = 0;
 
-    private DisplayType wordDisplay = DisplayType.ACTION_BAR;
+	private DisplayType wordDisplay = DisplayType.ACTION_BAR;
 
 	public Drawer(UUID playerID) {
 		this.playerID = playerID;
 
 		// Loading the tools
-		for(Map.Entry<Integer, Class<? extends DrawTool>> toolClass : Camelia.getInstance().getDrawingManager().getDrawTools().entrySet()) {
+		for (Map.Entry<Integer, Class<? extends DrawTool>> toolClass : Camelia.getInstance().getDrawingManager().getDrawTools().entrySet()) {
 			try {
 				DrawTool tool = toolClass.getValue().getConstructor(this.getClass()).newInstance(this);
 
@@ -118,31 +118,30 @@ public class Drawer {
 	/**
 	 * Returns the currently active tool of this drawer.
 	 *
-	 * @return The tool, or {@code null} if there is no active tool,
-	 * the player is null, not currently drawing, or disconnected.
+	 * @return The tool, or {@code null} if there is no active tool, the player is null, not currently drawing, or
+	 * disconnected.
 	 */
 	public DrawTool getActiveTool() {
-		if(!isOnline() || !isDrawing()) return null;
+		if (!isOnline() || !isDrawing()) return null;
 
 		Player player = getPlayer();
-		if(player == null) return null; // Just to be sure
+		if (player == null) return null; // Just to be sure
 
 		return drawTools.get(getPlayer().getInventory().getHeldItemSlot());
 	}
 
 	/**
-	 * Updates the inventory of this player with the good content (draw tools if
-	 * drawing; empty else).
+	 * Updates the inventory of this player with the good content (draw tools if drawing; empty else).
 	 */
 	public void fillInventory() {
 		Player player = getPlayer();
 
 		player.getInventory().clear();
 
-		if(isDrawing()) {
-			for(int i = 0; i < 9; i++) {
+		if (isDrawing()) {
+			for (int i = 0; i < 9; i++) {
 				DrawTool tool = drawTools.get(i);
-				if(tool != null)
+				if (tool != null)
 					player.getInventory().setItem(i, tool.constructIcon(this));
 			}
 		}
@@ -155,7 +154,7 @@ public class Drawer {
 	public void setPage(int page) {
 		this.page = page;
 	}
-	
+
 	public DrawTool getTool(int slot) {
 		return drawTools.get(slot);
 	}
@@ -179,41 +178,42 @@ public class Drawer {
 	}
 
 
-    /**
-     * Clears the display for this drawer.
-     */
-    public void clearWordDisplay() {
-        ActionBar.removeMessage(playerID, true);
+	/**
+	 * Clears the display for this drawer.
+	 */
+	public void clearWordDisplay() {
+		ActionBar.removeMessage(playerID, true);
 
-        Player player = getPlayer();
-        if(player != null) {
-            Titles.sendTitle(getPlayer(), 0, 0, 0, "", "");
-            BarAPI.removeBar(getPlayer());
-        }
-    }
+		Player player = getPlayer();
+		if (player != null) {
+			Titles.sendTitle(getPlayer(), 0, 0, 0, "", "");
+			BarAPI.removeBar(getPlayer());
+		}
+	}
 
-    /**
-     * Displays a word to this player
-     * @param word The word to display.
-     */
-    public void displayWord(String word) {
-        Player player = getPlayer();
-        if(player == null) return;
+	/**
+	 * Displays a word to this player
+	 *
+	 * @param word The word to display.
+	 */
+	public void displayWord(String word) {
+		Player player = getPlayer();
+		if (player == null) return;
 
-        switch(wordDisplay) {
-            case ACTION_BAR:
-                ActionBar.sendPermanentMessage(playerID, word);
-                break;
+		switch (wordDisplay) {
+			case ACTION_BAR:
+				ActionBar.sendPermanentMessage(playerID, word);
+				break;
 
-            case TITLE:
-                Titles.sendTitle(player, 0, 100000, 0, "", word);
-                break;
+			case TITLE:
+				Titles.sendTitle(player, 0, 100000, 0, "", word);
+				break;
 
-            case BOSS_BAR:
-                BarAPI.setMessage(player, word);
-                break;
-        }
-    }
+			case BOSS_BAR:
+				BarAPI.setMessage(player, word);
+				break;
+		}
+	}
 
 	public DisplayType getWordDisplay() {
 		return wordDisplay;
@@ -227,25 +227,25 @@ public class Drawer {
 	}
 
 	/**
-     * Where the word to guess is displayed?
-     */
-    public enum DisplayType {
+	 * Where the word to guess is displayed?
+	 */
+	public enum DisplayType {
 
-        /**
-         * Displayed in the action bar, just above the inventory.
-         */
-        ACTION_BAR,
+		/**
+		 * Displayed in the action bar, just above the inventory.
+		 */
+		ACTION_BAR,
 
-        /**
-         * Displayed as a /title (subtitle in fact).
-         */
-        TITLE,
+		/**
+		 * Displayed as a /title (subtitle in fact).
+		 */
+		TITLE,
 
-        /**
-         * Displayed in the boss bar
-         */
-        BOSS_BAR
-    }
+		/**
+		 * Displayed in the boss bar
+		 */
+		BOSS_BAR
+	}
 
 
 	@Override

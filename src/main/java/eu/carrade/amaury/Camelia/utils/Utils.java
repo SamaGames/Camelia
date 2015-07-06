@@ -16,18 +16,17 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Utils {
 
 
 	/**
 	 * Converts a string (in the config file) to a Location object.
 	 *
-	 * @param locationInConfig
-	 *            A string; format "x;y;z" or "x;y;z;yaw" or "x;y;z;yaw;pitch".
-	 * @return The Location object, for the main world (first one).
+	 * @param locationInConfig A string; format "x;y;z" or "x;y;z;yaw" or "x;y;z;yaw;pitch".
 	 *
-	 * @throws IllegalArgumentException
-	 *             if the format is not good.
+	 * @return The Location object, for the main world (first one).
+	 * @throws IllegalArgumentException if the format is not good.
 	 */
 	public static Location stringToLocation(String locationInConfig) {
 		String[] coords = locationInConfig.split(";");
@@ -57,7 +56,7 @@ public class Utils {
 	/**
 	 * Returns the block targeted by the given player.
 	 *
-	 * @param player The player
+	 * @param player   The player
 	 * @param maxRange The maximal search distance, in blocks.
 	 *
 	 * @return The block, or null if no block found.
@@ -87,6 +86,7 @@ public class Utils {
 	 * Cuts a string in lines to be inserted in a lore.
 	 *
 	 * @param text The original text.
+	 *
 	 * @return A list of lines.
 	 */
 	public static List<String> stringToLore(String text) {
@@ -105,9 +105,7 @@ public class Utils {
 			if (chars >= 45) {
 				line++;
 				lines.add(line, ChatColor.getLastColors(previousWords) + word);
-			}
-
-			else {
+			} else {
 				if (lines.get(line).equals("")) {
 					lines.set(line, ChatColor.getLastColors(previousWords) + word);
 				} else {
@@ -116,7 +114,7 @@ public class Utils {
 			}
 		}
 
-		for(int k = 0; k < lines.size(); k++) {
+		for (int k = 0; k < lines.size(); k++) {
 			lines.set(k, lines.get(k).trim());
 		}
 
@@ -125,8 +123,8 @@ public class Utils {
 
 	private static int countColors(String str) {
 		int count = 0;
-		for(int i = 0; i < str.length(); i++) {
-			if(str.charAt(i) == ChatColor.COLOR_CHAR && ChatColor.getByChar(str.charAt(i + 1)) != null) {
+		for (int i = 0; i < str.length(); i++) {
+			if (str.charAt(i) == ChatColor.COLOR_CHAR && ChatColor.getByChar(str.charAt(i + 1)) != null) {
 				count++;
 			}
 		}
@@ -138,6 +136,7 @@ public class Utils {
 	 * Returns a valid slot to use for this tool.
 	 *
 	 * @param toolRawSlot The tool' slot
+	 *
 	 * @return The slot to use: the declared slot if below or equals to 8; 8 else.
 	 */
 	public static Integer getDrawToolRealSlot(int toolRawSlot) {
@@ -152,7 +151,7 @@ public class Utils {
 		ItemStack item = new ItemStack(type, amount, data);
 		setNameLore(item, name, lore);
 
-		if(removeVanillaInfos) {
+		if (removeVanillaInfos) {
 			ItemMeta meta = item.getItemMeta();
 			meta.addItemFlags(ItemFlag.values()); // All is hidden
 			item.setItemMeta(meta);
@@ -160,7 +159,7 @@ public class Utils {
 
 		return item;
 	}
-	
+
 	public static ItemStack setNameLore(ItemStack item, String str, List<String> lore) {
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(str);
@@ -168,22 +167,22 @@ public class Utils {
 		item.setItemMeta(meta);
 		return item;
 	}
-	
+
 	public static ItemStack setName(ItemStack item, String str) {
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(str);
 		item.setItemMeta(meta);
 		return item;
 	}
-	
+
 	public static String getFormattedWord(String word) {
 		return ChatColor.GOLD + "" + ChatColor.BOLD + word.replace("", " ").trim().toUpperCase();
 	}
-	
+
 	public static String getFormattedBlank(String word) {
 		String str = "";
-		for(int i = 0; i < word.length(); i++) {
-			if(word.charAt(i) == ' ') {
+		for (int i = 0; i < word.length(); i++) {
+			if (word.charAt(i) == ' ') {
 				str += "   " + word.charAt(i);
 			} else {
 				str += " " + word.charAt(i);
@@ -191,11 +190,11 @@ public class Utils {
 		}
 		return ChatColor.GOLD + "" + ChatColor.BOLD + str.trim();
 	}
-	
+
 	public static String getNewWordBlank(String word) {
 		String str = "";
-		for(int i = 0; i < word.length(); i++) {
-			if(word.charAt(i) == ' ') {
+		for (int i = 0; i < word.length(); i++) {
+			if (word.charAt(i) == ' ') {
 				str += " ";
 			} else {
 				str += "_";
@@ -203,28 +202,24 @@ public class Utils {
 		}
 		return str.trim();
 	}
-	
+
 	/**
-	 * 
 	 * @autor http://stackoverflow.com/questions/3322152/is-there-a-way-to-get-rid-of-accents-and-convert-a-whole-string-to-regular-lette
-	 * 
 	 */
 	public static String removeAccents(String string) {
-		 StringBuilder sb = new StringBuilder(string.length());
-		 string = Normalizer.normalize(string, Normalizer.Form.NFD);
-		 for (char c : string.toCharArray()) {
-			 if (c <= '\u007F') sb.append(c);
-		 }
-		 return sb.toString();
+		StringBuilder sb = new StringBuilder(string.length());
+		string = Normalizer.normalize(string, Normalizer.Form.NFD);
+		for (char c : string.toCharArray()) {
+			if (c <= '\u007F') sb.append(c);
+		}
+		return sb.toString();
 	}
 
 	public static boolean wideComparison(String str1, String str2) {
-		if(str1 == null && str2 == null) return true;
-		if(str1 == null || str2 == null) return false;
-		
-		if(removeAccents(str1.toLowerCase()).equals(removeAccents(str2.toLowerCase())))
-			return true;
-		
-		return false;
+		if (str1 == null && str2 == null) return true;
+		if (str1 == null || str2 == null) return false;
+
+		return removeAccents(str1.toLowerCase()).equals(removeAccents(str2.toLowerCase()));
+
 	}
 }

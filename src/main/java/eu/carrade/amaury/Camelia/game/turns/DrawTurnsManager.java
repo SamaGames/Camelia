@@ -10,7 +10,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 
@@ -30,7 +34,7 @@ public class DrawTurnsManager {
 	 * The words used in this game.
 	 */
 	private Deque<String> simpleWords = new ConcurrentLinkedDeque<>();
-	private Deque<String> hardWords   = new ConcurrentLinkedDeque<>();
+	private Deque<String> hardWords = new ConcurrentLinkedDeque<>();
 
 	/**
 	 * The list of draws
@@ -38,7 +42,6 @@ public class DrawTurnsManager {
 	private Deque<Turn> draws = new ConcurrentLinkedDeque<>();
 
 	private Turn currentTurn = null;
-
 
 
 	public DrawTurnsManager() {
@@ -51,10 +54,8 @@ public class DrawTurnsManager {
 
 
 	/**
-	 * Loads the words from the server.
-	 *
-	 * TODO Fallback local list of words, just in case.
-	 * TODO Fallback server if the main one is down (mirror).
+	 * Loads the words from the server. <p/> TODO Fallback local list of words, just in case. TODO Fallback server if
+	 * the main one is down (mirror).
 	 */
 	private void loadWords() {
 		Bukkit.getScheduler().runTaskAsynchronously(Camelia.getInstance(), () -> {
@@ -80,30 +81,27 @@ public class DrawTurnsManager {
 				simpleWords.addAll(words);
 
 				Camelia.getInstance().getLogger().info("Succefully loaded " + simpleWords.size() + " words !");
-			}
-
-			catch (IOException ioe) {
+			} catch (IOException ioe) {
 				ioe.printStackTrace();
-			}
-
-			finally {
+			} finally {
 				try { if (is != null) is.close(); } catch (IOException ignored) {}
 			}
 		});
 	}
 
 	/**
-	 * Returns a random word for the given drawer.
-	 * If there isn't any word left, stops the game and returns an empty string.
+	 * Returns a random word for the given drawer. If there isn't any word left, stops the game and returns an empty
+	 * string.
 	 *
 	 * @param drawer The drawer who will have to draw this.
+	 *
 	 * @return The word, or {@code ""} (empty string) if the words list is empty.
 	 */
 	public String getRandomWord(Drawer drawer) {
-		if(simpleWords.size() == 0) {
+		if (simpleWords.size() == 0) {
 			Bukkit.broadcastMessage(
 					ChatColor.DARK_RED + "" + ChatColor.BOLD + "[!] "
-					+ ChatColor.RED + "" + ChatColor.BOLD + "Erreur critique : il n'y a plus de mots disponible ! La partie est interrompue."
+							+ ChatColor.RED + "" + ChatColor.BOLD + "Erreur critique : il n'y a plus de mots disponible ! La partie est interrompue."
 			);
 
 			Camelia.getInstance().getGameManager().onEnd();
@@ -129,7 +127,7 @@ public class DrawTurnsManager {
 
 		for (Integer i = 0; i < WAVES_COUNT; i++) {
 			Camelia.getInstance().getLogger().info(" » Wave #" + i);
-			for(Drawer drawer : drawers) {
+			for (Drawer drawer : drawers) {
 				Camelia.getInstance().getLogger().info(" » »  Added drawer " + drawer.getPlayer().getName());
 				draws.push(new Turn(drawer));
 			}
@@ -149,7 +147,7 @@ public class DrawTurnsManager {
 	 * Starts the next turn of draw.
 	 */
 	public void nextTurn() {
-		if(currentTurn != null && currentTurn.isActive()) {
+		if (currentTurn != null && currentTurn.isActive()) {
 			currentTurn.endTurn(Turn.EndReason.UNKNOWN);
 		}
 
@@ -169,18 +167,16 @@ public class DrawTurnsManager {
 				return;
 			}
 
-		} while(currentTurn.getDrawer().getPlayer() == null || !currentTurn.getDrawer().getPlayer().isOnline());
+		} while (currentTurn.getDrawer().getPlayer() == null || !currentTurn.getDrawer().getPlayer().isOnline());
 
 		currentTurn.startTurn();
 	}
 
 
 	/**
-	 * Returns the turn currently active.
+	 * Returns the turn currently active. <p/> Before the game, returns {@code null}. After, too.
 	 *
-	 * Before the game, returns {@code null}. After, too.
-	 *
-	 * @return
+	 * @return The current turn, or {@code null}.
 	 */
 	public Turn getCurrentTurn() {
 		return currentTurn;

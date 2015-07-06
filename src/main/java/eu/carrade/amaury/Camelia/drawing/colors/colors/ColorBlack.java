@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 
+
 public class ColorBlack extends PixelColor {
 
 	public ColorBlack(ColorType type) {
