@@ -2,6 +2,7 @@ package eu.carrade.amaury.Camelia.listeners;
 
 import eu.carrade.amaury.Camelia.*;
 import eu.carrade.amaury.Camelia.game.*;
+import eu.carrade.amaury.Camelia.game.guis.settings.*;
 import org.bukkit.*;
 import org.bukkit.command.*;
 import org.bukkit.entity.*;
@@ -37,7 +38,8 @@ public class CommandListener implements CommandExecutor {
 				return true;
 			}
 
-			player.openInventory(Camelia.getInstance().getGuiManager().getTipLocationOptionInventory(drawer));
+			//player.openInventory(Camelia.getInstance().getDrawingGuiManager().getTipLocationOptionInventory(drawer));
+			Camelia.getInstance().getGuiManager().openGui(player, new TipLocationSettingsGui());
 
 			return true;
 		} else if (commandName.equals("hint")) {

@@ -52,7 +52,7 @@ public class SprayTool extends ContinuousDrawTool {
 
 	@Override
 	public void onLeftClick(WhiteboardLocation targetOnScreen, Drawer drawer) {
-		drawer.getPlayer().openInventory(Camelia.getInstance().getGuiManager().getSprayInventory(drawer));
+		drawer.getPlayer().openInventory(Camelia.getInstance().getDrawingGuiManager().getSprayInventory(drawer));
 	}
 
 	public int getStrength() {

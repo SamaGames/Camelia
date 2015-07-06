@@ -32,7 +32,7 @@ public class PaintingsTools extends ClicDrawTool {
 
 	@Override
 	public void onRightClick(WhiteboardLocation targetOnScreen, Drawer drawer) {
-		drawer.getPlayer().openInventory(Camelia.getInstance().getGuiManager().getBackgroundInventory(drawer));
+		drawer.getPlayer().openInventory(Camelia.getInstance().getDrawingGuiManager().getBackgroundInventory(drawer));
 	}
 
 	@Override

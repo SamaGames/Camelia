@@ -32,7 +32,7 @@ public class ColorChooserTool extends ClicDrawTool {
 
 	@Override
 	public void onRightClick(WhiteboardLocation targetOnScreen, Drawer drawer) {
-		drawer.getPlayer().openInventory(Camelia.getInstance().getGuiManager().getColorInventory(drawer));
+		drawer.getPlayer().openInventory(Camelia.getInstance().getDrawingGuiManager().getColorInventory(drawer));
 
 	}
 

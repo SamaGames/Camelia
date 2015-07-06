@@ -49,6 +49,6 @@ public class BrushTool extends ContinuousDrawTool {
 
 	@Override
 	public void onLeftClick(WhiteboardLocation targetOnScreen, Drawer drawer) {
-		drawer.getPlayer().openInventory(Camelia.getInstance().getGuiManager().getBrushInventory(drawer));
+		drawer.getPlayer().openInventory(Camelia.getInstance().getDrawingGuiManager().getBrushInventory(drawer));
 	}
 }

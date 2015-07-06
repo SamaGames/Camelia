@@ -5,6 +5,7 @@ import eu.carrade.amaury.Camelia.*;
 import eu.carrade.amaury.Camelia.drawing.colors.colors.*;
 import eu.carrade.amaury.Camelia.drawing.colors.core.*;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.*;
+import eu.carrade.amaury.Camelia.game.turns.*;
 import eu.carrade.amaury.Camelia.utils.*;
 import net.samagames.tools.BarAPI.*;
 import net.samagames.tools.*;
@@ -220,7 +221,11 @@ public class Drawer {
 		this.wordDisplay = wordDisplay;
 
 		clearWordDisplay();
-		Camelia.getInstance().getDrawTurnsManager().getCurrentTurn().displayWord(getPlayer());
+
+		Turn currentTurn = Camelia.getInstance().getDrawTurnsManager().getCurrentTurn();
+		if(currentTurn != null) {
+			currentTurn.displayWord(getPlayer());
+		}
 	}
 
 	/**

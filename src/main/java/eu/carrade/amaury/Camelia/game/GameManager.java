@@ -125,7 +125,10 @@ public class GameManager extends IManagedGame {
 
 		// Rechecks if everyone left found the word.
 		if (getStatus() == Status.IN_GAME) {
-			Camelia.getInstance().getDrawTurnsManager().getCurrentTurn().checkIfEverybodyFoundTheWord();
+			Turn currentTurn = Camelia.getInstance().getDrawTurnsManager().getCurrentTurn();
+			if(currentTurn != null) {
+				currentTurn.checkIfEverybodyFoundTheWord();
+			}
 		}
 
 		// Workaround for a Minecraft bug (titles times not reset when the server changes)

@@ -8,6 +8,8 @@ package eu.carrade.amaury.Camelia;
 import eu.carrade.amaury.Camelia.drawing.*;
 import eu.carrade.amaury.Camelia.drawing.whiteboard.*;
 import eu.carrade.amaury.Camelia.game.*;
+import eu.carrade.amaury.Camelia.game.guis.*;
+import eu.carrade.amaury.Camelia.game.guis.drawing.*;
 import eu.carrade.amaury.Camelia.game.turns.*;
 import eu.carrade.amaury.Camelia.listeners.*;
 import eu.carrade.amaury.Camelia.utils.*;
@@ -34,10 +36,12 @@ public final class Camelia extends JavaPlugin {
 	private GameManager gameManager;
 	private DrawTurnsManager drawTurnsManager;
 	private DrawingManager drawingManager;
-	private Whiteboard whiteboard;
 	private GuiManager guiManager;
+	private Whiteboard whiteboard;
 	private CountdownTimer timer;
 	private ScoreManager scoreManager;
+
+	private DrawingGuiManager drawingGuiManager;
 
 	private CoherenceMachine machine;
 
@@ -67,10 +71,12 @@ public final class Camelia extends JavaPlugin {
 		gameManager = new GameManager();
 		drawTurnsManager = new DrawTurnsManager();
 		drawingManager = new DrawingManager();
-		whiteboard = new Whiteboard();
 		guiManager = new GuiManager();
+		whiteboard = new Whiteboard();
 		timer = new CountdownTimer();
 		scoreManager = new ScoreManager();
+
+		drawingGuiManager = new DrawingGuiManager();
 
 
 		SamaGamesAPI.get().getGameManager().registerGame(gameManager);
@@ -82,6 +88,7 @@ public final class Camelia extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new DrawListener(), this);
 		getServer().getPluginManager().registerEvents(new InventoryListener(), this);
 		getServer().getPluginManager().registerEvents(new GameListener(), this);
+		getServer().getPluginManager().registerEvents(new GuiListener(), this);
 
 		CommandListener command = new CommandListener();
 
@@ -115,6 +122,10 @@ public final class Camelia extends JavaPlugin {
 		return drawingManager;
 	}
 
+	public GuiManager getGuiManager() {
+		return guiManager;
+	}
+
 	public Whiteboard getWhiteboard() {
 		return whiteboard;
 	}
@@ -123,8 +134,8 @@ public final class Camelia extends JavaPlugin {
 		return arenaConfig;
 	}
 
-	public GuiManager getGuiManager() {
-		return guiManager;
+	public DrawingGuiManager getDrawingGuiManager() {
+		return drawingGuiManager;
 	}
 
 	public CoherenceMachine getCoherenceMachine() {

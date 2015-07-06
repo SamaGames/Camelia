@@ -5,6 +5,7 @@ import eu.carrade.amaury.Camelia.drawing.colors.core.*;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.*;
 import eu.carrade.amaury.Camelia.drawing.drawTools.tools.*;
 import eu.carrade.amaury.Camelia.game.*;
+import eu.carrade.amaury.Camelia.game.guis.drawing.*;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.*;
@@ -23,7 +24,7 @@ public class InventoryListener implements Listener {
 
 		e.setCancelled(true);
 
-		if (e.getInventory().getTitle().equals(GuiManager.COLOR_GUI)) {
+		if (e.getInventory().getTitle().equals(DrawingGuiManager.COLOR_GUI)) {
 			if (e.getSlot() < 0 || e.getInventory().getItem(e.getSlot()) == null || e.getInventory().getItem(e.getSlot()).getType().equals(Material.AIR))
 				return;
 
@@ -52,45 +53,45 @@ public class InventoryListener implements Listener {
 				int page = (e.getSlot() - 3) % 9;
 				drawer.setPage(page);
 				((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.CLICK, 0.25F, 2);
-				e.getWhoClicked().openInventory(Camelia.getInstance().getGuiManager().getColorInventory(drawer));
+				e.getWhoClicked().openInventory(Camelia.getInstance().getDrawingGuiManager().getColorInventory(drawer));
 			}
 
-		} else if (e.getInventory().getTitle().equals(GuiManager.BRUSH_GUI)) {
+		} else if (e.getInventory().getTitle().equals(DrawingGuiManager.BRUSH_GUI)) {
 			if (e.getSlot() < 0 || e.getInventory().getItem(e.getSlot()) == null || e.getInventory().getItem(e.getSlot()).getType().equals(Material.AIR))
 				return;
 
 			if (e.getSlot() == 0) {
-				drawer.getPlayer().openInventory(Camelia.getInstance().getGuiManager().getColorInventory(drawer));
+				drawer.getPlayer().openInventory(Camelia.getInstance().getDrawingGuiManager().getColorInventory(drawer));
 			} else if (e.getSlot() >= 3 && e.getSlot() <= 5) {
 				((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.CLICK, 0.25F, 2);
 				((ContinuousDrawTool) drawer.getTool(0)).setSize(e.getSlot() - 2);
-				drawer.getPlayer().openInventory(Camelia.getInstance().getGuiManager().getBrushInventory(drawer));
+				drawer.getPlayer().openInventory(Camelia.getInstance().getDrawingGuiManager().getBrushInventory(drawer));
 			} else if (e.getSlot() == 8) {
 				((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.CLICK, 0.25F, 1.5F);
 				((ContinuousDrawTool) drawer.getTool(0)).setMixColors(!((ContinuousDrawTool) drawer.getTool(0)).isMixColors());
-				drawer.getPlayer().openInventory(Camelia.getInstance().getGuiManager().getBrushInventory(drawer));
+				drawer.getPlayer().openInventory(Camelia.getInstance().getDrawingGuiManager().getBrushInventory(drawer));
 			}
 
-		} else if (e.getInventory().getTitle().equals(GuiManager.SPRAY_GUI)) {
+		} else if (e.getInventory().getTitle().equals(DrawingGuiManager.SPRAY_GUI)) {
 			if (e.getSlot() < 0 || e.getInventory().getItem(e.getSlot()) == null || e.getInventory().getItem(e.getSlot()).getType().equals(Material.AIR))
 				return;
 
 			if (e.getSlot() == 9) {
-				e.getWhoClicked().openInventory(Camelia.getInstance().getGuiManager().getColorInventory(drawer));
+				e.getWhoClicked().openInventory(Camelia.getInstance().getDrawingGuiManager().getColorInventory(drawer));
 			} else if (e.getSlot() == 17) {
 				((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.CLICK, 0.25F, 1.5F);
 				((ContinuousDrawTool) drawer.getTool(1)).setMixColors(!((ContinuousDrawTool) drawer.getTool(1)).isMixColors());
-				e.getWhoClicked().openInventory(Camelia.getInstance().getGuiManager().getSprayInventory(drawer));
+				e.getWhoClicked().openInventory(Camelia.getInstance().getDrawingGuiManager().getSprayInventory(drawer));
 			} else if (e.getSlot() >= 3 && e.getSlot() <= 5) {
 				((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.CLICK, 0.25F, 2);
 				((ContinuousDrawTool) drawer.getTool(1)).setSize((e.getSlot() - 2) % 9);
-				e.getWhoClicked().openInventory(Camelia.getInstance().getGuiManager().getSprayInventory(drawer));
+				e.getWhoClicked().openInventory(Camelia.getInstance().getDrawingGuiManager().getSprayInventory(drawer));
 			} else if (e.getSlot() >= 21 && e.getSlot() <= 23) {
 				((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.CLICK, 0.25F, 2);
 				((SprayTool) drawer.getTool(1)).setStrength((e.getSlot() - 2) % 9);
-				e.getWhoClicked().openInventory(Camelia.getInstance().getGuiManager().getSprayInventory(drawer));
+				e.getWhoClicked().openInventory(Camelia.getInstance().getDrawingGuiManager().getSprayInventory(drawer));
 			}
-		} else if (e.getInventory().getTitle().equals(GuiManager.BACKGROUND_GUI)) {
+		} else if (e.getInventory().getTitle().equals(DrawingGuiManager.BACKGROUND_GUI)) {
 			if (e.getSlot() < 0 || e.getInventory().getItem(e.getSlot()) == null || e.getInventory().getItem(e.getSlot()).getType().equals(Material.AIR))
 				return;
 
@@ -121,32 +122,7 @@ public class InventoryListener implements Listener {
 				e.getWhoClicked().sendMessage(ChatColor.GREEN + "Vous avez choisi le fond " + e.getInventory().getItem(e.getSlot()).getItemMeta().getDisplayName());
 			}
 
-		} else if (e.getInventory().getTitle().equals(GuiManager.TIP_LOCATION_GUI)) {
-			if (e.getSlot() < 0 || e.getInventory().getItem(e.getSlot()) == null || e.getInventory().getItem(e.getSlot()).getType().equals(Material.AIR))
-				return;
-
-			String newDisplayTypeName = null;
-			Drawer.DisplayType newDisplayType = null;
-
-
-			if (e.getSlot() == 11) { // Bottom, action bar
-				newDisplayTypeName = "en bas";
-				newDisplayType = Drawer.DisplayType.ACTION_BAR;
-			} else if (e.getSlot() == 13) { // Center, title
-				newDisplayTypeName = "au centre";
-				newDisplayType = Drawer.DisplayType.TITLE;
-			} else if (e.getSlot() == 15) { // Top, boss bar
-				newDisplayTypeName = "en haut";
-				newDisplayType = Drawer.DisplayType.BOSS_BAR;
-			}
-
-			if (newDisplayType != null) {
-				drawer.setWordDisplay(newDisplayType);
-				e.getWhoClicked().sendMessage(ChatColor.GREEN + "L'indice sera désormais affiché " + ChatColor.BOLD + newDisplayTypeName + ChatColor.GREEN + ".");
-				e.getWhoClicked().closeInventory();
-			}
-
-		} else {
+		}  else {
 			e.setCancelled(false);
 		}
 	}
