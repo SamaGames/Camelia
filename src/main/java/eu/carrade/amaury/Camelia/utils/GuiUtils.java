@@ -16,4 +16,8 @@ public class GuiUtils {
 		return stack;
 	}
 
+	public static String getBooleanTitle(String title, Boolean value) {
+		return (value ? ChatColor.GREEN : ChatColor.RED) + "" + ChatColor.BOLD + title;
+	}
+
 }

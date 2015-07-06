@@ -37,8 +37,11 @@ public class TipLocationSettingsGui extends AbstractGui {
 
 		ItemStack bannerLocationActionBar = Utils.quickItemStack(
 				Material.BANNER, 1, (byte) 0,
-				ChatColor.GREEN + "" + (display == Drawer.DisplayType.ACTION_BAR ? ChatColor.BOLD : "") + "Indice en bas",
-				Utils.stringToLore(ChatColor.GRAY + "Affiche l'indice juste au dessus de l'inventaire. Discret, mais possiblement recouvert par le chat."),
+				GuiUtils.getBooleanTitle("Indice en bas", display == Drawer.DisplayType.ACTION_BAR),
+				Utils.stringToLore(
+						ChatColor.GRAY + "Affiche l'indice juste au dessus de l'inventaire. Discret, mais possiblement recouvert par le chat."
+						+ (display != Drawer.DisplayType.ACTION_BAR ? ChatColor.GREEN + "{bl}Cliquez pour sélectionner" : "")
+				),
 				true);
 
 		BannerMeta meta = (BannerMeta) bannerLocationActionBar.getItemMeta();
@@ -49,8 +52,11 @@ public class TipLocationSettingsGui extends AbstractGui {
 
 		ItemStack bannerLocationTitle = Utils.quickItemStack(
 				Material.BANNER, 1, (byte) 0,
-				ChatColor.GREEN + "" + (display == Drawer.DisplayType.TITLE ? ChatColor.BOLD : "") + "Indice au centre",
-				Utils.stringToLore(ChatColor.GRAY + "Affiche l'indice au centre de l'écran. Bien visible, potentiellement trop selon les configurations."),
+				GuiUtils.getBooleanTitle("Indice au centre", display == Drawer.DisplayType.TITLE),
+				Utils.stringToLore(
+						ChatColor.GRAY + "Affiche l'indice au centre de l'écran. Bien visible, potentiellement trop selon les configurations."
+						+ (display != Drawer.DisplayType.TITLE ? ChatColor.GREEN + "{bl}Cliquez pour sélectionner" : "")
+				),
 				true);
 
 		meta = (BannerMeta) bannerLocationTitle.getItemMeta();
@@ -61,8 +67,11 @@ public class TipLocationSettingsGui extends AbstractGui {
 
 		ItemStack bannerLocationBossBar = Utils.quickItemStack(
 				Material.BANNER, 1, (byte) 0,
-				ChatColor.GREEN + "" + (display == Drawer.DisplayType.BOSS_BAR ? ChatColor.BOLD : "") + "Indice en haut",
-				Utils.stringToLore(ChatColor.GRAY + "Affiche l'indice en haut de l'écran, dans la BossBar. Pratique, encore faut-il savoir qu'il est là."),
+				GuiUtils.getBooleanTitle("Indice en haut", display == Drawer.DisplayType.BOSS_BAR),
+				Utils.stringToLore(
+						ChatColor.GRAY + "Affiche l'indice en haut de l'écran, dans la BossBar. Pratique, encore faut-il savoir qu'il est là."
+						+ (display != Drawer.DisplayType.BOSS_BAR ? ChatColor.GREEN + "{bl}Cliquez pour sélectionner" : "")
+				),
 				true);
 
 		meta = (BannerMeta) bannerLocationBossBar.getItemMeta();

@@ -40,10 +40,10 @@ public class SettingsGui extends AbstractGui {
 		ItemStack difficulty = Utils.quickItemStack(
 				Material.SKULL_ITEM, 1,
 				drawer.getHardWordsEnabled() ? (byte) 1 : (byte) 0,
-				ChatColor.RED + "" + ChatColor.BOLD + "Difficulté",
+				GuiUtils.getBooleanTitle("Difficulté", drawer.getHardWordsEnabled()),
 				Utils.stringToLore(
 						ChatColor.GRAY + "Si activé, il sera possible d'obtenir des mots plus compliqués à dessiner. Ces mots donneront plus de points s'ils sont devinés.{bl}"
-						+ (drawer.getHardWordsEnabled() ? ChatColor.GREEN + "Actuellement actif." : ChatColor.RED + "Actuellement désactivé.")
+						+ (drawer.getHardWordsEnabled() ? ChatColor.GREEN + "Cliquer pour désactiver" : ChatColor.RED + "Cliquer pour activer")
 				),
 				true
 		);
@@ -89,10 +89,10 @@ public class SettingsGui extends AbstractGui {
 
 		ItemStack sounds = Utils.quickItemStack(
 				Material.NOTE_BLOCK, 1, (byte) 0,
-				ChatColor.RED + "" + ChatColor.BOLD + "Sons",
+				GuiUtils.getBooleanTitle("Sons", drawer.getSoundsEnabled()),
 				Utils.stringToLore(
 						ChatColor.GRAY + "Si activé, divers sons seront joués lorsque les joueurs dessinent.{bl}"
-								+ (drawer.getSoundsEnabled() ? ChatColor.GREEN + "Actuellement actif." : ChatColor.RED + "Actuellement désactivé.")
+								+ (drawer.getSoundsEnabled() ? ChatColor.GREEN + "Cliquer pour désactiver" : ChatColor.RED + "Cliquer pour activer")
 				),
 				true
 		);
