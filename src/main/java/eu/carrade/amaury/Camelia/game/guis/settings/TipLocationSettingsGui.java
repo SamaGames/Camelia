@@ -17,7 +17,7 @@ public class TipLocationSettingsGui extends AbstractGui {
 	@Override
 	public void display(Player player) {
 
-		this.inventory = Bukkit.createInventory(player, 3 * 9, "Position de l'indice");
+		this.inventory = Bukkit.createInventory(player, 4 * 9, "Position de l'indice");
 
 		setSlotData(GuiUtils.getBackItem(), this.inventory.getSize() - 5, "back");
 
@@ -82,33 +82,28 @@ public class TipLocationSettingsGui extends AbstractGui {
 		Drawer drawer = Camelia.getInstance().getGameManager().getDrawer(player.getUniqueId());
 		if(drawer == null) return;
 
-		String newDisplayTypeName         = null;
 		Drawer.DisplayType newDisplayType = null;
 
 		switch (action) {
 			case "actionBar":
-				newDisplayTypeName = "en bas";
 				newDisplayType = Drawer.DisplayType.ACTION_BAR;
 				break;
 
 			case "title":
-				newDisplayTypeName = "au centre";
 				newDisplayType = Drawer.DisplayType.TITLE;
 				break;
 
 			case "bossBar":
-				newDisplayTypeName = "en haut";
 				newDisplayType = Drawer.DisplayType.BOSS_BAR;
 				break;
 
 			case "back":
-				// TODO back
+				Camelia.getInstance().getGuiManager().openGui(player, new SettingsGui());
 				break;
 		}
 
 		if (newDisplayType != null) {
 			drawer.setWordDisplay(newDisplayType);
-			player.sendMessage(ChatColor.GREEN + "L'indice sera désormais affiché " + ChatColor.BOLD + newDisplayTypeName + ChatColor.GREEN + ".");
 			update(player);
 		}
 	}

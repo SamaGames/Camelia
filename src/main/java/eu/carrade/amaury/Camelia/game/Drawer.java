@@ -7,6 +7,7 @@ import eu.carrade.amaury.Camelia.drawing.colors.core.*;
 import eu.carrade.amaury.Camelia.drawing.drawTools.core.*;
 import eu.carrade.amaury.Camelia.game.turns.*;
 import eu.carrade.amaury.Camelia.utils.*;
+import net.samagames.api.*;
 import net.samagames.tools.BarAPI.*;
 import net.samagames.tools.*;
 import org.bukkit.*;
@@ -18,6 +19,12 @@ import java.util.logging.*;
 
 
 public class Drawer {
+
+
+	private final String STORAGE_KEY_OPTION_HARD = "camelia.hard";
+	private final String STORAGE_KEY_OPTION_SOUNDS = "camelia.sounds";
+	private final String STORAGE_KEY_OPTION_WORD_DISPLAY = "camelia.wordDisplayType";
+
 
 	private final UUID playerID;
 
@@ -32,6 +39,9 @@ public class Drawer {
 	private int points = 0;
 
 	private DisplayType wordDisplay = DisplayType.ACTION_BAR;
+	private Boolean hardWordsEnabled = false;
+	private Boolean soundsEnabled = true;
+
 
 	public Drawer(UUID playerID) {
 		this.playerID = playerID;
@@ -47,7 +57,17 @@ public class Drawer {
 				Camelia.getInstance().getLogger().log(Level.SEVERE, "Cannot register the tool " + toolClass.getValue().getSimpleName() + " to the drawer " + playerID, e);
 			}
 		}
+
+		Bukkit.getScheduler().runTaskAsynchronously(Camelia.getInstance(), () -> {
+			try {
+				wordDisplay = DisplayType.valueOf(SamaGamesAPI.get().getSettingsManager().getSetting(playerID, STORAGE_KEY_OPTION_WORD_DISPLAY));
+			} catch(IllegalArgumentException ignored) {} // Default value
+
+			hardWordsEnabled = SamaGamesAPI.get().getSettingsManager().isEnabled(playerID, STORAGE_KEY_OPTION_HARD,  false);
+			soundsEnabled    = SamaGamesAPI.get().getSettingsManager().isEnabled(playerID, STORAGE_KEY_OPTION_SOUNDS, true);
+		});
 	}
+
 
 	/**
 	 * The player's UUID
@@ -226,6 +246,35 @@ public class Drawer {
 		if(currentTurn != null) {
 			currentTurn.displayWord(getPlayer());
 		}
+
+		Bukkit.getScheduler().runTaskAsynchronously(Camelia.getInstance(), () -> {
+			SamaGamesAPI.get().getSettingsManager().setSetting(playerID, STORAGE_KEY_OPTION_WORD_DISPLAY, wordDisplay.toString());
+		});
+	}
+
+
+	public Boolean getHardWordsEnabled() {
+		return hardWordsEnabled;
+	}
+
+	public void setHardWordsEnabled(Boolean hardWordsEnabled) {
+		this.hardWordsEnabled = hardWordsEnabled;
+
+		Bukkit.getScheduler().runTaskAsynchronously(Camelia.getInstance(), () -> {
+			SamaGamesAPI.get().getSettingsManager().setSetting(playerID, STORAGE_KEY_OPTION_HARD, hardWordsEnabled.toString());
+		});
+	}
+
+	public Boolean getSoundsEnabled() {
+		return soundsEnabled;
+	}
+
+	public void setSoundsEnabled(Boolean soundsEnabled) {
+		this.soundsEnabled = soundsEnabled;
+
+		Bukkit.getScheduler().runTaskAsynchronously(Camelia.getInstance(), () -> {
+			SamaGamesAPI.get().getSettingsManager().setSetting(playerID, STORAGE_KEY_OPTION_SOUNDS, soundsEnabled.toString());
+		});
 	}
 
 	/**

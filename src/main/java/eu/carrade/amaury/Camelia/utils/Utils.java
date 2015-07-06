@@ -80,11 +80,18 @@ public class Utils {
 	/**
 	 * Cuts a string in lines to be inserted in a lore.
 	 *
+	 * Use {@code \{bl\}} everywhere to insert a blank line.
+	 *
 	 * @param text The original text.
 	 *
 	 * @return A list of lines.
 	 */
 	public static List<String> stringToLore(String text) {
+
+		// Ensures all "{bl}" are a word.
+		text = text.replace("{bl}", " {bl} ");
+
+
 		List<String> lines = new ArrayList<>();
 		String[] words = text.split(" ");
 		int line = 0;
@@ -94,6 +101,14 @@ public class Utils {
 
 		for (String word : words) {
 			previousWords += word;
+
+			if(word.equalsIgnoreCase("{bl}")) {
+				line++;
+				lines.add(line, ""); // Empty line.
+				line++;
+				lines.add(line, ""); // Beginning of the next line.
+				continue;
+			}
 
 			int chars = (lines.get(line) + " " + word).length() - countColors(lines.get(line) + " " + word);
 

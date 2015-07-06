@@ -14,8 +14,8 @@ commands:
     aliases:
       - word
 
-  indice:
-    description: Permet de changer l'endroit où est affiché l'indice
+  options:
+    description: "Permet de changer les options de jeu du joueur : position de l'indice, difficulté, sons..."
     usage: /<command>
 
   hint:

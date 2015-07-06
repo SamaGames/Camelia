@@ -94,7 +94,7 @@ public final class Camelia extends JavaPlugin {
 
 		getCommand("mot").setExecutor(command);
 		getCommand("word").setExecutor(command);
-		getCommand("indice").setExecutor(command);
+		getCommand("options").setExecutor(command);
 		getCommand("hint").setExecutor(command);
 
 

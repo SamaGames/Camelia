@@ -30,7 +30,9 @@ public class CommandListener implements CommandExecutor {
 				// TODO Envoi
 			}
 			return true;
-		} else if (commandName.equals("indice")) {
+		}
+
+		else if (commandName.equals("options")) {
 			Drawer drawer = Camelia.getInstance().getGameManager().getDrawer(player.getUniqueId());
 
 			if (drawer == null) {
@@ -38,11 +40,12 @@ public class CommandListener implements CommandExecutor {
 				return true;
 			}
 
-			//player.openInventory(Camelia.getInstance().getDrawingGuiManager().getTipLocationOptionInventory(drawer));
-			Camelia.getInstance().getGuiManager().openGui(player, new TipLocationSettingsGui());
+			Camelia.getInstance().getGuiManager().openGui(player, new SettingsGui());
 
 			return true;
-		} else if (commandName.equals("hint")) {
+		}
+
+		else if (commandName.equals("hint")) {
 
 			if (!player.isOp()) {
 				player.sendMessage(ChatColor.RED + "Tricheur ! :>");
