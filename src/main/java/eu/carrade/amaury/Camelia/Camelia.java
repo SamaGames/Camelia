@@ -5,26 +5,20 @@
 
 package eu.carrade.amaury.Camelia;
 
-import eu.carrade.amaury.Camelia.drawing.DrawingManager;
-import eu.carrade.amaury.Camelia.drawing.whiteboard.Whiteboard;
-import eu.carrade.amaury.Camelia.game.GameManager;
-import eu.carrade.amaury.Camelia.game.GuiManager;
-import eu.carrade.amaury.Camelia.game.ScoreManager;
-import eu.carrade.amaury.Camelia.game.turns.DrawTurnsManager;
-import eu.carrade.amaury.Camelia.listeners.CommandListener;
-import eu.carrade.amaury.Camelia.listeners.DrawListener;
-import eu.carrade.amaury.Camelia.listeners.GameListener;
-import eu.carrade.amaury.Camelia.listeners.InventoryListener;
-import eu.carrade.amaury.Camelia.utils.CountdownTimer;
-import net.samagames.api.SamaGamesAPI;
-import net.samagames.api.games.themachine.CoherenceMachine;
-import org.bukkit.ChatColor;
-import org.bukkit.World;
-import org.bukkit.configuration.Configuration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
+import eu.carrade.amaury.Camelia.drawing.*;
+import eu.carrade.amaury.Camelia.drawing.whiteboard.*;
+import eu.carrade.amaury.Camelia.game.*;
+import eu.carrade.amaury.Camelia.game.turns.*;
+import eu.carrade.amaury.Camelia.listeners.*;
+import eu.carrade.amaury.Camelia.utils.*;
+import net.samagames.api.*;
+import net.samagames.api.games.themachine.*;
+import org.bukkit.*;
+import org.bukkit.configuration.*;
+import org.bukkit.configuration.file.*;
+import org.bukkit.plugin.java.*;
 
-import java.io.File;
+import java.io.*;
 
 
 public final class Camelia extends JavaPlugin {

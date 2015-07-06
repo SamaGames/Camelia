@@ -1,14 +1,12 @@
 package eu.carrade.amaury.Camelia.utils;
 
-import eu.carrade.amaury.Camelia.Camelia;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import eu.carrade.amaury.Camelia.*;
+import org.bukkit.*;
+import org.bukkit.entity.*;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+import java.lang.reflect.*;
+import java.util.*;
+import java.util.concurrent.*;
 
 
 /**

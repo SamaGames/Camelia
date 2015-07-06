@@ -1,29 +1,9 @@
 package eu.carrade.amaury.Camelia.drawing.colors.core;
 
-import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorBlack;
-import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorBlue;
-import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorBrown;
-import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorCyan;
-import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorGray;
-import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorGreen;
-import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorLightBlue;
-import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorLightGray;
-import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorLime;
-import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorMagenta;
-import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorOrange;
-import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorPink;
-import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorPurple;
-import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorRed;
-import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorWhite;
-import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorYellow;
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
+import eu.carrade.amaury.Camelia.drawing.colors.colors.*;
+import org.bukkit.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 public final class ColorUtils {

@@ -1,12 +1,8 @@
 package eu.carrade.amaury.Camelia.game;
 
-import eu.carrade.amaury.Camelia.Camelia;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
+import eu.carrade.amaury.Camelia.*;
+import org.bukkit.*;
+import org.bukkit.scoreboard.*;
 
 
 public class ScoreManager {

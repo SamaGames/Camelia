@@ -1,15 +1,13 @@
 package eu.carrade.amaury.Camelia.drawing;
 
-import eu.carrade.amaury.Camelia.Camelia;
-import eu.carrade.amaury.Camelia.drawing.drawTools.core.ContinuousDrawTool;
-import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
-import eu.carrade.amaury.Camelia.drawing.whiteboard.WhiteboardLocation;
-import eu.carrade.amaury.Camelia.game.Drawer;
-import org.bukkit.scheduler.BukkitRunnable;
+import eu.carrade.amaury.Camelia.*;
+import eu.carrade.amaury.Camelia.drawing.drawTools.core.*;
+import eu.carrade.amaury.Camelia.drawing.whiteboard.*;
+import eu.carrade.amaury.Camelia.game.*;
+import org.bukkit.scheduler.*;
 
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
+import java.util.concurrent.*;
 
 
 public class FollowDrawerCursorTask extends BukkitRunnable {

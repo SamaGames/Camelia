@@ -1,24 +1,16 @@
 package eu.carrade.amaury.Camelia.listeners;
 
-import eu.carrade.amaury.Camelia.Camelia;
-import eu.carrade.amaury.Camelia.drawing.colors.core.ColorType;
-import eu.carrade.amaury.Camelia.drawing.colors.core.ColorUtils;
-import eu.carrade.amaury.Camelia.drawing.colors.core.PixelColor;
-import eu.carrade.amaury.Camelia.drawing.drawTools.core.ContinuousDrawTool;
-import eu.carrade.amaury.Camelia.drawing.drawTools.tools.SprayTool;
-import eu.carrade.amaury.Camelia.game.Drawer;
-import eu.carrade.amaury.Camelia.game.GuiManager;
-import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
+import eu.carrade.amaury.Camelia.*;
+import eu.carrade.amaury.Camelia.drawing.colors.core.*;
+import eu.carrade.amaury.Camelia.drawing.drawTools.core.*;
+import eu.carrade.amaury.Camelia.drawing.drawTools.tools.*;
+import eu.carrade.amaury.Camelia.game.*;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.event.*;
+import org.bukkit.event.inventory.*;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 
 public class InventoryListener implements Listener {

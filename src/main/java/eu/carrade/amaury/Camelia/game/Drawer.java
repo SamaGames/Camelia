@@ -1,22 +1,19 @@
 package eu.carrade.amaury.Camelia.game;
 
 
-import eu.carrade.amaury.Camelia.Camelia;
-import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorGreen;
-import eu.carrade.amaury.Camelia.drawing.colors.core.ColorType;
-import eu.carrade.amaury.Camelia.drawing.colors.core.PixelColor;
-import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
-import eu.carrade.amaury.Camelia.utils.ActionBar;
-import net.samagames.tools.BarAPI.BarAPI;
-import net.samagames.tools.Titles;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import eu.carrade.amaury.Camelia.*;
+import eu.carrade.amaury.Camelia.drawing.colors.colors.*;
+import eu.carrade.amaury.Camelia.drawing.colors.core.*;
+import eu.carrade.amaury.Camelia.drawing.drawTools.core.*;
+import eu.carrade.amaury.Camelia.utils.*;
+import net.samagames.tools.BarAPI.*;
+import net.samagames.tools.*;
+import org.bukkit.*;
+import org.bukkit.entity.*;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import java.util.logging.Level;
+import java.lang.reflect.*;
+import java.util.*;
+import java.util.logging.*;
 
 
 public class Drawer {

@@ -1,23 +1,15 @@
 package eu.carrade.amaury.Camelia.game;
 
 
-import eu.carrade.amaury.Camelia.Camelia;
-import eu.carrade.amaury.Camelia.game.turns.DrawTurnsManager;
+import eu.carrade.amaury.Camelia.*;
+import eu.carrade.amaury.Camelia.game.turns.*;
 import eu.carrade.amaury.Camelia.utils.Utils;
-import net.samagames.api.games.IManagedGame;
-import net.samagames.api.games.Status;
-import net.samagames.tools.Titles;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
+import net.samagames.api.games.*;
+import net.samagames.tools.*;
+import org.bukkit.*;
+import org.bukkit.entity.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 
 public class GameManager extends IManagedGame {

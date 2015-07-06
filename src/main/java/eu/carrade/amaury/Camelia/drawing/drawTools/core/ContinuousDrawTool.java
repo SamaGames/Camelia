@@ -1,6 +1,6 @@
 package eu.carrade.amaury.Camelia.drawing.drawTools.core;
 
-import eu.carrade.amaury.Camelia.game.Drawer;
+import eu.carrade.amaury.Camelia.game.*;
 
 
 /**

@@ -1,6 +1,6 @@
 package eu.carrade.amaury.Camelia.drawing.colors.core;
 
-import org.bukkit.DyeColor;
+import org.bukkit.*;
 
 
 public abstract class PixelColor {

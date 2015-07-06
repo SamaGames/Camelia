@@ -1,10 +1,9 @@
 package eu.carrade.amaury.Camelia.utils;
 
-import eu.carrade.amaury.Camelia.Camelia;
-import org.bukkit.Bukkit;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
+import eu.carrade.amaury.Camelia.*;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.scheduler.*;
 
 
 public class DrawTimer implements Runnable {

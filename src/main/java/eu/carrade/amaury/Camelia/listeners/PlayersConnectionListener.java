@@ -1,12 +1,10 @@
 package eu.carrade.amaury.Camelia.listeners;
 
 
-import eu.carrade.amaury.Camelia.Camelia;
-import org.bukkit.Bukkit;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
+import eu.carrade.amaury.Camelia.*;
+import org.bukkit.*;
+import org.bukkit.event.*;
+import org.bukkit.event.player.*;
 
 
 public class PlayersConnectionListener implements Listener {

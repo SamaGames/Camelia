@@ -1,33 +1,21 @@
 package eu.carrade.amaury.Camelia.drawing.whiteboard;
 
-import eu.carrade.amaury.Camelia.Camelia;
-import eu.carrade.amaury.Camelia.drawing.colors.colors.ColorWhite;
-import eu.carrade.amaury.Camelia.drawing.colors.core.ColorType;
-import eu.carrade.amaury.Camelia.drawing.colors.core.ColorUtils;
-import eu.carrade.amaury.Camelia.drawing.colors.core.GameBlock;
-import eu.carrade.amaury.Camelia.drawing.colors.core.PixelColor;
-import eu.carrade.amaury.Camelia.utils.Utils;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
+import eu.carrade.amaury.Camelia.*;
+import eu.carrade.amaury.Camelia.drawing.colors.colors.*;
+import eu.carrade.amaury.Camelia.drawing.colors.core.*;
+import eu.carrade.amaury.Camelia.utils.*;
+import org.bukkit.*;
+import org.bukkit.block.*;
+import org.bukkit.entity.*;
 
-import javax.imageio.ImageIO;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.logging.Level;
+import javax.imageio.*;
+import java.awt.geom.*;
+import java.awt.image.*;
+import java.io.*;
+import java.net.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.logging.*;
 
 
 public class Whiteboard {

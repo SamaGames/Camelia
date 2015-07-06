@@ -1,12 +1,11 @@
 package eu.carrade.amaury.Camelia.drawing.drawTools.tools;
 
-import eu.carrade.amaury.Camelia.Camelia;
-import eu.carrade.amaury.Camelia.drawing.drawTools.core.ClicDrawTool;
-import eu.carrade.amaury.Camelia.drawing.drawTools.core.ToolLocator;
-import eu.carrade.amaury.Camelia.drawing.whiteboard.WhiteboardLocation;
-import eu.carrade.amaury.Camelia.game.Drawer;
-import org.bukkit.ChatColor;
-import org.bukkit.inventory.ItemStack;
+import eu.carrade.amaury.Camelia.*;
+import eu.carrade.amaury.Camelia.drawing.drawTools.core.*;
+import eu.carrade.amaury.Camelia.drawing.whiteboard.*;
+import eu.carrade.amaury.Camelia.game.*;
+import org.bukkit.*;
+import org.bukkit.inventory.*;
 
 
 @ToolLocator(slot = 6)

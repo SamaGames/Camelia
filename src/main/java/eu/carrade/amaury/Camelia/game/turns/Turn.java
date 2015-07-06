@@ -1,20 +1,14 @@
 package eu.carrade.amaury.Camelia.game.turns;
 
-import eu.carrade.amaury.Camelia.Camelia;
-import eu.carrade.amaury.Camelia.game.Drawer;
-import eu.carrade.amaury.Camelia.utils.ActionBar;
-import eu.carrade.amaury.Camelia.utils.DrawTimer;
+import eu.carrade.amaury.Camelia.*;
+import eu.carrade.amaury.Camelia.game.*;
+import eu.carrade.amaury.Camelia.utils.*;
 import eu.carrade.amaury.Camelia.utils.Utils;
-import net.samagames.tools.GameUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
+import net.samagames.tools.*;
+import org.bukkit.*;
+import org.bukkit.entity.*;
 
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 
 public class Turn {

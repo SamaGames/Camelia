@@ -1,25 +1,17 @@
 package eu.carrade.amaury.Camelia.game;
 
 import eu.carrade.amaury.Camelia.drawing.colors.core.ColorUtils;
-import eu.carrade.amaury.Camelia.drawing.colors.core.PixelColor;
-import eu.carrade.amaury.Camelia.drawing.drawTools.core.ContinuousDrawTool;
-import eu.carrade.amaury.Camelia.drawing.drawTools.tools.SprayTool;
+import eu.carrade.amaury.Camelia.drawing.colors.core.*;
+import eu.carrade.amaury.Camelia.drawing.drawTools.core.*;
+import eu.carrade.amaury.Camelia.drawing.drawTools.tools.*;
 import eu.carrade.amaury.Camelia.utils.Utils;
-import net.samagames.tools.GlowEffect;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
-import org.bukkit.Material;
-import org.bukkit.block.banner.Pattern;
-import org.bukkit.block.banner.PatternType;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BannerMeta;
-import org.bukkit.inventory.meta.ItemMeta;
+import net.samagames.tools.*;
+import org.bukkit.*;
+import org.bukkit.block.banner.*;
+import org.bukkit.inventory.*;
+import org.bukkit.inventory.meta.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 
 public class GuiManager {

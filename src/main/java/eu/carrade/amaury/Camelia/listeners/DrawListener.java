@@ -1,26 +1,20 @@
 package eu.carrade.amaury.Camelia.listeners;
 
-import eu.carrade.amaury.Camelia.Camelia;
-import eu.carrade.amaury.Camelia.drawing.drawTools.core.ClicDrawTool;
-import eu.carrade.amaury.Camelia.drawing.drawTools.core.DrawTool;
-import eu.carrade.amaury.Camelia.drawing.whiteboard.WhiteboardLocation;
-import eu.carrade.amaury.Camelia.game.Drawer;
-import eu.carrade.amaury.Camelia.game.turns.Turn;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.scheduler.BukkitTask;
+import eu.carrade.amaury.Camelia.*;
+import eu.carrade.amaury.Camelia.drawing.drawTools.core.*;
+import eu.carrade.amaury.Camelia.drawing.whiteboard.*;
+import eu.carrade.amaury.Camelia.game.*;
+import eu.carrade.amaury.Camelia.game.turns.*;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.event.*;
+import org.bukkit.event.block.*;
+import org.bukkit.event.inventory.*;
+import org.bukkit.event.player.*;
+import org.bukkit.scheduler.*;
 
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
+import java.util.concurrent.*;
 
 
 public class DrawListener implements Listener {

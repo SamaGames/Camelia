@@ -1,8 +1,7 @@
 package eu.carrade.amaury.Camelia.drawing.colors.core;
 
-import org.bukkit.DyeColor;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.*;
+import org.bukkit.inventory.*;
 
 
 public class GameBlock {

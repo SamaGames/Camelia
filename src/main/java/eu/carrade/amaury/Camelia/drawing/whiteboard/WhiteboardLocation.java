@@ -1,9 +1,9 @@
 package eu.carrade.amaury.Camelia.drawing.whiteboard;
 
 
-import eu.carrade.amaury.Camelia.Camelia;
-import org.apache.commons.lang.Validate;
-import org.bukkit.Location;
+import eu.carrade.amaury.Camelia.*;
+import org.apache.commons.lang.*;
+import org.bukkit.*;
 
 
 /**

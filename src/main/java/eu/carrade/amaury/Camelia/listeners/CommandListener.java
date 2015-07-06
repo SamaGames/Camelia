@@ -1,12 +1,10 @@
 package eu.carrade.amaury.Camelia.listeners;
 
-import eu.carrade.amaury.Camelia.Camelia;
-import eu.carrade.amaury.Camelia.game.Drawer;
-import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import eu.carrade.amaury.Camelia.*;
+import eu.carrade.amaury.Camelia.game.*;
+import org.bukkit.*;
+import org.bukkit.command.*;
+import org.bukkit.entity.*;
 
 
 public class CommandListener implements CommandExecutor {

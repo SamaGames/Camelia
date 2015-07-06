@@ -1,10 +1,10 @@
 package eu.carrade.amaury.Camelia.drawing.drawTools.core;
 
-import eu.carrade.amaury.Camelia.drawing.whiteboard.WhiteboardLocation;
-import eu.carrade.amaury.Camelia.game.Drawer;
-import eu.carrade.amaury.Camelia.utils.Utils;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import eu.carrade.amaury.Camelia.drawing.whiteboard.*;
+import eu.carrade.amaury.Camelia.game.*;
+import eu.carrade.amaury.Camelia.utils.*;
+import org.bukkit.inventory.*;
+import org.bukkit.inventory.meta.*;
 
 
 /**

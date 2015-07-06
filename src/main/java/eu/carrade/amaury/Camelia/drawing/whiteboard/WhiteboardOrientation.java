@@ -1,7 +1,7 @@
 package eu.carrade.amaury.Camelia.drawing.whiteboard;
 
 
-import org.bukkit.Location;
+import org.bukkit.*;
 
 
 public enum WhiteboardOrientation {

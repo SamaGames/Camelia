@@ -1,21 +1,13 @@
 package eu.carrade.amaury.Camelia.game.turns;
 
-import eu.carrade.amaury.Camelia.Camelia;
-import eu.carrade.amaury.Camelia.game.Drawer;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import eu.carrade.amaury.Camelia.*;
+import eu.carrade.amaury.Camelia.game.*;
+import org.bukkit.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.concurrent.ConcurrentLinkedDeque;
+import java.io.*;
+import java.net.*;
+import java.util.*;
+import java.util.concurrent.*;
 
 
 public class DrawTurnsManager {
