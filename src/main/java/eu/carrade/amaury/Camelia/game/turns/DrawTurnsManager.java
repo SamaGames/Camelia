@@ -49,13 +49,13 @@ public class DrawTurnsManager {
 		loadWords();
 
 		WAVES_COUNT = Camelia.getInstance().getArenaConfig().getInt("game.drawings");
-		Camelia.getInstance().getLogger().info("Waves: " + WAVES_COUNT);
 	}
 
 
 	/**
-	 * Loads the words from the server. <p/> TODO Fallback local list of words, just in case. TODO Fallback server if
-	 * the main one is down (mirror).
+	 * Loads the words from the server.
+	 *
+	 * TODO Fallback local list of words, just in case. TODO Fallback server if the main one is down (mirror).
 	 */
 	private void loadWords() {
 		Bukkit.getScheduler().runTaskAsynchronously(Camelia.getInstance(), () -> {
@@ -80,7 +80,7 @@ public class DrawTurnsManager {
 				simpleWords.clear();
 				simpleWords.addAll(words);
 
-				Camelia.getInstance().getLogger().info("Succefully loaded " + simpleWords.size() + " words !");
+				Camelia.getInstance().getLogger().info("Successfully loaded " + simpleWords.size() + " words!");
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
 			} finally {
@@ -120,15 +120,11 @@ public class DrawTurnsManager {
 	 */
 	private void generateWaves() {
 
-		Camelia.getInstance().getLogger().info("Generating " + WAVES_COUNT + " waves...");
-
 		List<Drawer> drawers = Camelia.getInstance().getGameManager().getDrawers();
 		Collections.shuffle(drawers);
 
 		for (Integer i = 0; i < WAVES_COUNT; i++) {
-			Camelia.getInstance().getLogger().info(" » Wave #" + i);
 			for (Drawer drawer : drawers) {
-				Camelia.getInstance().getLogger().info(" » »  Added drawer " + drawer.getPlayer().getName());
 				draws.push(new Turn(drawer));
 			}
 		}
@@ -151,17 +147,10 @@ public class DrawTurnsManager {
 			currentTurn.endTurn(Turn.EndReason.UNKNOWN);
 		}
 
-		Camelia.getInstance().getLogger().info("Next turn, " + draws.size() + " draws left.");
-
-
 		// We need an online drawer.
 		do {
 			try {
-				Camelia.getInstance().getLogger().info("Trying a drawer.");
 				currentTurn = draws.pop();
-				Camelia.getInstance().getLogger().info(" » Player " + currentTurn.getDrawer().getPlayer());
-				Camelia.getInstance().getLogger().info(" » Online " + currentTurn.getDrawer().getPlayer().isOnline());
-
 			} catch (NoSuchElementException e) {
 				Camelia.getInstance().getGameManager().onEnd();
 				return;
@@ -174,7 +163,9 @@ public class DrawTurnsManager {
 
 
 	/**
-	 * Returns the turn currently active. <p/> Before the game, returns {@code null}. After, too.
+	 * Returns the turn currently active.
+	 *
+	 * Before the game, returns {@code null}. After, too.
 	 *
 	 * @return The current turn, or {@code null}.
 	 */
