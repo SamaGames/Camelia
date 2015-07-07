@@ -122,7 +122,6 @@ public class GameManager extends IManagedGame {
 
 	@Override
 	public void playerDisconnect(Player player) {
-		unregisterDrawer(player.getUniqueId());
 
 		if (getConnectedPlayers() < getMinPlayers()
 				&& getStatus() != Status.IN_GAME && getStatus() != Status.FINISHED) {
@@ -135,6 +134,10 @@ public class GameManager extends IManagedGame {
 			Turn currentTurn = Camelia.getInstance().getDrawTurnsManager().getCurrentTurn();
 			if(currentTurn != null) {
 				currentTurn.checkIfEverybodyFoundTheWord();
+
+				if(currentTurn.getDrawer().getPlayerID().equals(player.getUniqueId())) {
+					currentTurn.endTurn(Turn.EndReason.DISCONNECTED);
+				}
 			}
 		}
 
