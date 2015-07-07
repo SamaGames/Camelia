@@ -47,8 +47,6 @@ public class DrawTurnsManager {
 
 	/**
 	 * Loads the words from the server.
-	 *
-	 * TODO Fallback local list of words, just in case. TODO Fallback server if the main one is down (mirror).
 	 */
 	private void loadWords() {
 		Bukkit.getScheduler().runTaskAsynchronously(Camelia.getInstance(), () -> {
@@ -67,6 +65,8 @@ public class DrawTurnsManager {
 	 * parameter.
 	 *
 	 * Run this async. Please.
+	 *
+	 * TODO Fallback server if the main one is down (mirror).
 	 *
 	 * @param wordCount The number of words to get from the server.
 	 * @param hard If true, this will returns only hard words. Else, “easy” ones.
@@ -88,8 +88,9 @@ public class DrawTurnsManager {
 
 			List<String> words = Arrays.asList(rawWords.split(","));
 
-			if(words.size() != wordCount) {
-				Camelia.getInstance().getLogger().severe("Cannot load " + wordCount + " words, only " + words.size() + " received from the server!");
+			if(words.size() < wordCount) {
+				Camelia.getInstance().getLogger().severe("Cannot load " + wordCount + " words, only " + words.size() + " received from the server! Using local words to complete.");
+				words.addAll(getFallbackLocalWordsList(wordCount - words.size(), hard));
 			}
 
 			Collections.shuffle(words);
@@ -99,13 +100,26 @@ public class DrawTurnsManager {
 			return words;
 
 		} catch (IOException e) {
-			Camelia.getInstance().getLogger().log(Level.SEVERE, "Cannot load " + wordCount + " words, I/O exception received!", e);
+			Camelia.getInstance().getLogger().log(Level.SEVERE, "Cannot load " + wordCount + " words, I/O exception received! Using local words instead.", e);
 
-			// TODO fallback list of words.
-			return new ArrayList<>();
+			return getFallbackLocalWordsList(wordCount, hard);
 		} finally {
 			try { if (is != null) is.close(); } catch (IOException ignored) {}
 		}
+	}
+
+	/**
+	 * Returns a local fallback list of words, used if the server is not responding.
+	 *
+	 * TODO Add some words here (or, better, in a configuration file).
+	 *
+	 * @param wordCount The number of words to get.
+	 * @param hard If true, this should return hard words.
+	 *
+	 * @return The words.
+	 */
+	private List<String> getFallbackLocalWordsList(int wordCount, boolean hard) {
+		return new ArrayList<>();
 	}
 
 	/**
