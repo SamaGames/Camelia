@@ -140,7 +140,7 @@ public class DrawListener implements Listener {
 
 
 		String word = ev.getMessage().trim();
-		Turn.FoundState found = currentTurn.checkIfFound(ev.getPlayer(), word);
+		Word.FoundState found = currentTurn.checkIfFound(ev.getPlayer(), word);
 
 		switch (found) {
 			case NEAR:

@@ -214,7 +214,7 @@ public class Utils {
 	}
 
 	/**
-	 * @autor http://stackoverflow.com/questions/3322152/is-there-a-way-to-get-rid-of-accents-and-convert-a-whole-string-to-regular-lette
+	 * @author http://stackoverflow.com/questions/3322152/is-there-a-way-to-get-rid-of-accents-and-convert-a-whole-string-to-regular-lette
 	 */
 	public static String removeAccents(String string) {
 		StringBuilder sb = new StringBuilder(string.length());
@@ -230,6 +230,5 @@ public class Utils {
 		if (str1 == null || str2 == null) return false;
 
 		return removeAccents(str1.toLowerCase()).equals(removeAccents(str2.toLowerCase()));
-
 	}
 }
