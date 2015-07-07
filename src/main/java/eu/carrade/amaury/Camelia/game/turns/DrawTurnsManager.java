@@ -36,6 +36,8 @@ public class DrawTurnsManager {
 
 	private Turn currentTurn = null;
 
+	private Random random = new Random();
+
 
 	public DrawTurnsManager() {
 		// Very important to run as soon as possible !
@@ -93,7 +95,7 @@ public class DrawTurnsManager {
 				words.addAll(getFallbackLocalWordsList(wordCount - words.size(), hard));
 			}
 
-			Collections.shuffle(words);
+			Collections.shuffle(words, random);
 
 			Camelia.getInstance().getLogger().info("Successfully loaded " + words.size() + " words!");
 
@@ -143,8 +145,20 @@ public class DrawTurnsManager {
 		}
 
 
-		// TODO Take difficulty into account
-		return simpleWords.pop();
+		// Easy mode
+		if(!drawer.getHardWordsEnabled()) {
+			return simpleWords.pop();
+		}
+
+		// Hard mode
+		else {
+			if(random.nextDouble() < 0.335) {
+				return hardWords.pop();
+			}
+			else {
+				return simpleWords.pop();
+			}
+		}
 	}
 
 
