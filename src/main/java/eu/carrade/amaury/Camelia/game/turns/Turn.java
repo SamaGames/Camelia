@@ -74,6 +74,8 @@ public class Turn {
 
 		// Beginning
 
+		Camelia.getInstance().getServer().broadcastMessage(""); // Separator between turns.
+
 		Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "C'est au tour de " + ChatColor.GOLD + drawPlayer.getName());
 
 		Camelia.getInstance().getGameManager().getDrawers().forEach(Drawer::clearWordDisplay);
@@ -83,7 +85,7 @@ public class Turn {
 		// Word given, timer starts.
 
 		Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), () -> {
-			timer.startTimer();
+			timer.start();
 
 			drawer.setDrawing(true);
 			drawer.fillInventory();
@@ -155,7 +157,7 @@ public class Turn {
 		}
 
 		int rnd = random.nextInt(2000 / word.length()) + 4 * 20;
-		if (timer.getSeconds() > rnd) {
+		if (timer.getTenthsOfSecondsLeft() > rnd) {
 			Bukkit.getScheduler().runTaskLater(Camelia.getInstance(), Turn.this::throwTip, rnd * 2);
 		}
 	}
@@ -164,14 +166,18 @@ public class Turn {
 	 * Ends the turn.
 	 */
 	public void endTurn(EndReason reason) {
+		if(!active) return;
+
+
 		final Player drawPlayer = drawer.getPlayer();
 
 		active = false;
+		timer.stop();
 
 
 		// Broadcast
 
-		String endMessage    = "";
+		String endMessage = "";
 
 		if (reason == null) reason = EndReason.UNKNOWN;
 
