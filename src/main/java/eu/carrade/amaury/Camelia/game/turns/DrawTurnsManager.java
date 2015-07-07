@@ -132,7 +132,7 @@ public class DrawTurnsManager {
 	 *
 	 * @return The word, or {@code ""} (empty string) if the words list is empty.
 	 */
-	public String getRandomWord(Drawer drawer) {
+	public Word getRandomWord(Drawer drawer) {
 		if (simpleWords.size() == 0) {
 			Bukkit.broadcastMessage(
 					ChatColor.DARK_RED + "" + ChatColor.BOLD + "[!] "
@@ -141,22 +141,22 @@ public class DrawTurnsManager {
 
 			Camelia.getInstance().getGameManager().onEnd();
 
-			return "";
+			return new Word("", false);
 		}
 
 
 		// Easy mode
 		if(!drawer.getHardWordsEnabled()) {
-			return simpleWords.pop();
+			return new Word(simpleWords.pop(), false);
 		}
 
 		// Hard mode
 		else {
 			if(random.nextDouble() < 0.335) {
-				return hardWords.pop();
+				return new Word(hardWords.pop(), true);
 			}
 			else {
-				return simpleWords.pop();
+				return new Word(simpleWords.pop(), false);
 			}
 		}
 	}

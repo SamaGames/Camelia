@@ -26,7 +26,7 @@ public class Turn {
 	/**
 	 * The word to draw.
 	 */
-	private String word;
+	private Word word;
 
 	/**
 	 * The current tip: the word, with _ where the letter is not displayed.
@@ -59,7 +59,7 @@ public class Turn {
 	public Turn(Drawer drawer) {
 		this.drawer = drawer;
 		this.word = Camelia.getInstance().getDrawTurnsManager().getRandomWord(drawer);
-		this.tip = Utils.getNewWordBlank(word);
+		this.tip = Utils.getNewWordBlank(word.getWord());
 	}
 
 	/**
@@ -88,9 +88,9 @@ public class Turn {
 			drawer.setDrawing(true);
 			drawer.fillInventory();
 
-			ActionBar.sendPermanentMessage(drawPlayer, Utils.getFormattedWord(word));
+			ActionBar.sendPermanentMessage(drawPlayer, Utils.getFormattedWord(word.getWord()));
 			drawPlayer.playSound(drawPlayer.getLocation(), Sound.NOTE_PLING, 1, 1);
-			drawPlayer.sendMessage(ChatColor.GREEN + "Vous devrez dessiner " + ChatColor.GOLD + "" + ChatColor.BOLD + word.toUpperCase());
+			drawPlayer.sendMessage(ChatColor.GREEN + "Vous devrez dessiner " + ChatColor.GOLD + "" + ChatColor.BOLD + word.getWord().toUpperCase());
 
 
 			String blank = Utils.getFormattedBlank(tip);
@@ -137,7 +137,7 @@ public class Turn {
 				if (letter == n) {
 					char[] chars = tip.toCharArray();
 
-					chars[i] = word.charAt(i);
+					chars[i] = word.getWord().charAt(i);
 					tip = String.valueOf(chars).toUpperCase();
 
 					break;
@@ -198,7 +198,7 @@ public class Turn {
 		}
 
 		Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + endMessage);
-		Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Le mot était " + ChatColor.GOLD + "" + ChatColor.BOLD + word.toUpperCase() + ChatColor.AQUA + ".");
+		Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Le mot était " + ChatColor.GOLD + "" + ChatColor.BOLD + word.getWord().toUpperCase() + ChatColor.AQUA + ".");
 
 		if (winnersOfThisTurn.size() > 0)
 			Camelia.getInstance().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "Il a été trouvé par " + winnersOfThisTurn.size() + " personne" + (winnersOfThisTurn.size() > 1 ? "s" : "") + ".");
@@ -238,38 +238,41 @@ public class Turn {
 	 *
 	 * @return {@code true} if the player found the word.
 	 */
-	public FoundState checkIfFound(Player player, String input) {
+	public Word.FoundState checkIfFound(Player player, String input) {
 		Drawer checkedDrawer = Camelia.getInstance().getGameManager().getDrawer(player.getUniqueId());
 
-		if (checkedDrawer == null)               return FoundState.NOT_FOUND;
-		if (checkedDrawer.hasFoundCurrentWord()) return FoundState.FOUND;
+		if (checkedDrawer == null)               return Word.FoundState.NOT_FOUND;
+		if (checkedDrawer.hasFoundCurrentWord()) return Word.FoundState.FOUND;
 
-		if (input != null && Utils.wideComparison(input, word)) {
+		Word.FoundState found = word.checkInput(input);
+
+		if (found == Word.FoundState.FOUND) {
 			checkedDrawer.getPlayer().getServer().broadcastMessage(Camelia.getInstance().getCoherenceMachine().getGameTag() + ChatColor.AQUA + "" + ChatColor.BOLD + checkedDrawer.getPlayer().getName() + ChatColor.GREEN + "" + ChatColor.BOLD + " a trouvé le mot !");
 			GameUtils.broadcastSound(Sound.LEVEL_UP);
 
-			int found = winnersOfThisTurn.size();
-			int points = 2;
+			int foundCount = winnersOfThisTurn.size();
+			int guesserPoints = 2;
 
-			if (found <= 2) {
-				points = 8 - 2 * found;
+			if (foundCount <= 2) {
+				guesserPoints = 8 - 2 * foundCount;
 			}
 
-			checkedDrawer.getPlayer().sendMessage(ChatColor.GREEN + "Vous gagnez " + ChatColor.AQUA + "" + ChatColor.BOLD + points + ChatColor.GREEN + " points !");
-			checkedDrawer.increasePoints(points);
+			int drawerPoints = word.isHard() ? 5 : 3;
 
-			drawer.getPlayer().sendMessage(ChatColor.GREEN + "Vous gagnez " + ChatColor.AQUA + "" + ChatColor.BOLD + "3" + ChatColor.GREEN + " points !");
-			drawer.increasePoints(3);
+
+			checkedDrawer.getPlayer().sendMessage(ChatColor.GREEN + "Vous gagnez " + ChatColor.AQUA + "" + ChatColor.BOLD + guesserPoints + ChatColor.GREEN + " points !");
+			checkedDrawer.increasePoints(guesserPoints);
+
+			drawer.getPlayer().sendMessage(ChatColor.GREEN + "Vous gagnez " + ChatColor.AQUA + "" + ChatColor.BOLD + drawerPoints + ChatColor.GREEN + " points !");
+			drawer.increasePoints(drawerPoints);
 
 			checkedDrawer.setFoundCurrentWord(true);
 			winnersOfThisTurn.add(checkedDrawer.getPlayerID());
 
 			checkIfEverybodyFoundTheWord();
-
-			return FoundState.FOUND;
 		}
 
-		return FoundState.NOT_FOUND;
+		return found;
 	}
 
 	/**
@@ -313,7 +316,7 @@ public class Turn {
 
 		// First case: after the end of the turn. The whole word is displayed to everyone.
 		if (!isActive()) {
-			String displayedWord = Utils.getFormattedWord(word);
+			String displayedWord = Utils.getFormattedWord(word.getWord());
 
 			if (pDrawer != null) pDrawer.displayWord(displayedWord);
 			else                 ActionBar.sendPermanentMessage(player, displayedWord);
@@ -333,7 +336,7 @@ public class Turn {
 
 			// Drawer
 			else {
-				pDrawer.displayWord(Utils.getFormattedWord(word));
+				pDrawer.displayWord(Utils.getFormattedWord(word.getWord()));
 			}
 		}
 	}
@@ -343,7 +346,7 @@ public class Turn {
 		return drawer;
 	}
 
-	public String getWord() {
+	public Word getWord() {
 		return word;
 	}
 
@@ -388,26 +391,5 @@ public class Turn {
 		 * Unknown reason
 		 */
 		UNKNOWN
-	}
-
-
-	/**
-	 * Does the player found the word? <p/> Used as an answer of the {@link #checkIfFound(Player, String)} method.
-	 */
-	public enum FoundState {
-		/**
-		 * The player didn't found the word.
-		 */
-		NOT_FOUND,
-
-		/**
-		 * The player didn't found the word, but he is near.
-		 */
-		NEAR,
-
-		/**
-		 * The player found the word.
-		 */
-		FOUND
 	}
 }
