@@ -8,6 +8,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.logging.*;
 
 
 public class DrawTurnsManager {
@@ -51,34 +52,60 @@ public class DrawTurnsManager {
 	 */
 	private void loadWords() {
 		Bukkit.getScheduler().runTaskAsynchronously(Camelia.getInstance(), () -> {
-			InputStream is = null;
+			Integer wordCount = (WAVES_COUNT + 1) * Camelia.getInstance().getGameManager().getMaxPlayers();
 
-			try {
+			simpleWords.clear();
+			simpleWords.addAll(getWords(wordCount, false));
 
-				Integer wordCount = (WAVES_COUNT + 1) * Camelia.getInstance().getGameManager().getMaxPlayers();
-				Camelia.getInstance().getLogger().info("Loading " + wordCount + " words...");
-
-				URL url = new URL(API_URL + "?pass=" + API_KEY + "&words=" + wordCount);
-
-				is = url.openStream();
-				BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
-				String rawWords = br.readLine();
-				Camelia.getInstance().getLogger().info("Got reply " + rawWords);
-
-				List<String> words = Arrays.asList(rawWords.split(","));
-				Collections.shuffle(words);
-
-				simpleWords.clear();
-				simpleWords.addAll(words);
-
-				Camelia.getInstance().getLogger().info("Successfully loaded " + simpleWords.size() + " words!");
-			} catch (IOException ioe) {
-				ioe.printStackTrace();
-			} finally {
-				try { if (is != null) is.close(); } catch (IOException ignored) {}
-			}
+			hardWords.clear();
+			hardWords.addAll(getWords(wordCount, true));
 		});
+	}
+
+	/**
+	 * Returns a randomized list of {@code wordCount} words, all hard or not following the {@code hard}
+	 * parameter.
+	 *
+	 * Run this async. Please.
+	 *
+	 * @param wordCount The number of words to get from the server.
+	 * @param hard If true, this will returns only hard words. Else, “easy” ones.
+	 * @return The words (randomized list).
+	 */
+	private List<String> getWords(int wordCount, boolean hard) {
+		InputStream is = null;
+
+		try {
+			Camelia.getInstance().getLogger().info("Loading " + wordCount + " words... (hard: " + hard + ")");
+
+			URL url = new URL(API_URL + "?pass=" + API_KEY + "&words=" + wordCount + (hard ? "&hard" : ""));
+
+			is = url.openStream();
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+			String rawWords = br.readLine();
+			Camelia.getInstance().getLogger().info("Got reply " + rawWords);
+
+			List<String> words = Arrays.asList(rawWords.split(","));
+
+			if(words.size() != wordCount) {
+				Camelia.getInstance().getLogger().severe("Cannot load " + wordCount + " words, only " + words.size() + " received from the server!");
+			}
+
+			Collections.shuffle(words);
+
+			Camelia.getInstance().getLogger().info("Successfully loaded " + words.size() + " words!");
+
+			return words;
+
+		} catch (IOException e) {
+			Camelia.getInstance().getLogger().log(Level.SEVERE, "Cannot load " + wordCount + " words, I/O exception received!", e);
+
+			// TODO fallback list of words.
+			return new ArrayList<>();
+		} finally {
+			try { if (is != null) is.close(); } catch (IOException ignored) {}
+		}
 	}
 
 	/**

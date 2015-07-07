@@ -42,7 +42,7 @@ public class SettingsGui extends AbstractGui {
 				drawer.getHardWordsEnabled() ? (byte) 1 : (byte) 0,
 				GuiUtils.getBooleanTitle("Difficulté", drawer.getHardWordsEnabled()),
 				Utils.stringToLore(
-						ChatColor.GRAY + "Si activé, il sera possible d'obtenir des mots plus compliqués à dessiner. Ces mots donneront plus de points s'ils sont devinés.{bl}"
+						ChatColor.GRAY + "Si activé, il sera possible d'obtenir des mots plus compliqués à dessiner. Ces mots donneront plus de points s'ils sont devinés par les autres joueurs.{bl}"
 						+ (drawer.getHardWordsEnabled() ? ChatColor.GREEN + "Cliquer pour désactiver" : ChatColor.RED + "Cliquer pour activer")
 				),
 				true
