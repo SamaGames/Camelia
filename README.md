@@ -24,7 +24,6 @@ Cette permission peut être retirée par les Propriétaires à tout moment, sans
 
 *Ce qui suit ne fait pas partie des termes ci-dessus.*
 
-La permission d'exploitation révocable ci-dessus est placée *au cas où*, pour protéger notre travail en cas de problème (par exemple similaires à ceux rencontrés lors du problème avec zyuiop). Ces termes ne sont en aucun cas a priori contre SamaGames, ce n'est qu'une sécurité.  
-On ne sais jamais.
+La permission d'exploitation révocable ci-dessus est placée *au cas où*, pour protéger notre travail en cas de problème (par exemple similaires à ceux rencontrés lors du problème avec zyuiop). Ces termes ne sont en aucun cas a priori contre SamaGames, ce n'est qu'une sécurité. On ne sait jamais.
 
 Le retrait des permissions d'usage ne serait fait qu'en cas extrême où aucun accord amical ne serait trouvé, si jamais une telle situation se reproduit.
