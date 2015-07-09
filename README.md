@@ -18,3 +18,13 @@ La permission est donnée, gratuitement, à l'association Elydra Network, d'util
  - si les Propriétaires décident de publier le Jeu hors du cadre de l'association Elydra Network et/ou de celui des Développeurs, ils s'engagent à retirer tout contenu propriété de l'association Elydra Network et/ou d'un Développeur qui ne soit pas Propriétaire, tel que (sans s'y limiter) la SamaGames API, de la partie publiée du Jeu, si les Propriétaires ne disposent pas du droit de publication du-dit contenu.
 
 Cette permission peut être retirée par les Propriétaires à tout moment, sans justification, avec un délai minimal de 15 (quinze) jours avant application.
+
+
+#### Nota Bene
+
+*Ce qui suit ne fait pas partie des termes ci-dessus.*
+
+La permission d'exploitation révocable ci-dessus est placée *au cas où*, pour protéger notre travail en cas de problème (par exemple similaires à ceux rencontrés lors du problème avec zyuiop). Ces termes ne sont en aucun cas a priori contre SamaGames, ce n'est qu'une sécurité.  
+On ne sais jamais.
+
+Le retrait des permissions d'usage ne serait fait qu'en cas extrême où aucun accord amical ne serait trouvé, si jamais une telle situation se reproduit.
